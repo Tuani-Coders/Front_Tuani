@@ -1,0 +1,86 @@
+/* ================================================================
+   typography.css — Escala tipográfica (Grupo Peñascal Design System)
+   ================================================================ */
+
+.headline-xl {
+  font-size: var(--headline-xl-size);
+  font-weight: var(--headline-xl-weight);
+  line-height: var(--headline-xl-line-height);
+  letter-spacing: var(--headline-xl-tracking);
+}
+
+.headline-lg {
+  font-size: var(--headline-lg-size);
+  font-weight: var(--headline-lg-weight);
+  line-height: var(--headline-lg-line-height);
+  letter-spacing: var(--headline-lg-tracking);
+}
+
+.headline-md {
+  font-size: var(--headline-md-size);
+  font-weight: var(--headline-md-weight);
+  line-height: var(--headline-md-line-height);
+}
+
+.body-lg {
+  font-size: var(--body-lg-size);
+  font-weight: var(--body-lg-weight);
+  line-height: var(--body-lg-line-height);
+}
+
+.body-md {
+  font-size: var(--body-md-size);
+  font-weight: var(--body-md-weight);
+  line-height: var(--body-md-line-height);
+}
+
+.label-md {
+  font-size: var(--label-md-size);
+  font-weight: var(--label-md-weight);
+  line-height: var(--label-md-line-height);
+  letter-spacing: var(--label-md-tracking);
+}
+
+.caption {
+  font-size: var(--caption-size);
+  font-weight: var(--caption-weight);
+  line-height: var(--caption-line-height);
+}
+
+h1 {
+  font-size: var(--headline-xl-size);
+  font-weight: var(--headline-xl-weight);
+  line-height: var(--headline-xl-line-height);
+  letter-spacing: var(--headline-xl-tracking);
+}
+
+h2 {
+  font-size: var(--headline-lg-size);
+  font-weight: var(--headline-lg-weight);
+  line-height: var(--headline-lg-line-height);
+  letter-spacing: var(--headline-lg-tracking);
+}
+
+h3 {
+  font-size: var(--headline-md-size);
+  font-weight: var(--headline-md-weight);
+  line-height: var(--headline-md-line-height);
+}
+
+h4 {
+  font-size: var(--body-lg-size);
+  font-weight: 600;
+  line-height: var(--body-lg-line-height);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: var(--headline-lg-mobile-size);
+    font-weight: var(--headline-lg-mobile-weight);
+    line-height: var(--headline-lg-mobile-line-height);
+  }
+
+  h2 {
+    font-size: var(--headline-md-size);
+  }
+}

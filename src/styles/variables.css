@@ -1,0 +1,100 @@
+/* ================================================================
+   variables.css — Design Tokens: Grupo Peñascal Design System
+   Basado en el diseño "la buena" de Stitch
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* ── Colores — Basque Heritage Identity ──────── */
+  --color-primary: #003429;           /* Deep Forest Green */
+  --color-primary-container: #004d3d;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #aff0d9;
+  
+  --color-secondary: #b52424;         /* Terracotta Red */
+  --color-secondary-container: #ffdad6;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #600006;
+
+  --color-surface: #f8faf7;           /* Stone White */
+  --color-surface-dim: #d8dbd8;
+  --color-surface-bright: #f8faf7;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f4f1;
+  --color-surface-container: #eceeeb;
+  --color-surface-container-high: #e6e9e6;
+  --color-surface-container-highest: #e1e3e0;
+
+  --color-on-surface: #191c1b;
+  --color-on-surface-variant: #404945;
+  --color-outline: #707975;           /* Muted Stone */
+  --color-outline-variant: #bfc9c3;
+
+  --color-background: #f8faf7;
+  --color-on-background: #191c1b;
+
+  /* ── Tipografía — Manrope (Basque Feel) ──────── */
+  --font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+
+  /* headline-xl (Stone Carving Style) */
+  --headline-xl-size: 48px;
+  --headline-xl-weight: 800;
+  --headline-xl-line-height: 56px;
+  --headline-xl-tracking: -0.02em;
+
+  /* headline-lg */
+  --headline-lg-size: 32px;
+  --headline-lg-weight: 700;
+  --headline-lg-line-height: 40px;
+  --headline-lg-tracking: -0.01em;
+
+  /* headline-md */
+  --headline-md-size: 24px;
+  --headline-md-weight: 700;
+  --headline-md-line-height: 32px;
+
+  /* body-lg */
+  --body-lg-size: 18px;
+  --body-lg-weight: 400;
+  --body-lg-line-height: 28px;
+
+  /* body-md */
+  --body-md-size: 16px;
+  --body-md-weight: 400;
+  --body-md-line-height: 24px;
+
+  /* label-lg (Geometric Accents) */
+  --label-lg-size: 14px;
+  --label-lg-weight: 600;
+  --label-lg-line-height: 20px;
+  --label-lg-tracking: 0.05em;
+
+  /* ── Espaciado (Fixed Grid Philosophy) ───────── */
+  --space-unit: 8px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+  
+  --space-gutter: 24px;
+  --space-container-max: 1280px;
+  --space-margin-desktop: 48px;
+  --space-margin-mobile: 16px;
+
+  /* ── Bordes y Formas (Structural Sturdiness) ── */
+  --radius-sm: 0.25rem;
+  --radius-default: 0.5rem; /* 8px */
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Shadows (Hard Shadows style) */
+  --shadow-sm: 0 2px 4px rgba(0, 52, 41, 0.08);
+  --shadow-md: 0 4px 8px rgba(0, 52, 41, 0.12);
+  --shadow-lg: 0 12px 24px rgba(0, 52, 41, 0.15);
+
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --z-header: 200;
+}

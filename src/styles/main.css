@@ -1,0 +1,9 @@
+/* ================================================================
+   main.css — Punto de entrada de estilos globales
+   Grupo Peñascal Kooperatiba
+   ================================================================ */
+
+@import './variables.css';
+@import './reset.css';
+@import './typography.css';
+@import './utilities.css';
