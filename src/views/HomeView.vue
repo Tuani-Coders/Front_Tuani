@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import OfertaFormativa from '../components/home/OfertaFormativa.vue'
 
 const services = [
   {
@@ -49,6 +50,8 @@ const news = [
 
 <template>
   <div class="home-view view">
+    <OfertaFormativa />
+
     <!-- Hero Section: Grounded & Minimalist -->
     <section class="hero-section">
       <div class="container">
@@ -105,12 +108,18 @@ const news = [
     </section>
 
     <!-- Final CTA: Institutional Strength -->
-    <section class="section cta-section bg-primary text-white">
-      <div class="container text-center">
-        <p class="body-lg mb-md">
-          Nuestro equipo está preparado para asesorarte en tu camino hacia el empleo o para colaborar con tu empresa.
-        </p>
-        <RouterLink to="/contacto" class="btn btn-secondary btn-lg">Contactar ahora</RouterLink>
+    <section class="section cta-section">
+      <div class="container">
+        <div class="cta-panel text-center">
+          <h2 class="headline-lg">¿Necesitas orientación?</h2>
+          <p class="body-lg mb-md">
+            Nuestro equipo está preparado para asesorarte en tu camino hacia el empleo o para colaborar con tu empresa.
+          </p>
+          <RouterLink to="/contacto" class="btn cta-panel-btn">
+            Contactar ahora
+            <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+          </RouterLink>
+        </div>
       </div>
     </section>
   </div>
@@ -241,7 +250,53 @@ const news = [
 
 /* ── CTA ──────────────────────────────────────── */
 .cta-section {
-  padding: 100px 0;
+  padding: 80px 0 100px;
+  background: var(--color-surface);
+}
+
+.cta-panel {
+  max-width: 1120px;
+  min-height: 290px;
+  margin-inline: auto;
+  padding: clamp(56px, 8vw, 92px) var(--space-lg);
+  background: var(--color-primary-container);
+  border-radius: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-panel h2 {
+  color: white;
+  margin-bottom: 4px;
+}
+
+.cta-panel p {
+  max-width: 620px;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.cta-panel-btn {
+  gap: 4px;
+  color: white;
+  border: 0;
+  background: var(--color-secondary);
+  padding: 14px 30px;
+  box-shadow: none;
+}
+
+.cta-panel-btn:hover {
+  background: var(--color-on-secondary-container);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.cta-panel-btn .material-symbols-outlined {
+  font-size: 20px;
 }
 
 .text-white {
@@ -261,5 +316,11 @@ const news = [
 @media (max-width: 768px) {
   .services-grid { grid-template-columns: 1fr; }
   .hero-section { padding: 100px 0 60px; }
+  .cta-section { padding: 56px 0 72px; }
+  .cta-panel {
+    min-height: 260px;
+    border-radius: 20px;
+    padding-inline: var(--space-md);
+  }
 }
 </style>

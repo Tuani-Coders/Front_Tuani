@@ -86,17 +86,18 @@ const institutionalLinks = [
 
 <style scoped>
 .app-footer {
-  background-color: var(--color-tertiary);
+  background-color: var(--color-primary);
   color: white;
   padding: 80px 0 40px;
-  border-top: 4px solid var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
-  gap: var(--space-xl);
+  grid-template-columns: minmax(240px, 1.4fr) minmax(140px, 0.8fr) minmax(150px, 0.9fr) minmax(260px, 1.3fr);
+  gap: var(--space-lg);
   margin-bottom: 60px;
+  align-items: start;
 }
 
 /* ── Brand ────────────────────────────────────── */
@@ -109,11 +110,11 @@ const institutionalLinks = [
   height: 60px;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1); /* Make it white for dark background */
+  filter: brightness(0) invert(1);
 }
 
 .brand-desc {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.78);
   max-width: 300px;
 }
 
@@ -122,6 +123,10 @@ const institutionalLinks = [
 .footer-contact h4 {
   color: var(--color-on-primary-container);
   margin-bottom: var(--space-md);
+  font-size: var(--label-lg-size);
+  font-weight: var(--label-lg-weight);
+  line-height: var(--label-lg-line-height);
+  letter-spacing: var(--label-lg-tracking);
 }
 
 .footer-links {
@@ -136,7 +141,7 @@ const institutionalLinks = [
 .footer-links a {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: color var(--transition-base);
 }
 
 .footer-links a:hover {
@@ -152,6 +157,7 @@ const institutionalLinks = [
 
 .contact-info li {
   display: flex;
+  align-items: flex-start;
   gap: 12px;
   margin-bottom: 16px;
   color: rgba(255, 255, 255, 0.8);
@@ -165,6 +171,11 @@ const institutionalLinks = [
 .contact-info a {
   color: inherit;
   text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.contact-info a:hover {
+  color: white;
 }
 
 /* ── Bottom ───────────────────────────────────── */
@@ -180,6 +191,7 @@ const institutionalLinks = [
 
 .legal-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 24px;
 }
 
@@ -195,6 +207,8 @@ const institutionalLinks = [
 
 .copyright {
   color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  line-height: 20px;
 }
 
 /* ── Responsive ───────────────────────────────── */
@@ -202,19 +216,32 @@ const institutionalLinks = [
   .footer-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .footer-brand,
+  .footer-contact {
+    max-width: 520px;
+  }
 }
 
 @media (max-width: 576px) {
+  .app-footer {
+    padding: 56px 0 32px;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
+    margin-bottom: 40px;
   }
+
   .footer-bottom {
     flex-direction: column;
     text-align: center;
   }
+
   .legal-links {
     justify-content: center;
+    gap: 12px 20px;
   }
 }
 </style>
