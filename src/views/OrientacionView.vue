@@ -50,7 +50,10 @@ const services = [
             </div>
           </div>
           <div class="intro-content">
-            <h2>No estás solo en tu camino</h2>
+            <h2>Un recurso para todos</h2>
+            <p class="body-md text-muted mb-md">
+              Todas las personas que entran en nuestro itinerario de formación tienen acceso a los recursos de Peñascal para la mejora de sus posibilidades de búsqueda de empleo. Además, ofrecemos estos recursos a cualquier persona que se acerque, en especial aquellas que pertenecen a colectivos con mayor dificultad para encontrar empleo.
+            </p>
             <p class="body-md text-muted mb-md">
               Nuestro equipo de orientadores y trabajadores sociales trabaja de forma cercana y humanizada. Creemos en el potencial de cada persona y nuestro objetivo es que encuentres el lugar donde mejor puedas desarrollarte.
             </p>

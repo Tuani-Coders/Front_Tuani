@@ -11,6 +11,10 @@ const QueHacemosView = () => import('../views/QueHacemosView.vue')
 const CooperanView = () => import('../views/CooperanView.vue')
 const OrientacionView = () => import('../views/OrientacionView.vue')
 const ColaboraView = () => import('../views/ColaboraView.vue')
+const ApoyandoProyectosView = () => import('../views/ApoyandoProyectosView.vue')
+const DonandoProductosView = () => import('../views/DonandoProductosView.vue')
+const ContratandoEmpresasView = () => import('../views/ContratandoEmpresasView.vue')
+const ApoyandoInsercionView = () => import('../views/ApoyandoInsercionView.vue')
 const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
@@ -81,6 +85,30 @@ const routes = [
     name: 'Colabora',
     component: ColaboraView,
     meta: { title: 'Colabora - Peñascal Koop.' }
+  },
+  {
+    path: '/colabora/apoyando-proyectos',
+    name: 'ApoyandoProyectos',
+    component: ApoyandoProyectosView,
+    meta: { title: 'Apoyando Proyectos - Peñascal Koop.' }
+  },
+  {
+    path: '/colabora/donando-productos',
+    name: 'DonandoProductos',
+    component: DonandoProductosView,
+    meta: { title: 'Donando Productos - Peñascal Koop.' }
+  },
+  {
+    path: '/colabora/contratando-empresas',
+    name: 'ContratandoEmpresas',
+    component: ContratandoEmpresasView,
+    meta: { title: 'Contratando Empresas - Peñascal Koop.' }
+  },
+  {
+    path: '/colabora/apoyando-insercion',
+    name: 'ApoyandoInsercion',
+    component: ApoyandoInsercionView,
+    meta: { title: 'Apoyando Inserción - Peñascal Koop.' }
   },
 
   /* ── Noticias ───────────────────────────────── */

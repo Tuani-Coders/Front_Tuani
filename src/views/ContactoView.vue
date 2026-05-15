@@ -20,6 +20,10 @@ const submitForm = () => {
   form.message = ''
   form.privacy = false
 }
+
+const openGoogleMaps = () => {
+  window.open('https://www.google.com/maps/search/?api=1&query=43.24747658263299,-2.906910497859511', '_blank')
+}
 </script>
 
 <template>
@@ -87,10 +91,20 @@ const submitForm = () => {
               </ul>
             </div>
 
-            <!-- Map placeholder -->
-            <div class="map-placeholder">
-              <span class="material-symbols-outlined map-icon">map</span>
-              <p class="label-md mt-sm">Mapa de ubicación</p>
+            <!-- Interactive Map -->
+            <div class="map-interactive card" @click="openGoogleMaps">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11623.156550974864!2d-2.906910497859511!3d43.24747658263299!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1715764000000!5m2!1ses!2ses"
+                width="100%"
+                height="240"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+              ></iframe>
+              <div class="map-hint">
+                <span class="material-symbols-outlined">open_in_new</span>
+                <span class="caption">Ver en Google Maps</span>
+              </div>
             </div>
           </div>
 
@@ -263,20 +277,32 @@ const submitForm = () => {
   color: var(--color-on-surface-variant);
 }
 
-.map-placeholder {
+.map-interactive {
   width: 100%;
   height: 240px;
-  background-color: var(--color-surface-container-highest);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
   border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-outline-variant);
 }
 
-.map-icon {
-  font-size: 48px;
+.map-interactive iframe {
+  pointer-events: none;
+}
+
+.map-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: var(--color-primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-md);
+  opacity: 0.9;
 }
 
 /* Form Panel */

@@ -118,6 +118,51 @@ const collabTypes = [
       </div>
     </section>
 
+    <!-- Entidades Colaboradoras -->
+    <section class="section bg-surface-container-low">
+      <div class="container">
+        <div class="section-header text-center mb-xl">
+          <h2>Entidades que hacen posible nuestro trabajo</h2>
+          <p class="body-lg text-muted">Agradecemos el apoyo de las instituciones públicas y organizaciones privadas.</p>
+        </div>
+
+        <div class="entities-grid">
+          <!-- Públicas -->
+          <div class="entities-column">
+            <h3 class="mb-lg border-bottom pb-sm">Entidades Públicas</h3>
+            <ul class="entities-list">
+              <li>FSE-Fondo Social Europeo (FSE+, Proyecto SENDOTU)</li>
+              <li>FEDER- Fondo Europeo de Desarrollo Regional</li>
+              <li>SEPE - Servicio Público de Empleo Estatal</li>
+              <li>Gobierno Vasco (Empleo, Educación, Lanbide)</li>
+              <li>Gobierno de Navarra (Servicio Navarro de Empleo)</li>
+              <li>Diputación Foral de Bizkaia (Acción Social, Empleo)</li>
+              <li>Diputación Foral de Gipuzkoa (Política Social)</li>
+              <li>Ayuntamiento de Bilbao (Bilbao Ekintza, Salud, Acción Social)</li>
+              <li>Ayuntamiento de Tolosa (Tolosaldea Garatzen)</li>
+              <li>Mancomunidad Lea-Artibai</li>
+              <li>Behargintza (Galdakao, Basauri, Txorierri, Getxolan)</li>
+            </ul>
+          </div>
+
+          <!-- Privadas -->
+          <div class="entities-column">
+            <h3 class="mb-lg border-bottom pb-sm">Organizaciones Privadas</h3>
+            <ul class="entities-list">
+              <li>Obra Social BBK</li>
+              <li>Fundación Bancaria "la Caixa" (Incorpora, Pobreza Infantil)</li>
+              <li>Fundación Víctor Tapia y Dolores Sainz</li>
+              <li>CEPES, Confederación Empresarial Española</li>
+              <li>Fundación Accenture</li>
+              <li>Porticus Iberia</li>
+              <li>Erkide, Federación de Cooperativas</li>
+              <li>ROBODK, Software de simulación</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Testimonial Simple -->
     <section class="section testimonial">
       <div class="container">
@@ -276,6 +321,44 @@ const collabTypes = [
   color: var(--color-primary-fixed);
 }
 
+/* Entities Section */
+.entities-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+.entities-column h3 {
+  color: var(--color-primary);
+  font-size: 1.25rem;
+}
+
+.entities-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.entities-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.95rem;
+  color: var(--color-on-surface-variant);
+}
+
+.entities-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-secondary);
+  font-weight: bold;
+}
+
+.border-bottom { border-bottom: 2px solid var(--color-outline-variant); }
+.pb-sm { padding-bottom: var(--space-sm); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
 /* Testimonial */
 .quote-icon {
   font-size: 48px;
@@ -311,10 +394,12 @@ const collabTypes = [
 @media (max-width: 992px) {
   .intro-grid { grid-template-columns: 1fr; }
   .modalities-grid { grid-template-columns: 1fr; }
+  .entities-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
   .perks-grid { grid-template-columns: 1fr; }
   .sectors-grid { flex-direction: column; gap: var(--space-sm); }
+  .cta-actions { flex-direction: column; }
 }
 </style>

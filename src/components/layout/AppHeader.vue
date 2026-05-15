@@ -57,10 +57,10 @@ const navItems = [
     label: 'Colabora',
     to: '/colabora',
     children: [
-      { label: 'Apoyando proyectos sin recursos', to: '/colabora' },
-      { label: 'Donando productos y servicios', to: '/colabora' },
-      { label: 'Contratando empresas de inserción', to: '/colabora' },
-      { label: 'Apoyando la inserción laboral', to: '/colabora' }
+      { label: 'Colabora apoyando proyectos sin recursos', to: '/colabora/apoyando-proyectos' },
+      { label: 'Colabora donando productos y servicios', to: '/colabora/donando-productos' },
+      { label: 'Colabora contratando empresas de inserción', to: '/colabora/contratando-empresas' },
+      { label: 'Colabora apoyando la inserción laboral', to: '/colabora/apoyando-insercion' }
     ]
   },
   { label: 'Noticias', to: '/noticias' },
@@ -82,6 +82,11 @@ const navItems = [
             <span class="material-symbols-outlined">mail</span>
             info@grupopenascal.com
           </a>
+          <!-- Ubicación en el topbar (redirige a contacto) -->
+          <RouterLink to="/contacto" class="topbar-link topbar-location">
+            <span class="material-symbols-outlined">location_on</span>
+            <span>Ubicación</span>
+          </RouterLink>
         </div>
         <div class="topbar-social">
           <div class="lang-switcher">
@@ -210,6 +215,18 @@ const navItems = [
 
 .topbar-link .material-symbols-outlined {
   font-size: 14px;
+}
+
+.topbar-location {
+  color: var(--color-primary);
+  font-weight: 700;
+  background: rgba(var(--color-primary-rgb), 0.05);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.topbar-location:hover {
+  background: rgba(var(--color-primary-rgb), 0.1);
 }
 
 .topbar-social {
