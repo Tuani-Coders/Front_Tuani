@@ -7,8 +7,12 @@ import { RouterLink } from 'vue-router'
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-amber mb-sm">Súmate</span>
-          <h1 class="page-title">Colabora con nosotros</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Colabora</span>
+          </nav>
+          <h1 class="page-title headline-xl">Colabora con nosotros</h1>
           <p class="page-subtitle body-lg">
             Existen muchas formas de formar parte de la familia Peñascal. Tu apoyo es clave para seguir generando oportunidades.
           </p>
@@ -69,7 +73,18 @@ import { RouterLink } from 'vue-router'
 .text-center { text-align: center; }
 
 .colabora-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
-.colabora-card { height: 100%; display: flex; flex-direction: column; }
+.colabora-card { 
+  height: 100%; 
+  display: flex; 
+  flex-direction: column; 
+  box-shadow: var(--shadow-md); 
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+.colabora-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
 .icon-header { height: 120px; display: flex; align-items: center; justify-content: center; }
 .icon-header .material-symbols-outlined { font-size: 48px; }
 

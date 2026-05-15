@@ -32,8 +32,12 @@ const openGoogleMaps = () => {
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-blue mb-sm">Contacto</span>
-          <h1 class="page-title">Hablemos</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Contacto</span>
+          </nav>
+          <h1 class="page-title headline-xl">Hablemos</h1>
           <p class="page-subtitle body-lg">
             Estamos aquí para ayudarte. Rellena el formulario o utiliza nuestra información de contacto directa.
           </p>
@@ -232,7 +236,7 @@ const openGoogleMaps = () => {
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .info-card h3 {
@@ -284,6 +288,7 @@ const openGoogleMaps = () => {
   overflow: hidden;
   cursor: pointer;
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .map-interactive iframe {
@@ -309,6 +314,7 @@ const openGoogleMaps = () => {
 .form-card {
   padding: var(--space-lg) var(--space-xl);
   background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-md);
 }
 
 .form-card h2 {

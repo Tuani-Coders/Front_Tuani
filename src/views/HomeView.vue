@@ -81,9 +81,9 @@ const news = [
             <p class="body-md text-muted">{{ service.desc }}</p>
           </RouterLink>
         </div>
-        <div class="text-right mt-lg">
-          <RouterLink to="/la-cooperativa/que-hacemos" class="btn-text">
-            Ver todas <span class="material-symbols-outlined">chevron_right</span>
+        <div class="text-center mt-xl">
+          <RouterLink to="/la-cooperativa/que-hacemos" class="btn btn-secondary">
+            Ver todas las áreas <span class="material-symbols-outlined">chevron_right</span>
           </RouterLink>
         </div>
       </div>
@@ -161,25 +161,27 @@ const news = [
 .services-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2px; /* For a 'built' feel with borders */
-  background-color: var(--color-outline-variant);
-  border: 2px solid var(--color-outline-variant);
-  border-radius: var(--radius-default);
-  overflow: hidden;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
 }
 
 .service-card {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: var(--space-lg);
   text-decoration: none;
-  transition: background-color var(--transition-base);
+  transition: all var(--transition-base);
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0,0,0,0.05); /* Very subtle border */
 }
 
 .service-card:hover {
-  background-color: var(--color-surface-container-low);
+  background-color: white;
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-8px);
 }
 
 .card-icon {
@@ -218,6 +220,16 @@ const news = [
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  background: white;
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.news-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
 .news-image {
@@ -266,6 +278,7 @@ const news = [
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow-lg);
 }
 
 .cta-panel h2 {

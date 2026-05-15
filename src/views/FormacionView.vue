@@ -8,8 +8,12 @@ import { RouterLink } from 'vue-router'
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-green mb-sm">Formación</span>
-          <h1 class="page-title">Programas Formativos</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Formación</span>
+          </nav>
+          <h1 class="page-title headline-xl">Programas Formativos</h1>
           <p class="page-subtitle body-lg">
             Capacitación técnica de alta calidad adaptada a las necesidades reales del mercado laboral actual.
           </p>
@@ -172,6 +176,14 @@ import { RouterLink } from 'vue-router'
 .formativa-card {
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+.formativa-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
 .card-image {
@@ -233,6 +245,12 @@ import { RouterLink } from 'vue-router'
   align-items: center;
   gap: 16px;
   background-color: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast);
+}
+
+.perk-item:hover {
+  transform: translateX(8px);
 }
 
 .perk-item .material-symbols-outlined {
@@ -247,6 +265,7 @@ import { RouterLink } from 'vue-router'
   align-items: center;
   justify-content: center;
   background-color: var(--color-surface-container);
+  box-shadow: var(--shadow-md);
 }
 
 .visual-box .material-symbols-outlined {
@@ -263,6 +282,7 @@ import { RouterLink } from 'vue-router'
   padding: 80px;
   border-radius: var(--radius-xl);
   text-align: center;
+  box-shadow: var(--shadow-lg);
 }
 
 .cta-inner {

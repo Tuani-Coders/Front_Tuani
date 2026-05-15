@@ -5,6 +5,7 @@ import { RouterLink } from 'vue-router'
 const mobileMenuOpen = ref(false)
 const scrolled = ref(false)
 const activeDropdown = ref(null)
+const headerRef = ref(null)
 
 const toggleMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
@@ -19,16 +20,31 @@ const toggleDropdown = (label) => {
   activeDropdown.value = activeDropdown.value === label ? null : label
 }
 
+const windowWidth = ref(window.innerWidth)
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+}
+
 const handleScroll = () => {
   scrolled.value = window.scrollY > 20
 }
 
+const handleClickOutside = (event) => {
+  if (mobileMenuOpen.value && headerRef.value && !headerRef.value.contains(event.target)) {
+    closeMenu()
+  }
+}
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', handleResize)
+  window.addEventListener('click', handleClickOutside)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleResize)
+  window.removeEventListener('click', handleClickOutside)
 })
 
 const navItems = [
@@ -66,6 +82,15 @@ const navItems = [
   { label: 'Noticias', to: '/noticias' },
   { label: 'Contacto', to: '/contacto' }
 ]
+
+const handleNavClick = (item, event) => {
+  if (window.innerWidth <= 1100 && item.children) {
+    event.preventDefault()
+    toggleDropdown(item.label)
+  } else {
+    closeMenu()
+  }
+}
 </script>
 
 <template>
@@ -104,7 +129,7 @@ const navItems = [
     </div>
 
     <!-- Nav principal -->
-    <nav class="header-nav" :class="{ 'nav--scrolled': scrolled }">
+    <nav ref="headerRef" class="header-nav" :class="{ 'nav--scrolled': scrolled }">
       <div class="container nav-inner">
         <RouterLink to="/" class="header-logo" @click="closeMenu">
           <img src="../../assets/icons/penascal.png" alt="Grupo Peñascal Logo" class="logo-img">
@@ -127,8 +152,8 @@ const navItems = [
             v-for="item in navItems"
             :key="item.label"
             :class="{ 'has-dropdown': item.children }"
-            @mouseenter="item.children ? (activeDropdown = item.label) : null"
-            @mouseleave="item.children ? (activeDropdown = null) : null"
+            @mouseenter="item.children && windowWidth <= 1100 ? (activeDropdown = item.label) : null"
+            @mouseleave="item.children && windowWidth <= 1100 ? (activeDropdown = null) : null"
           >
             <RouterLink
               v-if="!item.children"
@@ -143,7 +168,7 @@ const navItems = [
               <RouterLink
                 :to="item.to"
                 class="nav-link nav-parent"
-                @click="closeMenu"
+                @click="handleNavClick(item, $event)"
               >
                 {{ item.label }}
                 <span class="material-symbols-outlined dropdown-arrow" :class="{ rotated: activeDropdown === item.label }">expand_more</span>
@@ -350,6 +375,17 @@ const navItems = [
   position: relative;
 }
 
+@media (min-width: 1101px) {
+  .has-dropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .has-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+}
+
 .dropdown {
   position: absolute;
   top: calc(100% + 0px);
@@ -403,13 +439,14 @@ const navItems = [
   background: none;
   border: none;
   padding: 4px;
+  z-index: 1001;
 }
 
 .mobile-toggle span {
   display: block;
-  width: 22px;
-  height: 2px;
-  background: var(--color-on-surface);
+  width: 26px;
+  height: 3px;
+  background: #ffffff;
   border-radius: 2px;
   transition: all var(--transition-base);
 }
@@ -427,50 +464,112 @@ const navItems = [
 }
 
 /* ── Responsive ───────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .header-topbar {
     display: none;
   }
 
   .mobile-toggle {
     display: flex;
+    order: 1; /* Keep toggle on the left if preferred, or use absolute */
+  }
+
+  .nav-inner {
+    justify-content: center;
+    position: relative;
+  }
+
+  .header-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .logo-img {
+    height: 60px; /* Slightly larger as requested */
+  }
+
+  .mobile-toggle {
+    position: absolute;
+    right: 16px; /* Put hamburger on the right */
   }
 
   .nav-list {
     position: fixed;
-    top: var(--header-height);
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 80px; /* Fixed height of our header nav */
+    left: 16px;
+    right: 16px;
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 0;
     background: var(--color-surface-container-lowest);
-    padding: var(--space-md);
-    transform: translateX(100%);
-    transition: transform var(--transition-base);
+    padding: var(--space-md) 0;
+    transform: translateY(-20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
     overflow-y: auto;
+    z-index: 1000;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 48px rgba(0, 52, 41, 0.3);
+    max-height: 80vh;
   }
 
   .nav-list.open {
-    transform: translateX(0);
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
   }
 
-  .dropdown {
+  .nav-list .nav-link {
+    color: var(--color-primary);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--color-surface-container);
+    border-radius: 0;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .nav-list .nav-link:hover,
+  .nav-list .nav-link.router-link-active {
+    background-color: var(--color-surface-container-low);
+    color: var(--color-primary);
+  }
+
+  .nav-list .dropdown {
     position: static;
     box-shadow: none;
     border: none;
-    padding-left: var(--space-md);
+    padding: 0;
     opacity: 1;
     visibility: visible;
     transform: none;
     max-height: 0;
     overflow: hidden;
-    transition: max-height var(--transition-base);
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--color-surface-container-low);
+    width: 100%;
+    display: block; /* Ensure it's not hidden by display: none if any */
   }
 
-  .dropdown--open {
-    max-height: 400px;
+  .nav-list .dropdown--open {
+    max-height: 1000px; /* Large enough for all sub-items */
+    padding: 12px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
+
+  .dropdown-link {
+    padding: 12px 24px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: var(--color-on-surface);
+  }
+
+  .dropdown-link:last-child {
+    border-bottom: none;
   }
 }
 

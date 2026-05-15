@@ -25,8 +25,14 @@ const modalities = [
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-amber mb-sm">Colabora</span>
-          <h1 class="page-title">Apoyando la inserción laboral</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <RouterLink to="/colabora" class="link">Colabora</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Acompañando la inserción</span>
+          </nav>
+          <h1 class="page-title headline-xl">Apoyando la inserción laboral</h1>
           <p class="page-subtitle body-lg">
             El empleo es el motor definitivo de la inclusión social. Ayúdanos a completar el ciclo formativo.
           </p>
