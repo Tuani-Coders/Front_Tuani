@@ -7,18 +7,18 @@ const router = useRouter()
 const { loginInit, error, loading } = useAuth()
 
 const form = ref({
-  email: '',
-  password: ''
+  email: ''
 })
 
 const handleLogin = async () => {
   try {
-    // Paso 1: Enviar email y password para verificar admin y enviar codigo
-    const result = await loginInit(form.value.email, form.value.password)
-    // Redirigir a pagina de verificacion
+    // Paso 1: Enviar email para verificar admin y enviar codigo
+    const result = await loginInit(form.value.email)
+    // Redirigir a pagina de verificacion con timestamp de expiracion
+    const expiresAt = result.data?.expires_at || (Date.now() / 1000 + 300)
     router.push({
       path: '/verify-admin',
-      query: { email: form.value.email }
+      query: { email: form.value.email, expires: expiresAt }
     })
   } catch (err) {
     console.error('Error de login:', err)
@@ -42,7 +42,7 @@ const handleLogin = async () => {
           </div>
 
           <div class="form-group">
-            <label for="email" class="label-md">Email</label>
+            <label for="email" class="label-md">Email de administrador</label>
             <input
               type="email"
               id="email"
@@ -53,26 +53,9 @@ const handleLogin = async () => {
             >
           </div>
 
-          <div class="form-group">
-            <div class="d-flex justify-between align-center mb-xs">
-              <label for="password" class="label-md mb-0">Contraseña</label>
-            </div>
-            <input 
-              type="password" 
-              id="password" 
-              v-model="form.password" 
-              required 
-              class="form-control" 
-              placeholder="••••••••"
-            >
-            <div class="text-right mt-xs">
-              <RouterLink to="/forgot-password" class="link-forgot">¿Olvidaste tu contraseña?</RouterLink>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary w-100" :disabled="loading">
-            <span v-if="!loading">Continuar</span>
-            <span v-else>Verificando...</span>
+          <button type="submit" class="btn btn-primary w-100" :disabled="loading || !form.email">
+            <span v-if="!loading">Enviar código</span>
+            <span v-else>Enviando...</span>
           </button>
 
           <div class="auth-footer text-center">

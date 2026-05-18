@@ -5,6 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070
 // Estado para verificacion de admin
 const pendingVerification = ref(false)
 const pendingEmail = ref('')
+const pendingExpiresAt = ref(null)
 
 // Estado global (fuera de la función para persistir entre componentes)
 const user = ref(JSON.parse(localStorage.getItem('user')) || null)
@@ -97,22 +98,23 @@ export function useAuth() {
     }
   }
 
-  // Paso 1: Verificar admin y enviar codigo
-  const loginInit = async (email, password) => {
+  // Paso 1: Verificar admin y enviar codigo (solo email, sin password)
+  const loginInit = async (email) => {
     loading.value = true
     error.value = null
     try {
       const response = await fetch(`${API_BASE_URL}/auth/admin/login-init`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email })
       })
       const data = await response.json()
       if (!response.ok) throw new Error(data.message || 'Error en la verificación')
-      
-      // Guardar estado de verificacion pendiente
+
+      // Guardar estado de verificacion pendiente con tiempo de expiracion
       pendingVerification.value = true
       pendingEmail.value = email
+      pendingExpiresAt.value = data.data?.expires_at || null
       return data
     } catch (err) {
       error.value = err.message
@@ -141,6 +143,7 @@ export function useAuth() {
       setAuth(userData, tokenData)
       pendingVerification.value = false
       pendingEmail.value = ''
+      pendingExpiresAt.value = null
       return data
     } catch (err) {
       error.value = err.message
@@ -159,6 +162,7 @@ export function useAuth() {
     isLoggedIn,
     pendingVerification,
     pendingEmail,
+    pendingExpiresAt,
     setAuth,
     register,
     verifyEmail,
