@@ -36,7 +36,7 @@ const specialties = [
             <span class="separator">/</span>
             <span class="current">Grado Básico</span>
           </nav>
-          <h1 class="page-title">Formación Profesional de Grado Básico</h1>
+          <h1 class="page-title headline-xl">Formación Profesional de Grado Básico</h1>
           <p class="page-subtitle body-lg">
             Una oportunidad para retomar tus estudios, aprender un oficio y obtener el título de Graduado en ESO.
           </p>
@@ -250,6 +250,13 @@ const specialties = [
   flex-direction: column;
   gap: var(--space-sm);
   background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.specialty-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
 .specialty-icon {
@@ -266,6 +273,7 @@ const specialties = [
 /* Requirements */
 .requirements-box {
   padding: var(--space-xl);
+  box-shadow: var(--shadow-md);
 }
 
 .requirements-header {
@@ -310,6 +318,7 @@ const specialties = [
   justify-content: space-between;
   align-items: center;
   gap: var(--space-xl);
+  box-shadow: var(--shadow-md);
 }
 
 .cta-actions {

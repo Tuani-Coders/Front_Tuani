@@ -31,8 +31,14 @@ const services = [
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-green mb-sm">Servicio Gratuito</span>
-          <h1 class="page-title">Servicio de Orientación</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <RouterLink to="/la-cooperativa" class="link">La Cooperativa</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Servicio de Orientación</span>
+          </nav>
+          <h1 class="page-title headline-xl">Servicio de Orientación</h1>
           <p class="page-subtitle body-lg">
             Te acompañamos en la toma de decisiones sobre tu futuro profesional y personal, ofreciéndote herramientas para alcanzar tus metas.
           </p>

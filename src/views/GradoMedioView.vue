@@ -36,7 +36,7 @@ const specialties = [
             <span class="separator">/</span>
             <span class="current">Grado Medio</span>
           </nav>
-          <h1 class="page-title">Formación Profesional de Grado Medio</h1>
+          <h1 class="page-title headline-xl">Formación Profesional de Grado Medio</h1>
           <p class="page-subtitle body-lg">
             Especialización técnica de calidad para acceder con garantías al mercado laboral o continuar hacia un Grado Superior.
           </p>
@@ -240,6 +240,13 @@ const specialties = [
   flex-direction: column;
   gap: var(--space-sm);
   background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.specialty-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
 .specialty-icon {

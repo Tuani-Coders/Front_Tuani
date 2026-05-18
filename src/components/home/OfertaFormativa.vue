@@ -84,6 +84,7 @@ const updateContent = (key) => {
     } else {
       dropdownLabel.value = 'Grado Básico - Grado Medio'
       isDropdownOpen.value = false
+      activeKey.value = key
     }
   }, 400)
 }
@@ -109,7 +110,7 @@ onUnmounted(() => {
     <div class="container">
       <header class="section-header">
         <div class="section-heading">
-          <h2 class="headline-lg">Formación y empleo</h2>
+          <h2 class="headline-xl">Formación y empleo</h2>
           <p class="body-lg">
             Elige un itinerario y descubre cómo acompañamos cada proceso con aprendizaje práctico, orientación y conexión con empresas.
           </p>
@@ -235,11 +236,8 @@ onUnmounted(() => {
 .nav-buttons {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2px;
-  background-color: var(--color-outline-variant);
-  border: 2px solid var(--color-outline-variant);
-  border-radius: var(--radius-default);
-  margin-bottom: var(--space-lg);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl); /* More space */
   overflow: visible;
 }
 
@@ -251,12 +249,12 @@ onUnmounted(() => {
 }
 
 .main-btn {
-  min-height: 64px;
-  background: var(--color-surface-container-lowest);
-  border: 0;
-  color: var(--color-on-surface-variant);
+  min-height: 72px;
+  background: white;
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-primary);
   padding: 16px 24px;
-  border-radius: 0;
+  border-radius: var(--radius-lg);
   font-size: var(--label-lg-size);
   font-weight: 800;
   cursor: pointer;
@@ -265,17 +263,22 @@ onUnmounted(() => {
   width: 100%;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  box-shadow: var(--shadow-md);
 }
 
 .main-btn.active {
   background: var(--color-primary);
   color: white;
-  box-shadow: none;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
 }
 
 .main-btn:hover:not(.active) {
-  background: var(--color-surface-container-low);
-  color: var(--color-primary);
+  background: white;
+  color: var(--color-secondary);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
 .sub-selection {
@@ -291,7 +294,6 @@ onUnmounted(() => {
   border-radius: 0 0 var(--radius-default) var(--radius-default);
   margin-top: 8px;
   border: 1px solid var(--color-outline-variant);
-  border-top: 3px solid var(--color-secondary);
   box-shadow: var(--shadow-lg);
 }
 
@@ -330,7 +332,8 @@ onUnmounted(() => {
   border: 2px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
   overflow: hidden;
-  transition: opacity var(--transition-base), transform var(--transition-base);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
 }
 
 .display-card.sliding {

@@ -25,8 +25,14 @@ const services = [
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-amber mb-sm">Colabora</span>
-          <h1 class="page-title">Contratando empresas de inserción</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <RouterLink to="/colabora" class="link">Colabora</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Contratando empresas</span>
+          </nav>
+          <h1 class="page-title headline-xl">Contratando empresas de inserción</h1>
           <p class="page-subtitle body-lg">
             Convierte tus costes operativos en inversión social de alto impacto.
           </p>

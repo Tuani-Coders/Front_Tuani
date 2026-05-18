@@ -1,5 +1,8 @@
 <script setup>
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+
+const textExpanded = ref(false)
 </script>
 
 <template>
@@ -8,14 +11,53 @@ import { RouterLink } from 'vue-router'
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-green mb-sm">La Cooperativa</span>
-          <h1 class="page-title">Quiénes Somos</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">La Cooperativa</span>
+          </nav>
+          <h1 class="page-title headline-xl">Quiénes Somos</h1>
           <p class="page-subtitle body-lg">
             Grupo Peñascal es una iniciativa social sin ánimo de lucro dedicada a la integración y el desarrollo personal, social y laboral de personas en situación de vulnerabilidad o exclusión.
           </p>
         </div>
       </div>
     </header>
+
+    <!-- Quienes Somos Detailed Section -->
+    <section class="section bg-surface-lowest">
+      <div class="container">
+        <div class="expandable-text-container card p-lg">
+          <div class="expandable-text" :class="{ 'is-expanded': textExpanded }">
+            <p class="body-lg mb-md">
+              <strong>Peñascal Kooperatiba</strong><br>
+              Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública, que nació en Bilbao en 1986 y cuyo propósito se centra en integrar en la sociedad a personas que están en situación o en riesgo de exclusión por diversas circunstancias personales, académicas o sociales.
+            </p>
+            <p class="body-lg mb-md">
+              Promovemos una cualificación profesional, con valores y actitudes de responsabilidad y solidaridad, para que las personas sean soberanas y protagonistas activas, en sus propias vidas y en la sociedad.
+            </p>
+            <div class="remaining-text" v-if="textExpanded">
+              <p class="body-lg mb-md">
+                En Peñascal Kooperatiba tenemos como misión la integración de las personas, especialmente aquellas en situación de desventaja y para ello trabajamos en su formación y cualificación profesional, activación laboral, la creación de empleo, fomentando actitudes y valores solidarios y de ciudadanía. Atendemos a personas que necesitan un change positivo en sus competencias profesionales, personales y sociales, ayudándolas a encontrar la motivación y acompañándolas a recorrer un itinerario integral para poder vivir integradas en nuestra sociedad.
+              </p>
+              <p class="body-lg mb-md">
+                Trabajamos como titulares de varios centros formativos en distintas zonas del País Vasco y Navarra en los que aprenden desde jóvenes de 14 años hasta personas adultas de hasta 65 años. En nuestros espacios formativos las personas aprenden enseñanzas del sistema educativo (FP, Educación Básica para Personas Adultas, Programas Complementarios de Escolarización), o realizan acciones de formación profesional para el empleo o actuaciones de mejora de su situación personal y laboral a lo largo de la vida.
+              </p>
+              <p class="body-lg mb-md">
+                Además de la actividad en el plano formativo, estamos comprometidos con el empleo. Colaboramos activamente con los Servicios de Empleo, realizamos orientación para el empleo e intermediamos con las empresas para lograr que los usuarios logren un empleo.
+              </p>
+              <p class="body-lg">
+                Conscientes también de la necesidad de contribuir en la generación de riqueza en nuestro entorno, creamos y gestionamos empresas de inserción que respetan los valores y el estilo de la entidad.
+              </p>
+            </div>
+          </div>
+          <button @click="textExpanded = !textExpanded" class="read-more-btn">
+            {{ textExpanded ? 'Ver menos' : 'Leer más' }}
+            <span class="material-symbols-outlined" :class="{ 'rotated': textExpanded }">expand_more</span>
+          </button>
+        </div>
+      </div>
+    </section>
 
     <!-- Misión y Valores -->
     <section class="section">
@@ -149,6 +191,43 @@ import { RouterLink } from 'vue-router'
   color: var(--color-on-surface-variant);
 }
 
+/* expandable Text */
+.expandable-text-container {
+  max-width: 900px;
+  background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-md);
+}
+
+.expandable-text {
+  position: relative;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.read-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--color-secondary);
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.read-more-btn .material-symbols-outlined {
+  transition: transform 0.3s ease;
+}
+
+.read-more-btn .material-symbols-outlined.rotated {
+  transform: rotate(180deg);
+}
+
 /* Utilities */
 .mb-sm { margin-bottom: var(--space-sm); }
 .mb-md { margin-bottom: var(--space-md); }
@@ -174,6 +253,7 @@ import { RouterLink } from 'vue-router'
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow: var(--shadow-md);
 }
 
 .valores-list {
@@ -188,6 +268,13 @@ import { RouterLink } from 'vue-router'
   gap: var(--space-md);
   padding: var(--space-md);
   background-color: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.valor-item:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
 }
 
 .valor-icon {
@@ -258,6 +345,7 @@ import { RouterLink } from 'vue-router'
   flex: 1;
   padding: var(--space-md);
   background: var(--color-surface-container-lowest);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Transparencia */
@@ -265,6 +353,7 @@ import { RouterLink } from 'vue-router'
   padding: var(--space-xl);
   text-align: center;
   background: linear-gradient(135deg, var(--color-surface-container-lowest), var(--color-secondary-fixed));
+  box-shadow: var(--shadow-lg);
 }
 
 .transparencia-content {

@@ -36,8 +36,14 @@ const impacts = [
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-blue mb-sm">Actividad</span>
-          <h1 class="page-title">Qué Hacemos</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <RouterLink to="/la-cooperativa" class="link">La Cooperativa</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Qué Hacemos</span>
+          </nav>
+          <h1 class="page-title headline-xl">Qué Hacemos</h1>
           <p class="page-subtitle body-lg">
             Nuestra labor se centra en transformar vidas a través de la educación, el empleo digno y el apoyo social continuo.
           </p>

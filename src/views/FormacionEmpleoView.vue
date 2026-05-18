@@ -40,7 +40,7 @@ const courses = [
             <span class="separator">/</span>
             <span class="current">Formación para el Empleo</span>
           </nav>
-          <h1 class="page-title">Formación para el Empleo</h1>
+          <h1 class="page-title headline-xl">Formación para el Empleo</h1>
           <p class="page-subtitle body-lg">
             Cursos prácticos y Certificados de Profesionalidad diseñados para mejorar tu empleabilidad y conectarte con el mercado laboral actual.
           </p>
@@ -175,16 +175,7 @@ const courses = [
 .text-center { text-align: center; }
 .justify-center { justify-content: center; }
 
-/* Breadcrumb */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: var(--caption-size);
-}
-.breadcrumb .separator { color: var(--color-outline); }
-.breadcrumb .current { color: var(--color-on-surface); font-weight: 600; }
-.breadcrumb .link { color: var(--color-primary-container); }
+/* Breadcrumb is now global in utilities.css */
 
 .page-title {
   color: var(--color-on-surface);

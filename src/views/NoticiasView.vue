@@ -72,8 +72,12 @@ const newsItems = [
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-amber mb-sm">Actualidad</span>
-          <h1 class="page-title">Noticias</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Noticias</span>
+          </nav>
+          <h1 class="page-title headline-xl">Noticias</h1>
           <p class="page-subtitle body-lg">
             Mantente al día de todas las novedades, cursos, convenios y la actividad institucional del Grupo Peñascal.
           </p>

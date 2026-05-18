@@ -25,8 +25,14 @@ const projects = [
     <header class="page-header">
       <div class="container">
         <div class="page-header-content">
-          <span class="chip chip-amber mb-sm">Colabora</span>
-          <h1 class="page-title">Apoyando proyectos sin recursos</h1>
+          <nav class="breadcrumb mb-sm">
+            <RouterLink to="/" class="link">Inicio</RouterLink>
+            <span class="separator">/</span>
+            <RouterLink to="/colabora" class="link">Colabora</RouterLink>
+            <span class="separator">/</span>
+            <span class="current">Proyectos sin recursos</span>
+          </nav>
+          <h1 class="page-title headline-xl">Apoyando proyectos sin recursos</h1>
           <p class="page-subtitle body-lg">
             Tu solidaridad nos permite sostener iniciativas vitales que no cuentan con financiación pública suficiente.
           </p>
