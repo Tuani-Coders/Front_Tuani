@@ -18,9 +18,7 @@ const ApoyandoInsercionView = () => import('../views/ApoyandoInsercionView.vue')
 const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
-const RegisterView = () => import('../views/auth/RegisterView.vue')
-const VerifyEmailView = () => import('../views/auth/VerifyEmailView.vue')
-const OAuthCallbackView = () => import('../views/auth/OAuthCallbackView.vue')
+const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -31,7 +29,7 @@ const routes = [
     meta: { title: 'Inicio - Peñascal Koop.' }
   },
 
-  /* ── Autenticación ──────────────────────────── */
+  /* ── Autenticación (Solo Admin) ─────────────── */
   {
     path: '/login',
     name: 'Login',
@@ -39,22 +37,10 @@ const routes = [
     meta: { title: 'Iniciar Sesión - Peñascal Koop.' }
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: RegisterView,
-    meta: { title: 'Registrarse - Peñascal Koop.' }
-  },
-  {
-    path: '/verify-email',
-    name: 'VerifyEmail',
-    component: VerifyEmailView,
-    meta: { title: 'Verificar Email - Peñascal Koop.' }
-  },
-  {
-    path: '/auth/callback/:provider',
-    name: 'OAuthCallback',
-    component: OAuthCallbackView,
-    meta: { title: 'Autenticación - Peñascal Koop.' }
+    path: '/verify-admin',
+    name: 'VerifyAdmin',
+    component: VerifyAdminView,
+    meta: { title: 'Verificación Admin - Peñascal Koop.' }
   },
 
   /* ── Formación ──────────────────────────────── */

@@ -2,6 +2,10 @@ import { computed, ref } from 'vue'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070/api'
 
+// Estado para verificacion de admin
+const pendingVerification = ref(false)
+const pendingEmail = ref('')
+
 // Estado global (fuera de la función para persistir entre componentes)
 const user = ref(JSON.parse(localStorage.getItem('user')) || null)
 const token = ref(localStorage.getItem('token') || null)
@@ -93,22 +97,22 @@ export function useAuth() {
     }
   }
 
-  const login = async (username, password) => {
+  // Paso 1: Verificar admin y enviar codigo
+  const loginInit = async (email, password) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      const response = await fetch(`${API_BASE_URL}/auth/admin/login-init`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
       })
       const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error en el login')
+      if (!response.ok) throw new Error(data.message || 'Error en la verificación')
       
-      // La respuesta del backend según GUIA_AUTH tiene { access_token, user } dentro de data
-      const userData = data.data ? data.data.user : data.user
-      const tokenData = data.data ? data.data.access_token : data.access_token
-      setAuth(userData, tokenData)
+      // Guardar estado de verificacion pendiente
+      pendingVerification.value = true
+      pendingEmail.value = email
       return data
     } catch (err) {
       error.value = err.message
@@ -118,35 +122,25 @@ export function useAuth() {
     }
   }
 
-  const loginWithDiscord = () => {
-    const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback/discord`)
-    const scope = encodeURIComponent('identify email')
-    window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`
-  }
-
-  const loginWithGithub = () => {
-    const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback/github`)
-    const scope = encodeURIComponent('user:email')
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${redirectUri}&scope=${scope}`
-  }
-
-  const loginWithGoogle = async (googleAccessToken) => {
+  // Paso 2: Verificar codigo y completar login
+  const verifyAdminCode = async (code) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/oauth/google`, {
+      const response = await fetch(`${API_BASE_URL}/auth/admin/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_token: googleAccessToken })
+        body: JSON.stringify({ email: pendingEmail.value, code })
       })
       const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error en el login con Google')
+      if (!response.ok) throw new Error(data.message || 'Código incorrecto')
       
+      // Guardar auth y limpiar estado pendiente
       const userData = data.data ? data.data.user : data.user
       const tokenData = data.data ? data.data.access_token : data.access_token
       setAuth(userData, tokenData)
+      pendingVerification.value = false
+      pendingEmail.value = ''
       return data
     } catch (err) {
       error.value = err.message
@@ -155,6 +149,7 @@ export function useAuth() {
       loading.value = false
     }
   }
+
 
   return {
     user,
@@ -162,13 +157,14 @@ export function useAuth() {
     loading,
     error,
     isLoggedIn,
+    pendingVerification,
+    pendingEmail,
+    setAuth,
     register,
     verifyEmail,
     resendCode,
-    login,
-    loginWithGoogle,
-    loginWithDiscord,
-    loginWithGithub,
+    loginInit,
+    verifyAdminCode,
     logout
   }
 }
