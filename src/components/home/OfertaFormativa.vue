@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 
 const data = {
@@ -37,27 +37,18 @@ const data = {
   }
 }
 
-const activeKey = ref(null)
-const selectedKey = ref(null)
+const activeKey = ref('grado-basico')
+const selectedKey = ref('grado-basico')
 const currentContent = ref({
-  title: 'Selecciona una opción arriba',
-  eyebrow: 'Oferta formativa',
-  text: 'Explora nuestras opciones formativas para construir tu futuro profesional. Disponemos de itinerarios adaptados a cada necesidad y un equipo docente comprometido con tu éxito laboral.',
-  btnText: '',
-  link: '',
-  showBtn: false
+  title: data['grado-basico'].title,
+  eyebrow: data['grado-basico'].eyebrow,
+  text: data['grado-basico'].text,
+  btnText: data['grado-basico'].btnText,
+  link: data['grado-basico'].link,
+  showBtn: true
 })
-const isDropdownOpen = ref(false)
 const isSliding = ref(false)
-const dropdownLabel = ref('Grado Básico - Grado Medio')
 let slideTimeoutId = null
-
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value
-  if (isDropdownOpen.value) {
-    activeKey.value = 'grados'
-  }
-}
 
 const updateContent = (key) => {
   window.clearTimeout(slideTimeoutId)
@@ -75,33 +66,13 @@ const updateContent = (key) => {
     }
     
     selectedKey.value = key
+    activeKey.value = key
     isSliding.value = false
-    
-    if (key === 'grado-basico' || key === 'grado-medio') {
-      isDropdownOpen.value = false
-      dropdownLabel.value = content.title
-      activeKey.value = 'grados'
-    } else {
-      dropdownLabel.value = 'Grado Básico - Grado Medio'
-      isDropdownOpen.value = false
-      activeKey.value = key
-    }
   }, 400)
 }
 
-const handleOutsideClick = (event) => {
-  if (!event.target.closest('.nav-item')) {
-    isDropdownOpen.value = false
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('click', handleOutsideClick)
-})
-
 onUnmounted(() => {
   window.clearTimeout(slideTimeoutId)
-  window.removeEventListener('click', handleOutsideClick)
 })
 </script>
 
@@ -121,32 +92,22 @@ onUnmounted(() => {
         <div class="nav-item">
           <button 
             class="main-btn" 
-            :class="{ active: activeKey === 'grados' }"
+            :class="{ active: activeKey === 'grado-basico' }"
             type="button"
-            :aria-expanded="isDropdownOpen"
-            aria-controls="formacion-grados-dropdown"
-            @click.stop="toggleDropdown"
+            @click="updateContent('grado-basico')"
           >
-            {{ dropdownLabel }}
+            Grado Básico
           </button>
-          <div id="formacion-grados-dropdown" class="sub-selection" :class="{ open: isDropdownOpen }">
-            <button 
-              class="sub-btn" 
-              :class="{ active: selectedKey === 'grado-basico' }"
-              type="button"
-              @click="updateContent('grado-basico')"
-            >
-              Grado Básico
-            </button>
-            <button 
-              class="sub-btn" 
-              :class="{ active: selectedKey === 'grado-medio' }"
-              type="button"
-              @click="updateContent('grado-medio')"
-            >
-              Grado Medio
-            </button>
-          </div>
+        </div>
+        <div class="nav-item">
+          <button 
+            class="main-btn" 
+            :class="{ active: activeKey === 'grado-medio' }"
+            type="button"
+            @click="updateContent('grado-medio')"
+          >
+            Grado Medio
+          </button>
         </div>
         <div class="nav-item">
           <button 
@@ -235,9 +196,9 @@ onUnmounted(() => {
 
 .nav-buttons {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-md);
-  margin-bottom: var(--space-xl); /* More space */
+  margin-bottom: var(--space-xl);
   overflow: visible;
 }
 
@@ -281,48 +242,6 @@ onUnmounted(() => {
   transform: translateY(-2px);
 }
 
-.sub-selection {
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  background: #ffffff;
-  border-radius: 0 0 var(--radius-default) var(--radius-default);
-  margin-top: 8px;
-  border: 1px solid var(--color-outline-variant);
-  box-shadow: var(--shadow-lg);
-}
-
-.sub-selection.open {
-  max-height: 200px;
-  padding: 8px 0;
-}
-
-.sub-btn {
-  width: 100%;
-  padding: 12px 24px;
-  background: transparent;
-  border: none;
-  color: var(--color-on-surface-variant);
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.9rem;
-}
-
-.sub-btn:hover {
-  background: #f0fdf4;
-  color: var(--color-primary);
-}
-
-.sub-btn.active {
-  color: var(--color-secondary);
-  font-weight: 700;
-}
 
 .display-card {
   display: grid;
