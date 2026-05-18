@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070/api'
 
@@ -118,20 +118,6 @@ export function useAuth() {
     }
   }
 
-  const loginWithDiscord = () => {
-    const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback/discord`)
-    const scope = encodeURIComponent('identify email')
-    window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`
-  }
-
-  const loginWithGithub = () => {
-    const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback/github`)
-    const scope = encodeURIComponent('user:email')
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${redirectUri}&scope=${scope}`
-  }
-
   const loginWithGoogle = async (googleAccessToken) => {
     loading.value = true
     error.value = null
@@ -167,8 +153,6 @@ export function useAuth() {
     resendCode,
     login,
     loginWithGoogle,
-    loginWithDiscord,
-    loginWithGithub,
     logout
   }
 }

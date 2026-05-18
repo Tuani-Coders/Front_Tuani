@@ -20,6 +20,7 @@ const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
 const RegisterView = () => import('../views/auth/RegisterView.vue')
 const VerifyEmailView = () => import('../views/auth/VerifyEmailView.vue')
+const OAuthCallbackView = () => import('../views/auth/OAuthCallbackView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -48,6 +49,12 @@ const routes = [
     name: 'VerifyEmail',
     component: VerifyEmailView,
     meta: { title: 'Verificar Email - Peñascal Koop.' }
+  },
+  {
+    path: '/auth/callback/:provider',
+    name: 'OAuthCallback',
+    component: OAuthCallbackView,
+    meta: { title: 'Autenticación - Peñascal Koop.' }
   },
 
   /* ── Formación ──────────────────────────────── */
