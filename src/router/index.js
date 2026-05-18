@@ -17,6 +17,9 @@ const ContratandoEmpresasView = () => import('../views/ContratandoEmpresasView.v
 const ApoyandoInsercionView = () => import('../views/ApoyandoInsercionView.vue')
 const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
+const LoginView = () => import('../views/auth/LoginView.vue')
+const RegisterView = () => import('../views/auth/RegisterView.vue')
+const VerifyEmailView = () => import('../views/auth/VerifyEmailView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -25,6 +28,26 @@ const routes = [
     name: 'Inicio',
     component: HomeView,
     meta: { title: 'Inicio - Peñascal Koop.' }
+  },
+
+  /* ── Autenticación ──────────────────────────── */
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView,
+    meta: { title: 'Iniciar Sesión - Peñascal Koop.' }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: RegisterView,
+    meta: { title: 'Registrarse - Peñascal Koop.' }
+  },
+  {
+    path: '/verify-email',
+    name: 'VerifyEmail',
+    component: VerifyEmailView,
+    meta: { title: 'Verificar Email - Peñascal Koop.' }
   },
 
   /* ── Formación ──────────────────────────────── */
