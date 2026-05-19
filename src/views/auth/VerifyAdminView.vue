@@ -38,6 +38,7 @@ const calculateTimeLeft = () => {
 onMounted(() => {
   email.value = route.query.email || ''
   expiresAt.value = parseFloat(route.query.expires) || null
+  code.value = route.query.code || ''
 
   if (!email.value) {
     router.push('/login')
@@ -144,7 +145,7 @@ const resendCode = async () => {
 const handleVerify = async () => {
   try {
     await verifyAdminCode(code.value)
-    router.push('/')
+    router.push(route.query.redirect || '/dashboard')
   } catch (err) {
     console.error('Error de verificación:', err)
   }
@@ -152,47 +153,64 @@ const handleVerify = async () => {
 </script>
 
 <template>
-  <div class="auth-view view">
-    <div class="container auth-container">
-      <div class="auth-card card shadow-md">
-        <div class="auth-header text-center">
-          <h1 class="headline-md">Verificación de seguridad</h1>
-          <p class="body-md text-muted">
-            Hemos enviado un código a <strong>{{ email }}</strong>
-          </p>
-          <div class="timer-box" :class="{ 'timer-warning': timeLeft < 60 }">
-            <span class="timer-label">El código expira en:</span>
-            <span class="timer-value">{{ formatTime(timeLeft) }}</span>
-          </div>
-        </div>
-
-        <form @submit.prevent="handleVerify" class="auth-form">
-          <div v-if="error" class="error-box">
-            {{ error }}
+  <div>
+    <div class="auth-view view">
+      <div class="container auth-container">
+        <div class="auth-card card shadow-md">
+          <div class="auth-header text-center">
+            <h1 class="headline-md">Verificación de seguridad</h1>
+            <p class="body-md text-muted">
+              Hemos enviado un código a <strong>{{ email }}</strong>
+            </p>
+            <div class="timer-box" :class="{ 'timer-warning': timeLeft < 60 }">
+              <span class="timer-label">El código expira en:</span>
+              <span class="timer-value">{{ formatTime(timeLeft) }}</span>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="code" class="label-md">Código de verificación</label>
-            <input
-              type="text"
-              id="code"
-              v-model="code"
-              required
-              maxlength="6"
-              class="form-control code-input"
-              placeholder="123456"
-            >
-          </div>
+          <form @submit.prevent="handleVerify" class="auth-form">
+            <div v-if="error" class="error-box">
+              {{ error }}
+            </div>
 
-          <button type="submit" class="btn btn-primary w-100" :disabled="loading || code.length < 6">
-            <span v-if="!loading">Verificar y entrar</span>
-            <span v-else>Verificando...</span>
-          </button>
+            <div class="form-group">
+              <label for="code" class="label-md">Código de verificación</label>
+              <input
+                type="text"
+                id="code"
+                v-model="code"
+                required
+                maxlength="6"
+                class="form-control code-input"
+                placeholder="123456"
+              >
+            </div>
 
-          <div class="auth-footer text-center">
-            <div v-if="timeLeft > 0">
-              <p class="resend-info">
-                ¿No recibiste el código?
+            <button type="submit" class="btn btn-primary w-100" :disabled="loading || code.length < 6">
+              <span v-if="!loading">Verificar y entrar</span>
+              <span v-else>Verificando...</span>
+            </button>
+
+            <div class="auth-footer text-center">
+              <div v-if="timeLeft > 0">
+                <p class="resend-info">
+                  ¿No recibiste el código?
+                  <button
+                    v-if="canResend"
+                    type="button"
+                    @click="resendCode"
+                    class="link-resend"
+                    :disabled="loading"
+                  >
+                    Reenviar ahora
+                  </button>
+                  <span v-else class="resend-wait">
+                    Podrás reenviar cuando el código expire
+                  </span>
+                </p>
+              </div>
+              <div v-else>
+                <p class="code-expired">Código expirado</p>
                 <button
                   v-if="canResend"
                   type="button"
@@ -200,65 +218,50 @@ const handleVerify = async () => {
                   class="link-resend"
                   :disabled="loading"
                 >
-                  Reenviar ahora
+                  Enviar nuevo código
                 </button>
                 <span v-else class="resend-wait">
-                  Podrás reenviar cuando el código expire
+                  Espera {{ formatTime(resendCooldown) }} para reenviar
                 </span>
-              </p>
-            </div>
-            <div v-else>
-              <p class="code-expired">Código expirado</p>
-              <button
-                v-if="canResend"
-                type="button"
-                @click="resendCode"
-                class="link-resend"
-                :disabled="loading"
+              </div>
+              <br>
+              <a
+                href="#"
+                class="link-forgot"
+                @click.prevent="confirmExit('/login')"
               >
-                Enviar nuevo código
-              </button>
-              <p v-else class="resend-wait">
-                Espera {{ formatTime(resendCooldown) }} para reenviar
-              </p>
+                Cancelar y volver al login
+              </a>
             </div>
-            <br>
-            <a
-              href="#"
-              class="link-forgot"
-              @click.prevent="confirmExit('/login')"
-            >
-              Cancelar y volver al login
-            </a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de confirmacion para salir -->
-  <div v-if="showExitModal" class="modal-overlay" @click="stayOnPage">
-    <div class="modal-card" @click.stop>
-      <div class="modal-header">
-        <h3 class="headline-sm">¿Seguro que quieres salir?</h3>
-      </div>
-      <div class="modal-body">
-        <p class="body-md">
-          Necesitas el código de verificación para completar el login.
-          Si sales ahora, perderás el acceso y deberás solicitar un nuevo código.
-        </p>
-        <div class="modal-timer" v-if="timeLeft > 0">
-          <span class="timer-label">Tiempo restante:</span>
-          <span class="timer-value">{{ formatTime(timeLeft) }}</span>
+          </form>
         </div>
       </div>
-      <div class="modal-footer">
-        <button @click="stayOnPage" class="btn btn-primary">
-          Quedarme y verificar
-        </button>
-        <button @click="leavePage" class="btn btn-secondary">
-          Salir igualmente
-        </button>
+    </div>
+
+    <!-- Modal de confirmacion para salir -->
+    <div v-if="showExitModal" class="modal-overlay" @click="stayOnPage">
+      <div class="modal-card" @click.stop>
+        <div class="modal-header">
+          <h3 class="headline-sm">¿Seguro que quieres salir?</h3>
+        </div>
+        <div class="modal-body">
+          <p class="body-md">
+            Necesitas el código de verificación para completar el login.
+            Si sales ahora, perderás el acceso y deberás solicitar un nuevo código.
+          </p>
+          <div class="modal-timer" v-if="timeLeft > 0">
+            <span class="timer-label">Tiempo restante:</span>
+            <span class="timer-value">{{ formatTime(timeLeft) }}</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button @click="stayOnPage" class="btn btn-primary">
+            Quedarme y verificar
+          </button>
+          <button @click="leavePage" class="btn btn-secondary">
+            Salir igualmente
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
 
+const route = useRoute()
 const router = useRouter()
 const { loginInit, error, loading } = useAuth()
 
@@ -18,7 +19,12 @@ const handleLogin = async () => {
     const expiresAt = result.data?.expires_at || (Date.now() / 1000 + 300)
     router.push({
       path: '/verify-admin',
-      query: { email: form.value.email, expires: expiresAt }
+      query: {
+        email: form.value.email,
+        expires: expiresAt,
+        code: result.data?.code || '',
+        redirect: route.query.redirect || '/dashboard'
+      }
     })
   } catch (err) {
     console.error('Error de login:', err)
@@ -257,4 +263,3 @@ const handleLogin = async () => {
   border-color: #24292f;
 }
 </style>
-

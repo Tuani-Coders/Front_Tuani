@@ -19,6 +19,7 @@ const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
 const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
+const DashboardView = () => import('../views/dashboard/DashboardView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -41,6 +42,16 @@ const routes = [
     name: 'VerifyAdmin',
     component: VerifyAdminView,
     meta: { title: 'Verificación Admin - Peñascal Koop.' }
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: DashboardView,
+    meta: {
+      title: 'Dashboard - Peñascal Koop.',
+      layout: 'dashboard',
+      requiresAuth: true
+    }
   },
 
   /* ── Formación ──────────────────────────────── */
@@ -162,6 +173,16 @@ const router = createRouter({
 
 /* Actualizar título de la pestaña en cada navegación */
 router.beforeEach((to, _from, next) => {
+  const token = localStorage.getItem('token')
+
+  if (to.meta.requiresAuth && !token) {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+    return
+  }
+
   document.title = to.meta.title || 'Grupo Peñascal Kooperatiba'
   next()
 })
