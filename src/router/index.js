@@ -19,7 +19,7 @@ const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
 const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
-const CreditsView = () => import('../views/CreditsView.vue')
+const EquipoView = () => import('../views/EquipoView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -44,12 +44,12 @@ const routes = [
     meta: { title: 'Verificación Admin - Peñascal Koop.' }
   },
 
-  /* ── Créditos ───────────────────────────────── */
+  /* ── Equipo ────────────────────────────────── */
   {
-    path: '/creditos',
-    name: 'Creditos',
-    component: CreditsView,
-    meta: { title: 'Créditos - Tuani Coders' }
+    path: '/equipo',
+    name: 'Equipo',
+    component: EquipoView,
+    meta: { title: 'Equipo - Tuani Coders' }
   },
 
   /* ── Formación ──────────────────────────────── */

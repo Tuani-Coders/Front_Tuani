@@ -1,11 +1,11 @@
 <script setup>
-// Página de créditos - Equipo Tuani Coders
+// Página del equipo de desarrollo - Tuani Coders
 </script>
 
 <template>
-  <div class="credits-view view">
+  <div class="equipo-view view">
     <div class="container">
-      <div class="credits-card card">
+      <div class="equipo-card card">
         <h1 class="headline-lg text-center">Tuani Coders</h1>
         <p class="body-lg text-center text-muted">
           Equipo de desarrollo detrás de este proyecto
@@ -19,8 +19,7 @@
               <span class="material-symbols-outlined">code</span>
               <div class="member-info">
                 <span class="label-lg">Yeremis Yesus</span>
-                 <span class="label-lg">Gino</span>
-               
+                <span class="label-lg">Gino</span>
               </div>
             </div>
           </div>
@@ -34,16 +33,12 @@
                 <span class="label-lg">Achraf RZZ</span>
                 <span class="label-lg">Luis Alfonso</span>
                 <span class="label-lg">Yo Andress</span>
-            
               </div>
             </div>
           </div>
-
-          <!-- Equipo -->
-        
         </div>
 
-        <div class="credits-footer">
+        <div class="equipo-footer">
           <p class="body-sm text-center text-muted">
             Proyecto desarrollado con dedicación para Peñascal Kooperatiba
           </p>
@@ -57,23 +52,23 @@
 </template>
 
 <style scoped>
-.credits-view {
+.equipo-view {
   min-height: 60vh;
   padding: var(--space-xl) var(--space-md);
   background-color: var(--color-surface);
 }
 
-.credits-card {
+.equipo-card {
   max-width: 700px;
   margin: 0 auto;
   padding: var(--space-xl);
 }
 
-.credits-card h1 {
+.equipo-card h1 {
   margin-bottom: var(--space-xs);
 }
 
-.credits-card > p {
+.equipo-card > p {
   margin-bottom: var(--space-xl);
 }
 
@@ -114,13 +109,13 @@
   gap: 2px;
 }
 
-.credits-footer {
+.equipo-footer {
   text-align: center;
   padding-top: var(--space-lg);
   border-top: 1px solid var(--color-outline-variant);
 }
 
-.credits-footer p {
+.equipo-footer p {
   margin-bottom: var(--space-md);
 }
 </style>

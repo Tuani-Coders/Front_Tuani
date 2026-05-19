@@ -81,7 +81,7 @@ const institutionalLinks = [
         </p>
         <p class="made-by caption">
           Este sitio web ha sido creado por
-          <RouterLink to="/creditos" class="tuani-link">Tuani Coders</RouterLink>
+          <RouterLink to="/equipo" class="tuani-link">Tuani Coders</RouterLink>
         </p>
       </div>
     </div>
