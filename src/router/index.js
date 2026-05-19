@@ -19,6 +19,7 @@ const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
 const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
+const CreditsView = () => import('../views/CreditsView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -41,6 +42,14 @@ const routes = [
     name: 'VerifyAdmin',
     component: VerifyAdminView,
     meta: { title: 'Verificación Admin - Peñascal Koop.' }
+  },
+
+  /* ── Créditos ───────────────────────────────── */
+  {
+    path: '/creditos',
+    name: 'Creditos',
+    component: CreditsView,
+    meta: { title: 'Créditos - Tuani Coders' }
   },
 
   /* ── Formación ──────────────────────────────── */

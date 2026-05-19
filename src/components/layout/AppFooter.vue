@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
 
 const currentYear = new Date().getFullYear()
 
@@ -78,6 +78,10 @@ const institutionalLinks = [
         </div>
         <p class="copyright caption">
           &copy; {{ currentYear }} Grupo Peñascal Kooperatiba. Todos los derechos reservados.
+        </p>
+        <p class="made-by caption">
+          Este sitio web ha sido creado por
+          <RouterLink to="/creditos" class="tuani-link">Tuani Coders</RouterLink>
         </p>
       </div>
     </div>
@@ -209,6 +213,25 @@ const institutionalLinks = [
   color: rgba(255, 255, 255, 0.5);
   font-size: 13px;
   line-height: 20px;
+}
+
+.made-by {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  line-height: 20px;
+  font-style: italic;
+}
+
+.tuani-link {
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-base);
+}
+
+.tuani-link:hover {
+  color: white;
+  text-decoration: underline;
 }
 
 /* ── Responsive ───────────────────────────────── */
