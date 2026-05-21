@@ -1,32 +1,50 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useContent } from '../composables/useContent'
 
-const courses = [
-  {
-    title: 'Operaciones de Restaurante y Bar',
-    level: 'Certificado Nivel 1',
-    duration: '290h',
-    icon: 'local_bar'
-  },
-  {
-    title: 'Mantenimiento de Sistemas Eléctricos',
-    level: 'Certificado Nivel 2',
-    duration: '420h',
-    icon: 'electrical_services'
-  },
-  {
-    title: 'Soldadura Oxigás y MIG/MAG',
-    level: 'Certificado Nivel 2',
-    duration: '600h',
-    icon: 'mode_fan'
-  },
-  {
-    title: 'Actividades de Gestión Administrativa',
-    level: 'Certificado Nivel 2',
-    duration: '880h',
-    icon: 'description'
+const { coursesList } = useContent()
+
+const courses = computed(() => {
+  const activeEmpleo = coursesList.value.filter(c => c.category === 'Empleo' && c.status === 'Activo')
+  
+  if (activeEmpleo.length === 0) {
+    return [
+      { title: 'Operaciones de Restaurante y Bar', level: 'Certificado Nivel 1', duration: '290h', icon: 'local_bar' },
+      { title: 'Mantenimiento de Sistemas Eléctricos', level: 'Certificado Nivel 2', duration: '420h', icon: 'electrical_services' }
+    ]
   }
-]
+  
+  return activeEmpleo.map(c => {
+    let icon = 'work_history'
+    let level = 'Certificado Profesional'
+    
+    const nameLower = c.name.toLowerCase()
+    if (nameLower.includes('restaurante') || nameLower.includes('cocina') || nameLower.includes('bar') || nameLower.includes('camer')) {
+      icon = 'local_bar'
+      level = 'Certificado Nivel 1'
+    } else if (nameLower.includes('eléctric') || nameLower.includes('electrici')) {
+      icon = 'electrical_services'
+      level = 'Certificado Nivel 2'
+    } else if (nameLower.includes('solda')) {
+      icon = 'mode_fan'
+      level = 'Certificado Nivel 2'
+    } else if (nameLower.includes('admin') || nameLower.includes('gestión')) {
+      icon = 'description'
+      level = 'Certificado Nivel 2'
+    } else if (nameLower.includes('social') || nameLower.includes('sanitaria') || nameLower.includes('domicilio')) {
+      icon = 'volunteer_activism'
+      level = 'Certificado Nivel 2'
+    }
+    
+    return {
+      title: c.name,
+      level: level,
+      duration: c.duration,
+      icon: icon
+    }
+  })
+})
 </script>
 
 <template>

@@ -1,5 +1,9 @@
 <script setup>
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useContent } from '../composables/useContent'
+
+const { newsList } = useContent()
 
 const categories = [
   { id: 'all', label: 'Todas' },
@@ -8,62 +12,18 @@ const categories = [
   { id: 'institucional', label: 'Institucional' }
 ]
 
-const newsItems = [
-  {
-    id: 1,
-    tag: 'Formación',
-    tagClass: 'chip-green',
-    title: 'Nueva convocatoria de cursos 2024: Automoción y Hostelería',
-    excerpt: 'Abrimos el plazo de inscripción para los nuevos módulos formativos que comenzarán el próximo septiembre.',
-    date: '12 Mayo 2024',
-    image: 'school'
-  },
-  {
-    id: 2,
-    tag: 'Empresas',
-    tagClass: 'chip-blue',
-    title: 'Convenio con la Asociación de Hostelería de Bizkaia',
-    excerpt: 'Firmamos un nuevo acuerdo que garantizará prácticas remuneradas a más de 50 alumnos de la cooperativa.',
-    date: '08 Mayo 2024',
-    image: 'handshake'
-  },
-  {
-    id: 3,
-    tag: 'Institucional',
-    tagClass: 'chip-amber',
-    title: 'Publicada nuestra Memoria de Sostenibilidad 2023',
-    excerpt: 'Ya está disponible el informe anual donde recogemos el impacto social y medioambiental de nuestra actividad.',
-    date: '25 Abril 2024',
-    image: 'menu_book'
-  },
-  {
-    id: 4,
-    tag: 'Formación',
-    tagClass: 'chip-green',
-    title: 'Alumnos de mecanizado ganan el premio de innovación',
-    excerpt: 'Un proyecto desarrollado íntegramente en nuestros talleres es reconocido a nivel autonómico.',
-    date: '14 Abril 2024',
-    image: 'engineering'
-  },
-  {
-    id: 5,
-    tag: 'Institucional',
-    tagClass: 'chip-amber',
-    title: 'Visita institucional a nuestras instalaciones en Bolueta',
-    excerpt: 'Representantes del Gobierno Vasco conocen de primera mano nuestros programas de inserción laboral.',
-    date: '02 Abril 2024',
-    image: 'diversity_3'
-  },
-  {
-    id: 6,
-    tag: 'Empresas',
-    tagClass: 'chip-blue',
-    title: 'Peñascal inaugura una nueva línea de montaje para automoción',
-    excerpt: 'Esta nueva instalación permitirá ampliar las competencias prácticas de nuestro alumnado en entornos reales.',
-    date: '18 Marzo 2024',
-    image: 'precision_manufacturing'
-  }
-]
+const activeCategory = ref('all')
+
+const publishedNews = computed(() => {
+  return newsList.value.filter(n => n.status === 'Publicado')
+})
+
+const filteredNews = computed(() => {
+  if (activeCategory.value === 'all') return publishedNews.value
+  return publishedNews.value.filter(item => 
+    item.tag && item.tag.toLowerCase() === activeCategory.value
+  )
+})
 </script>
 
 <template>
@@ -93,7 +53,8 @@ const newsItems = [
             v-for="cat in categories" 
             :key="cat.id"
             class="filter-btn"
-            :class="{ 'active': cat.id === 'all' }"
+            :class="{ 'active': cat.id === activeCategory }"
+            @click="activeCategory = cat.id"
           >
             {{ cat.label }}
           </button>
@@ -101,15 +62,16 @@ const newsItems = [
 
         <!-- Grid de Noticias -->
         <div class="news-grid">
-          <article v-for="item in newsItems" :key="item.id" class="news-card card">
+          <article v-for="item in filteredNews" :key="item.id" class="news-card card">
             <div class="news-card-image">
+              <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.title" class="news-card-photo">
               <div class="news-card-placeholder">
-                <span class="material-symbols-outlined">{{ item.image }}</span>
+                <span class="material-symbols-outlined">{{ item.image || 'school' }}</span>
               </div>
             </div>
             <div class="news-card-body">
               <div class="news-meta">
-                <span class="chip" :class="item.tagClass">{{ item.tag }}</span>
+                <span class="chip" :class="item.tagClass || 'chip-green'">{{ item.tag }}</span>
                 <span class="news-date caption">{{ item.date }}</span>
               </div>
               <h3 class="news-card-title">{{ item.title }}</h3>
@@ -223,7 +185,22 @@ const newsItems = [
   transition: transform var(--transition-base);
 }
 
+.news-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-base);
+}
+
+.news-card-photo + .news-card-placeholder {
+  display: none;
+}
+
 .news-card:hover .news-card-placeholder {
+  transform: scale(1.05);
+}
+
+.news-card:hover .news-card-photo {
   transform: scale(1.05);
 }
 

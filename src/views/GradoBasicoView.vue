@@ -1,28 +1,50 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useContent } from '../composables/useContent'
 
-const specialties = [
-  {
-    title: 'Mantenimiento de Vehículos',
-    desc: 'Aprende las bases de la mecánica y electricidad del automóvil en talleres reales.',
-    icon: 'directions_car'
-  },
-  {
-    title: 'Cocina y Restauración',
-    desc: 'Iníciate en el mundo de la hostelería cocinando en nuestra escuela-restaurante.',
-    icon: 'restaurant'
-  },
-  {
-    title: 'Fabricación y Montaje',
-    desc: 'Descubre el mundo del metal, la soldadura y el montaje industrial.',
-    icon: 'precision_manufacturing'
-  },
-  {
-    title: 'Servicios Comerciales',
-    desc: 'Aprende gestión de almacén, atención al cliente y técnicas de venta.',
-    icon: 'store'
+const { coursesList } = useContent()
+
+const specialties = computed(() => {
+  const activeGB = coursesList.value.filter(c => c.category === 'Grado Básico' && c.status === 'Activo')
+  
+  // If there are no active courses in localstorage yet, return some defaults so the page is not empty
+  if (activeGB.length === 0) {
+    return [
+      { title: 'Cocina y Restauración', desc: 'Iníciate en el mundo de la hostelería cocinando en nuestra escuela-restaurante.', icon: 'restaurant' },
+      { title: 'Mantenimiento de Vehículos', desc: 'Aprende las bases de la mecánica y electricidad del automóvil en talleres reales.', icon: 'directions_car' }
+    ]
   }
-]
+  
+  return activeGB.map(c => {
+    let icon = 'school'
+    let desc = 'Formación profesional básica adaptada con talleres prácticos y simulaciones de entornos reales.'
+    
+    const nameLower = c.name.toLowerCase()
+    if (nameLower.includes('cocina') || nameLower.includes('restau') || nameLower.includes('hostel')) {
+      icon = 'restaurant'
+      desc = 'Iníciate en el mundo de la hostelería cocinando en nuestra escuela-restaurante.'
+    } else if (nameLower.includes('vehí') || nameLower.includes('auto')) {
+      icon = 'directions_car'
+      desc = 'Aprende las bases de la mecánica y electricidad del automóvil en talleres reales.'
+    } else if (nameLower.includes('solda') || nameLower.includes('fabri') || nameLower.includes('metal') || nameLower.includes('mecaniz')) {
+      icon = 'precision_manufacturing'
+      desc = 'Descubre el mundo del metal, la soldadura y el montaje industrial.'
+    } else if (nameLower.includes('elec')) {
+      icon = 'electric_bolt'
+      desc = 'Aprende sobre instalaciones eléctricas, automatismos y circuitos electrónicos básicos.'
+    } else if (nameLower.includes('comer') || nameLower.includes('venta') || nameLower.includes('almac')) {
+      icon = 'store'
+      desc = 'Aprende gestión de almacén, atención al cliente y técnicas de venta.'
+    }
+    
+    return {
+      title: c.name,
+      desc: desc,
+      icon: icon
+    }
+  })
+})
 </script>
 
 <template>

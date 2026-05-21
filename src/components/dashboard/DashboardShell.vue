@@ -1,16 +1,27 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
+
+const props = defineProps({
+  activeTab: {
+    type: String,
+    default: 'Resumen'
+  }
+})
+
+const emit = defineEmits(['update:activeTab', 'change-tab', 'action-click'])
 
 const { user, logout } = useAuth()
 const router = useRouter()
 
 const navItems = [
-  { label: 'Resumen', icon: 'dashboard', active: true },
+  { label: 'Resumen', icon: 'dashboard' },
   { label: 'Noticias', icon: 'article' },
   { label: 'Formación', icon: 'school' },
   { label: 'Colabora', icon: 'volunteer_activism' },
   { label: 'Mensajes', icon: 'mail' },
+  { label: 'Usuarios', icon: 'group' },
   { label: 'Ajustes', icon: 'settings' }
 ]
 
@@ -18,6 +29,21 @@ const handleLogout = () => {
   logout()
   router.push('/login')
 }
+
+const userInitials = computed(() => {
+  const profile = user.value?.profile || {}
+  const source = `${profile.name || ''} ${profile.lastNames || ''}`.trim() || user.value?.username || 'Administrador'
+  return source
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part.charAt(0).toUpperCase())
+    .join('')
+})
+
+const avatarStyle = computed(() => ({
+  background: user.value?.profileSettings?.avatarColor || 'var(--color-secondary)'
+}))
 </script>
 
 <template>
@@ -43,8 +69,9 @@ const handleLogout = () => {
           v-for="item in navItems"
           :key="item.label"
           class="dashboard-nav-item"
-          :class="{ active: item.active }"
+          :class="{ active: activeTab === item.label }"
           type="button"
+          @click="emit('update:activeTab', item.label); emit('change-tab', item.label)"
         >
           <span class="material-symbols-outlined">{{ item.icon }}</span>
           <span>{{ item.label }}</span>
@@ -52,13 +79,16 @@ const handleLogout = () => {
       </nav>
 
       <div class="sidebar-footer">
-        <div class="admin-chip">
-          <span class="admin-avatar">{{ user?.username?.charAt(0)?.toUpperCase() || 'A' }}</span>
+        <button class="admin-chip" type="button" @click="emit('update:activeTab', 'Perfil'); emit('change-tab', 'Perfil')">
+          <span class="admin-avatar" :style="avatarStyle">
+            <img v-if="user?.profileSettings?.avatarImage" :src="user.profileSettings.avatarImage" alt="">
+            <span v-else>{{ user?.profileSettings?.avatarPreset || userInitials }}</span>
+          </span>
           <div>
             <strong>{{ user?.username || 'Administrador' }}</strong>
-            <span>Sesión activa</span>
+            <span>Editar perfil</span>
           </div>
-        </div>
+        </button>
         <button class="logout-action" type="button" @click="handleLogout">
           <span class="material-symbols-outlined">logout</span>
           Salir
@@ -69,8 +99,21 @@ const handleLogout = () => {
     <section class="dashboard-panel">
       <header class="dashboard-topbar">
         <div>
-          <p class="eyebrow">Grupo Peñascal Kooperatiba</p>
-          <h1>Panel de control</h1>
+          <p class="eyebrow">
+            {{ activeTab === 'Resumen' ? 'Grupo Peñascal Kooperatiba' : 'Administración / ' + activeTab }}
+          </p>
+          <h1>
+            {{
+              activeTab === 'Resumen' ? 'Panel de control' :
+              activeTab === 'Noticias' ? 'Gestión de Noticias' :
+              activeTab === 'Formación' ? 'Oferta Formativa' :
+              activeTab === 'Colabora' ? 'Colaboraciones' :
+              activeTab === 'Mensajes' ? 'Buzón de Mensajes' :
+              activeTab === 'Usuarios' ? 'Gestión de Usuarios' :
+              activeTab === 'Perfil' ? 'Mi Perfil' :
+              'Configuración General'
+            }}
+          </h1>
         </div>
 
         <div class="topbar-actions">
@@ -84,9 +127,26 @@ const handleLogout = () => {
           <RouterLink to="/" class="icon-button" aria-label="Ver página pública">
             <span class="material-symbols-outlined">open_in_new</span>
           </RouterLink>
-          <button class="primary-action" type="button">
-            <span class="material-symbols-outlined">add</span>
-            Nueva noticia
+          <button
+            v-if="activeTab !== 'Mensajes'"
+            class="primary-action"
+            type="button"
+            @click="emit('action-click', activeTab)"
+          >
+            <span class="material-symbols-outlined">
+              {{
+                activeTab === 'Ajustes' ? 'save' :
+                activeTab === 'Resumen' ? 'add' : 'add_circle'
+              }}
+            </span>
+            {{
+              activeTab === 'Resumen' || activeTab === 'Noticias' ? 'Nueva noticia' :
+              activeTab === 'Formación' ? 'Nuevo curso' :
+              activeTab === 'Colabora' ? 'Nueva entidad' :
+              activeTab === 'Usuarios' ? 'Nuevo usuario' :
+              activeTab === 'Perfil' ? 'Guardar perfil' :
+              'Guardar'
+            }}
           </button>
         </div>
       </header>
@@ -237,10 +297,20 @@ const handleLogout = () => {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-default);
   background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.admin-chip:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
 }
 
 .admin-avatar {
@@ -253,6 +323,13 @@ const handleLogout = () => {
   color: #ffffff;
   font-size: 15px;
   font-weight: 900;
+  overflow: hidden;
+}
+
+.admin-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .admin-chip strong,

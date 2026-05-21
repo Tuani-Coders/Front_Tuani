@@ -38,6 +38,25 @@ export function useAuth() {
     localStorage.removeItem('token')
   }
 
+  const updateCurrentUser = (updates) => {
+    const nextUser = {
+      ...(user.value || {}),
+      ...updates,
+      profile: {
+        ...(user.value?.profile || {}),
+        ...(updates.profile || {})
+      },
+      profileSettings: {
+        ...(user.value?.profileSettings || {}),
+        ...(updates.profileSettings || {})
+      }
+    }
+
+    user.value = nextUser
+    localStorage.setItem('user', JSON.stringify(nextUser))
+    return nextUser
+  }
+
   const register = async (username, email, password) => {
     loading.value = true
     error.value = null
@@ -169,6 +188,7 @@ export function useAuth() {
     resendCode,
     loginInit,
     verifyAdminCode,
+    updateCurrentUser,
     logout
   }
 }

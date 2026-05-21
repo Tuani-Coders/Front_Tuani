@@ -1,28 +1,46 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useContent } from '../composables/useContent'
 
-const specialties = [
-  {
-    title: 'Mecanizado',
-    desc: 'Especialízate en procesos de fabricación por arranque de viruta, control numérico (CNC) y metrología.',
-    icon: 'settings_suggest'
-  },
-  {
-    title: 'Cocina y Gastronomía',
-    desc: 'Domina las técnicas culinarias profesionales, gestión de cocina y seguridad alimentaria.',
-    icon: 'outdoor_grill'
-  },
-  {
-    title: 'Electromecánica de Vehículos',
-    desc: 'Formación avanzada en diagnosis de averías, sistemas eléctricos y mantenimiento de motores.',
-    icon: 'car_repair'
-  },
-  {
-    title: 'Actividades Comerciales',
-    desc: 'Gestión integral del comercio, marketing en el punto de venta y operaciones de almacenaje.',
-    icon: 'payments'
+const { coursesList } = useContent()
+
+const specialties = computed(() => {
+  const activeGM = coursesList.value.filter(c => c.category === 'Grado Medio' && c.status === 'Activo')
+  
+  if (activeGM.length === 0) {
+    return [
+      { title: 'Mecanizado', desc: 'Especialízate en procesos de fabricación por arranque de viruta, control numérico (CNC) y metrología.', icon: 'settings_suggest' },
+      { title: 'Cocina y Gastronomía', desc: 'Domina las técnicas culinarias profesionales, gestión de cocina y seguridad alimentaria.', icon: 'outdoor_grill' }
+    ]
   }
-]
+  
+  return activeGM.map(c => {
+    let icon = 'engineering'
+    let desc = 'Ciclo formativo oficial de grado medio con alta empleabilidad y prácticas en empresas líderes.'
+    
+    const nameLower = c.name.toLowerCase()
+    if (nameLower.includes('cocina') || nameLower.includes('gastro') || nameLower.includes('hostel')) {
+      icon = 'outdoor_grill'
+      desc = 'Domina las técnicas culinarias profesionales, gestión de cocina y seguridad alimentaria.'
+    } else if (nameLower.includes('mecaniz') || nameLower.includes('solda') || nameLower.includes('calder')) {
+      icon = 'settings_suggest'
+      desc = 'Especialízate en procesos de fabricación por arranque de viruta, control numérico (CNC), soldadura y metrología.'
+    } else if (nameLower.includes('vehí') || nameLower.includes('electromec') || nameLower.includes('auto')) {
+      icon = 'car_repair'
+      desc = 'Formación avanzada en diagnosis de averías, sistemas eléctricos y mantenimiento de motores.'
+    } else if (nameLower.includes('comer') || nameLower.includes('venta') || nameLower.includes('activi')) {
+      icon = 'payments'
+      desc = 'Gestión integral del comercio, marketing en el punto de venta y operaciones de almacenaje.'
+    }
+    
+    return {
+      title: c.name,
+      desc: desc,
+      icon: icon
+    }
+  })
+})
 </script>
 
 <template>

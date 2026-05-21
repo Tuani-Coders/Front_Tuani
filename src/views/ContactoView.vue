@@ -1,5 +1,8 @@
 <script setup>
 import { reactive } from 'vue'
+import { useContent } from '../composables/useContent'
+
+const { settings, addMessage } = useContent()
 
 const form = reactive({
   name: '',
@@ -11,7 +14,16 @@ const form = reactive({
 })
 
 const submitForm = () => {
-  // Mock form submission
+  addMessage({
+    name: form.name,
+    email: form.email,
+    phone: form.phone,
+    subject: form.subject === 'formacion' ? 'Información sobre cursos' : 
+             form.subject === 'orientacion' ? 'Servicio de orientación' : 
+             form.subject === 'empresas' ? 'Colaboración para empresas' : 'Otros',
+    message: form.message
+  })
+
   alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.')
   form.name = ''
   form.email = ''
@@ -62,7 +74,7 @@ const openGoogleMaps = () => {
                   </div>
                   <div>
                     <h4 class="label-md">Dirección</h4>
-                    <p class="body-md">Barrio Peñascal, s/n. 48002 Bilbao</p>
+                    <p class="body-md">{{ settings.siteAddress }}</p>
                   </div>
                 </li>
                 <li>
@@ -71,7 +83,7 @@ const openGoogleMaps = () => {
                   </div>
                   <div>
                     <h4 class="label-md">Teléfono</h4>
-                    <a href="tel:+34944430000" class="body-md link">+34 944 43 00 00</a>
+                    <a :href="'tel:' + settings.sitePhone" class="body-md link">{{ settings.sitePhone }}</a>
                   </div>
                 </li>
                 <li>
@@ -80,7 +92,7 @@ const openGoogleMaps = () => {
                   </div>
                   <div>
                     <h4 class="label-md">Email</h4>
-                    <a href="mailto:info@grupopenascal.com" class="body-md link">info@grupopenascal.com</a>
+                    <a :href="'mailto:' + settings.siteEmail" class="body-md link">{{ settings.siteEmail }}</a>
                   </div>
                 </li>
                 <li>
