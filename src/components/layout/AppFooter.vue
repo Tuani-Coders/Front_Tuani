@@ -67,12 +67,13 @@ function createFooterGoogleTranslateWidget() {
     if (select) {
       select.style.width = '100%';
       select.style.maxWidth = '300px';
-      select.style.padding = '0.5rem 1rem';
-      select.style.borderRadius = '6px';
-      select.style.border = '1px solid rgba(148, 163, 184, 0.25)';
-      select.style.background = '#ffffff';
-      select.style.color = '#1a202c';
-      select.style.fontSize = '0.9rem';
+      select.style.padding = '12px 16px';
+      select.style.borderRadius = 'var(--radius-default)';
+      select.style.border = '2px solid var(--color-outline-variant)';
+      select.style.background = 'var(--color-surface-container-low)';
+      select.style.color = 'var(--color-on-surface)';
+      select.style.fontFamily = 'var(--font-family)';
+      select.style.fontSize = 'var(--body-md-size)';
     }
   }, 200);
 }
@@ -356,26 +357,42 @@ const institutionalLinks = [
 }
 
 #footer-google-translate-element select {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  background: #ffffff;
-  color: #1a202c;
-  font-size: 0.9rem;
+  padding: 12px 16px;
+  border-radius: var(--radius-default);
+  border: 2px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+  color: var(--color-on-surface);
+  font-family: var(--font-family);
+  font-size: var(--body-md-size);
   min-width: 200px;
   max-width: 300px;
   width: 100%;
+  transition: all var(--transition-base);
+}
+
+#footer-google-translate-element select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  background: #ffffff;
 }
 
 #footer-google-translate-element .goog-te-combo {
   width: 100% !important;
   max-width: 300px !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 6px !important;
-  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  padding: 12px 16px !important;
+  border-radius: var(--radius-default) !important;
+  border: 2px solid var(--color-outline-variant) !important;
+  background: var(--color-surface-container-low) !important;
+  color: var(--color-on-surface) !important;
+  font-family: var(--font-family) !important;
+  font-size: var(--body-md-size) !important;
+  transition: all var(--transition-base) !important;
+}
+
+#footer-google-translate-element .goog-te-combo:focus {
+  outline: none !important;
+  border-color: var(--color-secondary) !important;
   background: #ffffff !important;
-  color: #1a202c !important;
-  font-size: 0.9rem !important;
 }
 
 /* Hide Google Translate banner in footer */
