@@ -20,6 +20,7 @@ const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
 const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
 const DashboardView = () => import('../views/dashboard/DashboardView.vue')
+const EquipoView = () => import('../views/EquipoView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -52,6 +53,14 @@ const routes = [
       layout: 'dashboard',
       requiresAuth: true
     }
+  },
+
+  /* ── Equipo ────────────────────────────────── */
+  {
+    path: '/equipo',
+    name: 'Equipo',
+    component: EquipoView,
+    meta: { title: 'Equipo - Tuani Coders' }
   },
 
   /* ── Formación ──────────────────────────────── */
