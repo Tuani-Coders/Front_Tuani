@@ -41,7 +41,8 @@ const specialties = computed(() => {
     return {
       title: c.name,
       desc: desc,
-      icon: icon
+      icon: icon,
+      image: c.imageUrl
     }
   })
 })
@@ -111,7 +112,10 @@ const specialties = computed(() => {
 
         <div class="specialties-grid">
           <div v-for="specialty in specialties" :key="specialty.title" class="specialty-card card">
-            <div class="specialty-icon">
+            <div class="specialty-image" v-if="specialty.image">
+              <img :src="specialty.image" :alt="specialty.title">
+            </div>
+            <div class="specialty-icon" v-else>
               <span class="material-symbols-outlined">{{ specialty.icon }}</span>
             </div>
             <h3>{{ specialty.title }}</h3>
@@ -290,6 +294,21 @@ const specialties = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.specialty-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-xs);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.specialty-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Requirements */

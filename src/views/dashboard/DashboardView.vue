@@ -276,13 +276,13 @@ const handleProfileImageFile = (event) => {
   reader.readAsDataURL(file)
 }
 
-const saveProfile = () => {
+const saveProfile = async () => {
   if (!profileForm.username.trim() || !profileForm.email.trim()) {
     showToast('El nombre de usuario y el email son obligatorios', 'error')
     return
   }
 
-  updateCurrentUser({
+  const updates = {
     username: profileForm.username.trim(),
     email: profileForm.email.trim(),
     profile: {
@@ -296,8 +296,36 @@ const saveProfile = () => {
       avatarPreset: profileForm.avatarPreset,
       avatarColor: profileForm.avatarColor
     }
-  })
-  showToast('Perfil actualizado correctamente')
+  }
+
+  // Actualizar localmente primero para feedback inmediato
+  updateCurrentUser(updates)
+
+  // Sincronizar con el servidor
+  try {
+    const tokenVal = localStorage.getItem('token')
+    if (!tokenVal || !user.value?.id) {
+      showToast('Perfil actualizado localmente', 'success')
+      return
+    }
+
+    const response = await fetch(`${API_BASE_URL}/auth/admin/users/${user.value.id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${tokenVal}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updates)
+    })
+
+    const data = await response.json()
+    if (!response.ok) throw new Error(data.message || 'Error al sincronizar con el servidor')
+
+    showToast('Perfil actualizado y sincronizado correctamente', 'success')
+  } catch (err) {
+    console.error('Error al sincronizar perfil:', err)
+    showToast('Perfil guardado localmente, pero no se pudo sincronizar: ' + err.message, 'warning')
+  }
 }
 
 loadProfileForm()
@@ -333,7 +361,7 @@ const newsForm = reactive({
   imageUrl: '',
   imageName: ''
 })
-const courseForm = reactive({ id: '', name: '', category: 'Grado Básico', duration: '2000h', enrolled: 0, capacity: 15, status: 'Activo' })
+const courseForm = reactive({ id: '', name: '', category: 'Grado Básico', duration: '2000h', enrolled: 0, capacity: 15, status: 'Activo', imageUrl: '', imageName: '' })
 const collabForm = reactive({ entity: '', type: 'Apoyando Proyectos', date: '', status: 'Pendiente' })
 const selectedCourseId = ref('')
 const selectedStudentId = ref(null)
@@ -420,6 +448,29 @@ const clearNewsImage = () => {
   newsForm.imageName = ''
 }
 
+const handleCourseImageFile = (event) => {
+  const file = event.target.files?.[0]
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    showToast('Selecciona un archivo de imagen válido', 'error')
+    event.target.value = ''
+    return
+  }
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    courseForm.imageUrl = reader.result
+    courseForm.imageName = file.name
+  }
+  reader.readAsDataURL(file)
+}
+
+const clearCourseImage = () => {
+  courseForm.imageUrl = ''
+  courseForm.imageName = ''
+}
+
 const openModal = (type, mode = 'create', data = null, index = -1) => {
   modalType.value = type.toLowerCase()
   modalMode.value = mode
@@ -450,6 +501,8 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
       courseForm.enrolled = 0
       courseForm.capacity = 15
       courseForm.status = 'Activo'
+      courseForm.imageUrl = ''
+      courseForm.imageName = ''
     }
   } else if (modalType.value === 'colabora') {
     if (mode === 'edit' && data) {
@@ -1074,8 +1127,10 @@ onMounted(() => {
                 </div>
               </td>
               <td class="primary-cell">
-                <strong>{{ item.title }}</strong>
-                <span class="cell-excerpt">{{ item.excerpt }}</span>
+                <div class="primary-cell-text">
+                  <strong>{{ item.title }}</strong>
+                  <span class="cell-excerpt">{{ item.excerpt }}</span>
+                </div>
               </td>
               <td>
                 <span class="table-chip chip-gray">{{ item.tag }}</span>
@@ -1143,7 +1198,14 @@ onMounted(() => {
                 @click="toggleCourseStudents(item.id)"
               >
                 <td class="code-cell">{{ item.id }}</td>
-                <td class="primary-cell"><strong>{{ item.name }}</strong></td>
+                <td class="primary-cell">
+                  <div class="course-thumbnail" v-if="item.imageUrl">
+                    <img :src="item.imageUrl" alt="Miniatura">
+                  </div>
+                  <div class="primary-cell-text">
+                    <strong>{{ item.name }}</strong>
+                  </div>
+                </td>
                 <td>
                   <span class="table-chip chip-gray">{{ item.category }}</span>
                 </td>
@@ -1823,6 +1885,29 @@ onMounted(() => {
                 <option value="Completo">Completo</option>
                 <option value="Borrador">Borrador</option>
               </select>
+            </div>
+            <div class="form-group-full">
+              <label class="label-md">Imagen del curso</label>
+              <div class="news-image-field">
+                <div class="news-image-preview">
+                  <img v-if="courseForm.imageUrl" :src="courseForm.imageUrl" alt="Vista previa del curso">
+                  <span v-else class="material-symbols-outlined">image</span>
+                </div>
+                <div class="news-image-controls">
+                  <input type="url" class="form-control-dash" v-model="courseForm.imageUrl" placeholder="Pega aquí el enlace de una imagen">
+                  <label class="file-upload-button">
+                    <span class="material-symbols-outlined">upload</span>
+                    Subir imagen local
+                    <input type="file" accept="image/*" @change="handleCourseImageFile">
+                  </label>
+                  <div class="image-helper-row">
+                    <span>{{ courseForm.imageName || 'Puedes usar una URL o seleccionar una imagen de tu equipo.' }}</span>
+                    <button v-if="courseForm.imageUrl" type="button" class="link-button" @click="clearCourseImage">
+                      Quitar imagen
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2792,7 +2877,33 @@ onMounted(() => {
 }
 
 .primary-cell {
-  max-width: 320px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.primary-cell-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.course-thumbnail {
+  flex-shrink: 0;
+  width: 48px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.course-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .primary-cell strong {

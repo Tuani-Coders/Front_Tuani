@@ -41,7 +41,8 @@ const courses = computed(() => {
       title: c.name,
       level: level,
       duration: c.duration,
-      icon: icon
+      icon: icon,
+      image: c.imageUrl
     }
   })
 })
@@ -113,7 +114,10 @@ const courses = computed(() => {
 
         <div class="courses-grid">
           <div v-for="course in courses" :key="course.title" class="course-card card">
-            <div class="course-icon-wrap">
+            <div class="course-image-header" v-if="course.image">
+              <img :src="course.image" :alt="course.title">
+            </div>
+            <div class="course-icon-wrap" v-else>
               <span class="material-symbols-outlined">{{ course.icon }}</span>
             </div>
             <div class="course-info">
@@ -268,6 +272,20 @@ const courses = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.course-image-header {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-outline-variant);
+}
+
+.course-image-header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .course-icon-wrap .material-symbols-outlined {
