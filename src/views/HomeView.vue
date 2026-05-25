@@ -1,6 +1,10 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import OfertaFormativa from '../components/home/OfertaFormativa.vue'
+import { useContent } from '../composables/useContent'
+
+const { newsList } = useContent()
 
 const services = [
   {
@@ -29,23 +33,35 @@ const services = [
   }
 ]
 
-const news = [
-  {
-    title: 'Nueva convocatoria de cursos 2024',
-    desc: 'Abrimos el plazo de inscripción para los nuevos módulos de automoción y hostelería.',
-    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    title: 'Acuerdo con empresas locales',
-    desc: 'Fortalecemos nuestra red de empresas colaboradoras para las prácticas del alumnado.',
-    image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    title: 'Historias de inserción laboral',
-    desc: 'Entrevistamos a antiguos alumnos que hoy lideran sus propios proyectos.',
-    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800'
+const news = computed(() => {
+  const publishedNews = newsList.value.filter(n => n.status === 'Publicado')
+  
+  if (publishedNews.length === 0) {
+    return [
+      {
+        title: 'Nueva convocatoria de cursos 2024',
+        desc: 'Abrimos el plazo de inscripción para los nuevos módulos de automoción y hostelería.',
+        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800'
+      },
+      {
+        title: 'Acuerdo con empresas locales',
+        desc: 'Fortalecemos nuestra red de empresas colaboradoras para las prácticas del alumnado.',
+        image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=800'
+      },
+      {
+        title: 'Historias de inserción laboral',
+        desc: 'Entrevistamos a antiguos alumnos que hoy lideran sus propios proyectos.',
+        image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800'
+      }
+    ]
   }
-]
+  
+  return publishedNews.slice(0, 3).map(n => ({
+    title: n.title,
+    desc: n.excerpt,
+    image: n.imageUrl || 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800'
+  }))
+})
 </script>
 
 <template>
@@ -108,17 +124,19 @@ const news = [
     </section>
 
     <!-- Final CTA: Institutional Strength -->
-    <section class="section cta-section">
+    <section class="section cta-section bg-primary">
       <div class="container">
-        <div class="cta-panel text-center">
-          <h2 class="headline-lg">¿Necesitas orientación?</h2>
-          <p class="body-lg mb-md">
-            Nuestro equipo está preparado para asesorarte en tu camino hacia el empleo o para colaborar con tu empresa.
-          </p>
-          <RouterLink to="/contacto" class="btn cta-panel-btn">
-            Contactar ahora
-            <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
-          </RouterLink>
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">¿Necesitas orientación?</h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">
+              Nuestro equipo está preparado para asesorarte en tu camino hacia el empleo o para colaborar con tu empresa.
+            </p>
+            <RouterLink to="/contacto" class="btn cta-panel-btn">
+              Contactar ahora
+              <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+            </RouterLink>
+          </div>
         </div>
       </div>
     </section>
@@ -129,6 +147,8 @@ const news = [
 .home-view {
   background-color: var(--color-surface);
 }
+
+.justify-center { justify-content: center; }
 
 /* ── Hero ─────────────────────────────────────── */
 .hero-section {

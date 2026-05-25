@@ -89,59 +89,98 @@ const institutionalLinks = [
   { label: 'Equipo', to: '/la-cooperativa' },
   { label: 'Noticias', to: '/noticias' }
 ]
+
+const locations = [
+  {
+    name: 'BOLUETA - BILBAO',
+    address: 'Ctra. Bilbao-Galdakao, 10 48004 BILBAO',
+    phone: '944 029 300',
+    email: 'info@grupopenascal.com',
+    icon: 'location_on'
+  },
+  {
+    name: 'SANTURTZI',
+    address: 'Avda. Murrieta, 22 48980 SANTURTZI',
+    phone: '944 835 158',
+    email: 'santurtzi@grupopenascal.com',
+    icon: 'location_on'
+  },
+  {
+    name: 'TOLOSA - GIPUZKOA',
+    address: 'Pol. Ind. Usabal, 20 20400 TOLOSA',
+    phone: '943 654 444',
+    email: 'gipuzkoa@grupopenascal.com',
+    icon: 'location_on'
+  }
+]
 </script>
 
 <template>
   <footer class="app-footer">
     <div class="container footer-inner">
+      <!-- Branding & Desc -->
+      <div class="footer-header">
+        <RouterLink to="/" class="footer-logo">
+          <img src="../../assets/icons/penascal.png" alt="Grupo Peñascal Logo" class="footer-logo-img">
+        </RouterLink>
+        <p class="brand-desc body-lg">
+          Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública desde 1986.
+        </p>
+      </div>
+
+      <!-- Main Footer Grid (Cards) -->
       <div class="footer-grid">
-        <!-- Branding -->
-        <div class="footer-brand">
-          <RouterLink to="/" class="footer-logo">
-            <img src="../../assets/icons/penascal.png" alt="Grupo Peñascal Logo" class="footer-logo-img">
-          </RouterLink>
-          <p class="brand-desc body-md">
-            Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública desde 1986.
-          </p>
+        <!-- Sedes (From Reference Image) -->
+        <div v-for="loc in locations" :key="loc.name" class="accent-card">
+          <h4 class="accent-card-title">
+            <span class="material-symbols-outlined">{{ loc.icon }}</span>
+            {{ loc.name }}
+          </h4>
+          <div class="accent-card-content">
+            <ul class="accent-card-list">
+              <li>
+                <span>{{ loc.address }}</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined">phone</span>
+                <a :href="'tel:' + loc.phone.replace(/\s/g, '')">{{ loc.phone }}</a>
+              </li>
+              <li>
+                <span class="material-symbols-outlined">mail</span>
+                <a :href="'mailto:' + loc.email">{{ loc.email }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- Links: Recursos -->
-        <div class="footer-nav">
-          <h4 class="label-lg">RECURSOS</h4>
-          <ul class="footer-links">
-            <li v-for="link in resourceLinks" :key="link.label">
-              <RouterLink :to="link.to">{{ link.label }}</RouterLink>
-            </li>
-          </ul>
+        <div class="accent-card">
+          <h4 class="accent-card-title">
+            <span class="material-symbols-outlined">hub</span>
+            RECURSOS
+          </h4>
+          <div class="accent-card-content">
+            <ul class="accent-card-list">
+              <li v-for="link in resourceLinks" :key="link.label">
+                <RouterLink :to="link.to">{{ link.label }}</RouterLink>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- Links: Institucional -->
-        <div class="footer-nav">
-          <h4 class="label-lg">INSTITUCIONAL</h4>
-          <ul class="footer-links">
-            <li v-for="link in institutionalLinks" :key="link.label">
-              <RouterLink :to="link.to">{{ link.label }}</RouterLink>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Contacto -->
-        <div class="footer-contact">
-          <h4 class="label-lg">CONTACTO</h4>
-          <ul class="contact-info">
-            <li>
-              <span class="material-symbols-outlined">location_on</span>
-              <span>C/ Ctra. Bilbao-Galdakao, 10 48004 BILBAO</span>
-            </li>
-            <li>
-              <span class="material-symbols-outlined">phone</span>
-              <a href="tel:+34944029300">+34 944 029 300</a>
-            </li>
-            <li>
-              <span class="material-symbols-outlined">mail</span>
-              <a href="mailto:info@grupopenascal.com">info@grupopenascal.com</a>
-            </li>
-          </ul>
+        <div class="accent-card">
+          <h4 class="accent-card-title">
+            <span class="material-symbols-outlined">corporate_fare</span>
+            INSTITUCIONAL
+          </h4>
+          <div class="accent-card-content">
+            <ul class="accent-card-list">
+              <li v-for="link in institutionalLinks" :key="link.label">
+                <RouterLink :to="link.to">{{ link.label }}</RouterLink>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -180,18 +219,24 @@ const institutionalLinks = [
   border-top: 4px solid var(--color-secondary);
 }
 
+.footer-header {
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
 .footer-grid {
   display: grid;
-  grid-template-columns: minmax(240px, 1.4fr) minmax(140px, 0.8fr) minmax(150px, 0.9fr) minmax(260px, 1.3fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-lg);
   margin-bottom: 60px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ── Brand ────────────────────────────────────── */
 .footer-logo {
-  display: block;
-  margin-bottom: var(--space-md);
+  display: inline-block;
 }
 
 .footer-logo-img {
@@ -203,67 +248,7 @@ const institutionalLinks = [
 
 .brand-desc {
   color: rgba(255, 255, 255, 0.78);
-  max-width: 300px;
-}
-
-/* ── Navs ─────────────────────────────────────── */
-.footer-nav h4,
-.footer-contact h4 {
-  color: var(--color-on-primary-container);
-  margin-bottom: var(--space-md);
-  font-size: var(--label-lg-size);
-  font-weight: var(--label-lg-weight);
-  line-height: var(--label-lg-line-height);
-  letter-spacing: var(--label-lg-tracking);
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-}
-
-.footer-links li {
-  margin-bottom: 12px;
-}
-
-.footer-links a {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  transition: color var(--transition-base);
-}
-
-.footer-links a:hover {
-  color: white;
-  text-decoration: underline;
-}
-
-/* ── Contact ──────────────────────────────────── */
-.contact-info {
-  list-style: none;
-  padding: 0;
-}
-
-.contact-info li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 16px;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.contact-info .material-symbols-outlined {
-  color: var(--color-on-primary-container);
-  font-size: 20px;
-}
-
-.contact-info a {
-  color: inherit;
-  text-decoration: none;
-  transition: color var(--transition-base);
-}
-
-.contact-info a:hover {
-  color: white;
+  max-width: 600px;
 }
 
 /* ── Bottom ───────────────────────────────────── */

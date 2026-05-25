@@ -1,5 +1,15 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useContent } from '../composables/useContent'
+
+const { collaborationsList } = useContent()
+
+const approvedEntities = computed(() => {
+  return collaborationsList.value.filter(
+    c => c.type === 'Apoyando Inserción' && c.status === 'Aprobada'
+  )
+})
 
 const modalities = [
   {
@@ -76,8 +86,35 @@ const modalities = [
           </div>
         </div>
 
-        <div class="actions mt-xl text-center">
-          <RouterLink to="/contacto" class="btn btn-primary btn-lg">Quiero ser empresa colaboradora</RouterLink>
+        <div v-if="approvedEntities.length > 0" class="collab-entities mt-xl card p-lg">
+          <h3 class="mb-md text-center">Empresas colaboradoras en esta modalidad</h3>
+          <div class="entities-tags">
+            <span v-for="entity in approvedEntities" :key="entity.id" class="entity-tag" :class="{ 'has-logo': entity.imageUrl }">
+              <img v-if="entity.imageUrl" :src="entity.imageUrl" :alt="entity.entity" class="entity-logo">
+              <span v-else>{{ entity.entity }}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section bg-primary">
+      <div class="container">
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">
+            <span class="material-symbols-outlined">business_center</span>
+            ¿Quieres colaborar?
+          </h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">Tu empresa puede marcar la diferencia en la vida de muchas personas.</p>
+            <div class="actions justify-center">
+              <RouterLink to="/contacto" class="btn cta-panel-btn">
+                Quiero ser empresa colaboradora
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+              </RouterLink>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -115,6 +152,40 @@ const modalities = [
 .check-list-white li::before { content: "check"; font-family: 'Material Symbols Outlined'; position: absolute; left: 0; color: var(--color-primary-fixed); }
 
 .giant-icon { font-size: 120px; opacity: 0.2; }
+
+.entities-tags {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.entity-tag {
+  background: var(--color-surface-container);
+  color: var(--color-on-surface);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  border: 1px solid var(--color-outline-variant);
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.entity-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.entity-tag.has-logo {
+  background: #ffffff;
+  padding: 6px 12px;
+}
+.entity-logo {
+  max-height: 24px;
+  max-width: 100px;
+  object-fit: contain;
+}
 
 @media (max-width: 992px) {
   .modalities-grid { grid-template-columns: 1fr; }

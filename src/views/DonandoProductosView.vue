@@ -100,7 +100,10 @@ const categories = [
         <div v-if="approvedEntities.length > 0" class="collab-entities mt-xl card p-lg">
           <h3 class="mb-md text-center">Empresas colaboradoras en esta modalidad</h3>
           <div class="entities-tags">
-            <span v-for="entity in approvedEntities" :key="entity.id" class="entity-tag">{{ entity.entity }}</span>
+            <span v-for="entity in approvedEntities" :key="entity.id" class="entity-tag" :class="{ 'has-logo': entity.imageUrl }">
+              <img v-if="entity.imageUrl" :src="entity.imageUrl" :alt="entity.entity" class="entity-logo">
+              <span v-else>{{ entity.entity }}</span>
+            </span>
           </div>
         </div>
 
@@ -143,6 +146,7 @@ const categories = [
   gap: var(--space-sm);
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
 }
 .entity-tag {
   background: var(--color-surface-container);
@@ -152,6 +156,23 @@ const categories = [
   font-weight: 600;
   border: 1px solid var(--color-outline-variant);
   font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.entity-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.entity-tag.has-logo {
+  background: #ffffff;
+  padding: 6px 12px;
+}
+.entity-logo {
+  max-height: 24px;
+  max-width: 100px;
+  object-fit: contain;
 }
 
 @media (max-width: 992px) {

@@ -32,8 +32,8 @@ import { RouterLink } from 'vue-router'
         <div class="cards-grid">
           <!-- Grado Básico -->
           <div class="card formativa-card">
-            <div class="card-image bg-primary-container">
-              <span class="material-symbols-outlined display-icon">school</span>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=500&auto=format&fit=crop&q=80" alt="Grado Básico">
             </div>
             <div class="card-content">
               <h3 class="headline-md">Grado Básico</h3>
@@ -51,8 +51,8 @@ import { RouterLink } from 'vue-router'
 
           <!-- Grado Medio -->
           <div class="card formativa-card">
-            <div class="card-image bg-secondary">
-              <span class="material-symbols-outlined display-icon">engineering</span>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&auto=format&fit=crop&q=80" alt="Grado Medio">
             </div>
             <div class="card-content">
               <h3 class="headline-md">Grado Medio</h3>
@@ -70,8 +70,8 @@ import { RouterLink } from 'vue-router'
 
           <!-- Formación para el Empleo -->
           <div class="card formativa-card">
-            <div class="card-image bg-tertiary">
-              <span class="material-symbols-outlined display-icon">work_history</span>
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=500&auto=format&fit=crop&q=80" alt="Formación para el Empleo">
             </div>
             <div class="card-content">
               <h3 class="headline-md">Formación para el Empleo</h3>
@@ -116,8 +116,8 @@ import { RouterLink } from 'vue-router'
             </div>
           </div>
           <div class="metodologia-visual">
-            <div class="visual-box border-stone">
-              <span class="material-symbols-outlined">architecture</span>
+            <div class="visual-box">
+              <img src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&auto=format&fit=crop&q=80" alt="Metodología Peñascal">
             </div>
           </div>
         </div>
@@ -125,13 +125,15 @@ import { RouterLink } from 'vue-router'
     </section>
 
     <!-- CTA -->
-    <section class="section">
+    <section class="section bg-primary">
       <div class="container">
-        <div class="cta-banner bg-primary text-white">
-          <div class="cta-inner">
-            <h2 class="headline-lg">¿Necesitas orientación?</h2>
-            <p class="body-lg">Nuestro servicio de orientación te ayudará a elegir el itinerario más adecuado para tu situación personal y profesional.</p>
-            <RouterLink to="/la-cooperativa/servicio-de-orientacion" class="btn btn-secondary mt-md">Solicitar Cita</RouterLink>
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">¿Necesitas orientación?</h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">Nuestro servicio de orientación te ayudará a elegir el itinerario más adecuado para tu situación personal y profesional.</p>
+            <div class="cta-actions justify-center">
+              <RouterLink to="/la-cooperativa/servicio-de-orientacion" class="btn cta-panel-btn">Solicitar Cita <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span></RouterLink>
+            </div>
           </div>
         </div>
       </div>
@@ -191,7 +193,13 @@ import { RouterLink } from 'vue-router'
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .card-image .display-icon {
@@ -266,6 +274,13 @@ import { RouterLink } from 'vue-router'
   justify-content: center;
   background-color: var(--color-surface-container);
   box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.visual-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .visual-box .material-symbols-outlined {
@@ -279,18 +294,25 @@ import { RouterLink } from 'vue-router'
 
 /* CTA */
 .cta-banner {
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
+  color: white;
   padding: 80px;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
   text-align: center;
-  box-shadow: var(--shadow-lg);
 }
 
-.cta-inner {
-  max-width: 600px;
-  margin: 0 auto;
+.cta-banner h2 { 
+  color: white;
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
 }
 
-.cta-banner h2 { color: white; }
+.cta-banner p {
+  color: rgba(255, 255, 255, 0.8);
+}
 
 .text-white { color: white; }
 

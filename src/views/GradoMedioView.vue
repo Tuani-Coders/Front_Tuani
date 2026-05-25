@@ -150,15 +150,24 @@ const specialties = computed(() => {
     </section>
 
     <!-- CTA -->
-    <section class="section">
+    <section class="section bg-primary">
       <div class="container">
-        <div class="cta-banner-blue">
-          <div class="cta-inner">
-            <h2>Especialízate con Peñascal</h2>
-            <p class="body-lg">Nuestros talleres e instructores te preparan para los retos reales de tu futura profesión.</p>
-            <div class="cta-btns mt-lg">
-              <RouterLink to="/contacto" class="btn btn-primary btn-lg">Solicitar Información</RouterLink>
-              <RouterLink to="/la-cooperativa/cooperan-con-nosotros" class="btn btn-ghost btn-lg text-white">Empresas colaboradoras</RouterLink>
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">
+            <span class="material-symbols-outlined">engineering</span>
+            Especialízate con Peñascal
+          </h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">Nuestros talleres e instructores te preparan para los retos reales de tu futura profesión.</p>
+            <div class="cta-btns justify-center">
+              <RouterLink to="/contacto" class="btn cta-panel-btn">
+                Solicitar Información
+                <span class="material-symbols-outlined">chevron_right</span>
+              </RouterLink>
+              <RouterLink to="/la-cooperativa/cooperan-con-nosotros" class="btn btn-outline-white">
+                Empresas colaboradoras
+                <span class="material-symbols-outlined">chevron_right</span>
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -332,19 +341,26 @@ const specialties = computed(() => {
 
 /* CTA */
 .cta-banner-blue {
-  background-color: var(--color-secondary);
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
   color: white;
   padding: var(--space-xl);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
   text-align: center;
 }
 
-.cta-inner {
-  max-width: 600px;
-  margin: 0 auto;
+.cta-inner h2 { 
+  color: white; 
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
 }
 
-.cta-inner h2 { color: white; margin-bottom: var(--space-sm); }
+.cta-inner p {
+  color: rgba(255, 255, 255, 0.8);
+}
 
 .cta-btns {
   display: flex;

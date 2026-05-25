@@ -60,238 +60,135 @@ const handleGoogleLogin = () => {
 
 <template>
   <div class="auth-view view">
-    <div class="container auth-container">
-      <div class="auth-card card shadow-md">
-        <div class="auth-header text-center">
-          <img src="../../assets/icons/penascal.png" alt="Logo" class="auth-logo">
-          <h1 class="headline-md">Crear una cuenta</h1>
-          <p class="body-md text-muted">Únete a la comunidad de Peñascal Kooperatiba</p>
+    <div class="auth-wrapper">
+      <!-- Brand Sidebar -->
+      <div class="auth-sidebar">
+        <div class="sidebar-content">
+          <div class="brand-info">
+            <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="sidebar-logo">
+            <span class="brand-tagline">Peñascal</span>
+          </div>
+          <div class="sidebar-hero-text">
+            <h2 class="sidebar-title">Creando oportunidades, tejiendo futuro</h2>
+            <p class="sidebar-subtitle">Acceso exclusivo para el personal de administración e instructores autorizados.</p>
+          </div>
+          <div class="sidebar-footer">
+            <p class="sidebar-footer-text">© 2026 Grupo Peñascal · Compromiso social y ético</p>
+          </div>
         </div>
+      </div>
 
-        <form @submit.prevent="handleRegister" class="auth-form">
-          <div v-if="error" class="error-box">
-            {{ error }}
-          </div>
-
-          <div class="form-group">
-            <label for="username" class="label-md">Nombre de usuario</label>
-            <input 
-              type="text" 
-              id="username" 
-              v-model="form.username" 
-              required 
-              class="form-control" 
-              placeholder="Ej: juancarlos"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="email" class="label-md">Correo electrónico</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="form.email" 
-              required 
-              class="form-control" 
-              placeholder="tu@email.com"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="password" class="label-md">Contraseña</label>
-            <input 
-              type="password" 
-              id="password" 
-              v-model="form.password" 
-              required 
-              class="form-control" 
-              placeholder="••••••••"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="confirmPassword" class="label-md">Confirmar contraseña</label>
-            <input 
-              type="password" 
-              id="confirmPassword" 
-              v-model="form.confirmPassword" 
-              required 
-              class="form-control" 
-              placeholder="••••••••"
-            >
-          </div>
-
-          <button type="submit" class="btn btn-primary w-100" :disabled="loading">
-            <span v-if="!loading">Registrarse</span>
-            <span v-else>Procesando...</span>
-          </button>
-
-          <div class="social-auth">
-            <div class="divider">
-              <span>O regístrate con</span>
+      <!-- Form Container -->
+      <div class="auth-form-container">
+        <div class="auth-form-card">
+          <div class="auth-header text-center">
+            <div class="mobile-logo-container">
+              <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="auth-logo">
             </div>
-            
-            <button type="button" @click="handleGoogleLogin" class="btn btn-outline w-100 btn-google" :disabled="loading">
-              <img src="../../assets/icons/google.png" alt="Google" class="btn-icon">
-              <span>Google</span>
-            </button>
+            <h1 class="headline-md">Crear una cuenta</h1>
+            <p class="body-md text-muted">Únete a la administración de Peñascal Kooperatiba</p>
           </div>
 
-          <div class="auth-footer text-center">
-            <p class="body-md text-muted">
-              ¿Ya tienes una cuenta? 
-              <RouterLink to="/login" class="link-primary">Inicia sesión aquí</RouterLink>
-            </p>
-          </div>
-        </form>
+          <form @submit.prevent="handleRegister" class="auth-form">
+            <div v-if="error" class="error-box">
+              {{ error }}
+            </div>
+
+            <div class="form-group">
+              <label for="username" class="label-md">Nombre de usuario</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">person</span>
+                <input 
+                  type="text" 
+                  id="username" 
+                  v-model="form.username" 
+                  required 
+                  class="form-control" 
+                  placeholder="Ej: juancarlos"
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="label-md">Correo electrónico</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">mail</span>
+                <input 
+                  type="email" 
+                  id="email" 
+                  v-model="form.email" 
+                  required 
+                  class="form-control" 
+                  placeholder="tu@grupopenascal.com"
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="label-md">Contraseña</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">lock</span>
+                <input 
+                  type="password" 
+                  id="password" 
+                  v-model="form.password" 
+                  required 
+                  class="form-control" 
+                  placeholder="••••••••"
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword" class="label-md">Confirmar contraseña</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">lock_reset</span>
+                <input 
+                  type="password" 
+                  id="confirmPassword" 
+                  v-model="form.confirmPassword" 
+                  required 
+                  class="form-control" 
+                  placeholder="••••••••"
+                >
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" :disabled="loading">
+              <span v-if="!loading" style="display: inline-flex; align-items: center; gap: 8px;">
+                Registrarse
+                <span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
+              </span>
+              <span v-else>Procesando...</span>
+            </button>
+
+            <div class="social-auth">
+              <div class="auth-divider" style="margin-block: var(--space-md);">
+                <span>O regístrate con</span>
+              </div>
+              
+              <button type="button" @click="handleGoogleLogin" class="btn btn-outline w-100 btn-google" :disabled="loading" style="display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;">
+                <img src="../../assets/icons/google.png" alt="Google" class="btn-icon" style="height: 18px; width: 18px;">
+                <span>Google Workspace</span>
+              </button>
+            </div>
+
+            <div class="auth-footer text-center">
+              <p class="body-md text-muted" style="margin: 0; margin-top: var(--space-md);">
+                ¿Ya tienes una cuenta? <br>
+                <RouterLink to="/login" class="link-resend" style="font-weight: 700; text-decoration: underline;">Inicia sesión aquí</RouterLink>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.auth-view {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-surface);
-  padding: var(--space-xl) var(--space-md);
-}
-
-.auth-container {
-  max-width: 520px;
-}
-
-.auth-card {
-  padding: var(--space-lg);
-  background: white;
-  border-radius: var(--radius-lg);
-}
-
-.auth-header {
-  margin-bottom: var(--space-lg);
-}
-
-.auth-logo {
-  height: 64px;
-  margin-bottom: var(--space-md);
-  object-fit: contain;
-}
-
-.form-group {
-  margin-bottom: var(--space-md);
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: var(--space-xs);
-  color: var(--color-on-surface);
-  font-weight: 700;
-}
-
-.form-control {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid var(--color-outline-variant);
-  border-radius: var(--radius-default);
-  background: var(--color-surface-container-low);
-  font-family: var(--font-family);
-  font-size: var(--body-md-size);
-  transition: all var(--transition-base);
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  background: white;
-}
-
-.error-box {
-  background: var(--color-secondary-container);
-  color: var(--color-on-secondary-container);
-  padding: var(--space-md);
-  border-radius: var(--radius-default);
-  margin-bottom: var(--space-md);
-  font-size: var(--label-lg-size);
-  text-align: center;
-  border-left: 4px solid var(--color-secondary);
-}
-
-.link-primary {
-  color: var(--color-secondary);
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.link-primary:hover {
-  text-decoration: underline;
-}
-
-.auth-footer {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--color-outline-variant);
-}
-
 .w-100 {
   width: 100%;
-  justify-content: center;
-}
-
-.text-center { text-align: center; }
-
-/* Social Auth Styles */
-.social-auth {
-  margin-top: var(--space-lg);
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin-bottom: var(--space-md);
-  color: var(--color-on-surface-variant);
-  font-size: var(--label-md-size);
-}
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid var(--color-outline-variant);
-}
-
-.divider:not(:empty)::before {
-  margin-right: var(--space-sm);
-}
-
-.divider:not(:empty)::after {
-  margin-left: var(--space-sm);
-}
-
-.btn-outline {
-  background: transparent;
-  border: 2px solid var(--color-outline-variant);
-  color: var(--color-on-surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-}
-
-.btn-outline:hover {
-  background: var(--color-surface-container-low);
-  border-color: var(--color-outline);
-}
-
-.btn-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-}
-
-.btn-google {
-  font-weight: 600;
 }
 </style>
 

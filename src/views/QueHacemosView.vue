@@ -89,11 +89,11 @@ const impacts = [
           </div>
           <div class="impact-visual">
             <div class="image-stack">
-              <div class="image-box bg-primary-fixed">
-                <span class="material-symbols-outlined">diversity_1</span>
+              <div class="image-box">
+                <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=400&auto=format&fit=crop&q=80" alt="Diversidad y comunidad">
               </div>
-              <div class="image-box bg-secondary-fixed">
-                <span class="material-symbols-outlined">trending_up</span>
+              <div class="image-box">
+                <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=400&auto=format&fit=crop&q=80" alt="Impacto y crecimiento">
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@ const impacts = [
           </div>
           <div class="area-visual">
             <div class="visual-placeholder">
-              <span class="material-symbols-outlined">school</span>
+              <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&auto=format&fit=crop&q=80" alt="Formación Profesional">
             </div>
           </div>
         </div>
@@ -140,8 +140,8 @@ const impacts = [
             <RouterLink to="/la-cooperativa/cooperan-con-nosotros" class="btn btn-primary">Nuestras empresas</RouterLink>
           </div>
           <div class="area-visual">
-            <div class="visual-placeholder visual-placeholder--blue">
-              <span class="material-symbols-outlined">business_center</span>
+            <div class="visual-placeholder">
+              <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop&q=80" alt="Empresas de inserción laboral">
             </div>
           </div>
         </div>
@@ -149,15 +149,24 @@ const impacts = [
     </section>
 
     <!-- CTA Final -->
-    <section class="section">
+    <section class="section bg-primary">
       <div class="container">
-        <div class="cta-final-card">
-          <div class="cta-inner">
-            <h2>¿Quieres saber más?</h2>
-            <p class="body-lg">Estamos encantados de explicarte en detalle nuestra forma de trabajar.</p>
-            <div class="cta-btns">
-              <RouterLink to="/contacto" class="btn btn-primary btn-lg">Contactar ahora</RouterLink>
-              <RouterLink to="/la-cooperativa" class="btn btn-secondary btn-lg">Más sobre nosotros</RouterLink>
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">
+            <span class="material-symbols-outlined">info</span>
+            ¿Quieres saber más?
+          </h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">Estamos encantados de explicarte en detalle nuestra forma de trabajar.</p>
+            <div class="cta-btns justify-center">
+              <RouterLink to="/contacto" class="btn cta-panel-btn">
+                Contactar ahora
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+              </RouterLink>
+              <RouterLink to="/la-cooperativa" class="btn btn-outline-white">
+                Más sobre nosotros
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -167,6 +176,8 @@ const impacts = [
 </template>
 
 <style scoped>
+.justify-center { justify-content: center; }
+
 .page-header {
   background-color: var(--color-surface-container-low);
   padding: var(--space-xl) 0 var(--space-lg);
@@ -278,10 +289,14 @@ const impacts = [
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
-.image-box .material-symbols-outlined {
-  font-size: 64px;
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Áreas */
@@ -308,21 +323,18 @@ const impacts = [
 .visual-placeholder {
   width: 100%;
   aspect-ratio: 16/9;
-  background: var(--color-primary-fixed);
   border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
-.visual-placeholder--blue {
-  background: var(--color-secondary-fixed);
-  color: var(--color-secondary);
-}
-
-.visual-placeholder .material-symbols-outlined {
-  font-size: 80px;
+.visual-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .check-list {
@@ -346,10 +358,11 @@ const impacts = [
 
 /* CTA Final */
 .cta-final-card {
-  background: var(--color-primary-container);
-  color: var(--color-on-primary);
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
+  color: white;
   padding: var(--space-xl);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
   text-align: center;
 }
 
@@ -358,8 +371,16 @@ const impacts = [
   margin: 0 auto;
 }
 
-.cta-inner h2 { color: var(--color-on-primary); margin-bottom: var(--space-sm); }
-.cta-inner p { opacity: 0.9; margin-bottom: var(--space-lg); }
+.cta-inner h2 { 
+  color: white; 
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.cta-inner p { color: rgba(255, 255, 255, 0.8); margin-bottom: var(--space-lg); }
 
 .cta-btns {
   display: flex;

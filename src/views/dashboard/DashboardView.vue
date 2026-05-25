@@ -362,7 +362,7 @@ const newsForm = reactive({
   imageName: ''
 })
 const courseForm = reactive({ id: '', name: '', category: 'Grado Básico', duration: '2000h', enrolled: 0, capacity: 15, status: 'Activo', imageUrl: '', imageName: '' })
-const collabForm = reactive({ entity: '', type: 'Apoyando Proyectos', date: '', status: 'Pendiente' })
+const collabForm = reactive({ entity: '', type: 'Apoyando Proyectos', date: '', status: 'Pendiente', imageUrl: '', imageName: '' })
 const selectedCourseId = ref('')
 const selectedStudentId = ref(null)
 const studentForm = reactive({
@@ -471,6 +471,29 @@ const clearCourseImage = () => {
   courseForm.imageName = ''
 }
 
+const handleCollabImageFile = (event) => {
+  const file = event.target.files?.[0]
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    showToast('Selecciona un archivo de imagen válido', 'error')
+    event.target.value = ''
+    return
+  }
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    collabForm.imageUrl = reader.result
+    collabForm.imageName = file.name
+  }
+  reader.readAsDataURL(file)
+}
+
+const clearCollabImage = () => {
+  collabForm.imageUrl = ''
+  collabForm.imageName = ''
+}
+
 const openModal = (type, mode = 'create', data = null, index = -1) => {
   modalType.value = type.toLowerCase()
   modalMode.value = mode
@@ -479,7 +502,14 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
 
   if (modalType.value === 'noticias') {
     if (mode === 'edit' && data) {
-      Object.assign(newsForm, data)
+      newsForm.title = data.title || ''
+      newsForm.tag = data.tag || 'Formación'
+      newsForm.excerpt = data.excerpt || ''
+      newsForm.date = data.date || ''
+      newsForm.status = data.status || 'Publicado'
+      newsForm.author = data.author || 'Administrador'
+      newsForm.imageUrl = data.imageUrl || ''
+      newsForm.imageName = data.imageName || ''
     } else {
       newsForm.title = ''
       newsForm.tag = 'Formación'
@@ -492,7 +522,15 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
     }
   } else if (modalType.value === 'formación' || modalType.value === 'formacion') {
     if (mode === 'edit' && data) {
-      Object.assign(courseForm, data)
+      courseForm.id = data.id || ''
+      courseForm.name = data.name || ''
+      courseForm.category = data.category || 'Grado Básico'
+      courseForm.duration = data.duration || '2000h'
+      courseForm.enrolled = data.enrolled || 0
+      courseForm.capacity = data.capacity || 15
+      courseForm.status = data.status || 'Activo'
+      courseForm.imageUrl = data.imageUrl || ''
+      courseForm.imageName = data.imageName || ''
     } else {
       courseForm.id = ''
       courseForm.name = ''
@@ -506,12 +544,19 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
     }
   } else if (modalType.value === 'colabora') {
     if (mode === 'edit' && data) {
-      Object.assign(collabForm, data)
+      collabForm.entity = data.entity || ''
+      collabForm.type = data.type || 'Apoyando Proyectos'
+      collabForm.date = data.date || ''
+      collabForm.status = data.status || 'Pendiente'
+      collabForm.imageUrl = data.imageUrl || ''
+      collabForm.imageName = data.imageName || ''
     } else {
       collabForm.entity = ''
       collabForm.type = 'Apoyando Proyectos'
       collabForm.date = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
       collabForm.status = 'Pendiente'
+      collabForm.imageUrl = ''
+      collabForm.imageName = ''
     }
   } else if (modalType.value === 'usuarios' || modalType.value === 'usuario') {
     if (mode === 'edit' && data) {
@@ -1359,7 +1404,14 @@ onMounted(() => {
           </thead>
           <tbody>
             <tr v-for="(item, index) in filteredCollabs" :key="item.id">
-              <td class="primary-cell"><strong>{{ item.entity }}</strong></td>
+              <td class="primary-cell">
+                <div class="collab-thumbnail" v-if="item.imageUrl">
+                  <img :src="item.imageUrl" alt="Logo">
+                </div>
+                <div class="primary-cell-text">
+                  <strong>{{ item.entity }}</strong>
+                </div>
+              </td>
               <td>{{ item.type }}</td>
               <td>{{ item.date }}</td>
               <td>
@@ -1982,6 +2034,29 @@ onMounted(() => {
             <div class="form-group-half">
               <label class="label-md">Fecha de Registro</label>
               <input type="text" class="form-control-dash" v-model="collabForm.date" readonly>
+            </div>
+            <div class="form-group-full">
+              <label class="label-md">Logo o Imagen de la Colaboración</label>
+              <div class="news-image-field">
+                <div class="news-image-preview">
+                  <img v-if="collabForm.imageUrl" :src="collabForm.imageUrl" alt="Vista previa del logo">
+                  <span v-else class="material-symbols-outlined">handshake</span>
+                </div>
+                <div class="news-image-controls">
+                  <input type="url" class="form-control-dash" v-model="collabForm.imageUrl" placeholder="Pega aquí el enlace de una imagen">
+                  <label class="file-upload-button">
+                    <span class="material-symbols-outlined">upload</span>
+                    Subir logo local
+                    <input type="file" accept="image/*" @change="handleCollabImageFile">
+                  </label>
+                  <div class="image-helper-row">
+                    <span>{{ collabForm.imageName || 'Puedes usar una URL o seleccionar una imagen de tu equipo.' }}</span>
+                    <button v-if="collabForm.imageUrl" type="button" class="link-button" @click="clearCollabImage">
+                      Quitar logo
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2904,6 +2979,23 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.collab-thumbnail {
+  flex-shrink: 0;
+  width: 48px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.collab-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: white;
 }
 
 .primary-cell strong {

@@ -36,177 +36,95 @@ const handleResendCode = async () => {
 
 <template>
   <div class="auth-view view">
-    <div class="container auth-container">
-      <div class="auth-card card shadow-md">
-        <div class="auth-header text-center">
-          <div class="icon-circle bg-primary-light text-primary mx-auto">
-            <span class="material-symbols-outlined">mark_email_unread</span>
+    <div class="auth-wrapper">
+      <!-- Brand Sidebar -->
+      <div class="auth-sidebar">
+        <div class="sidebar-content">
+          <div class="brand-info">
+            <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="sidebar-logo">
+            <span class="brand-tagline">Peñascal</span>
           </div>
-          <h1 class="headline-md">Verifica tu cuenta</h1>
-          <p class="body-md text-muted">Introduce el código de 6 dígitos que hemos enviado a tu email.</p>
+          <div class="sidebar-hero-text">
+            <h2 class="sidebar-title">Creando oportunidades, tejiendo futuro</h2>
+            <p class="sidebar-subtitle">Acceso exclusivo para el personal de administración e instructores autorizados.</p>
+          </div>
+          <div class="sidebar-footer">
+            <p class="sidebar-footer-text">© 2026 Grupo Peñascal · Compromiso social y ético</p>
+          </div>
         </div>
+      </div>
 
-        <form @submit.prevent="handleVerify" class="auth-form">
-          <div v-if="error" class="error-box">
-            {{ error }}
+      <!-- Form Container -->
+      <div class="auth-form-container">
+        <div class="auth-form-card">
+          <div class="auth-header text-center">
+            <div class="mobile-logo-container">
+              <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="auth-logo">
+            </div>
+            <h1 class="headline-md">Verificación de email</h1>
+            <p class="body-md text-muted">Introduce el código de 6 dígitos enviado a tu correo.</p>
           </div>
 
-          <div class="form-group">
-            <label for="email" class="label-md">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="email" 
-              required 
-              class="form-control" 
-              :readonly="!!route.query.email"
-            >
-          </div>
+          <form @submit.prevent="handleVerify" class="auth-form">
+            <div v-if="error" class="error-box">
+              {{ error }}
+            </div>
 
-          <div class="form-group">
-            <label for="code" class="label-md">Código de verificación</label>
-            <input 
-              type="text" 
-              id="code" 
-              v-model="code" 
-              required 
-              class="form-control code-input" 
-              placeholder="123456" 
-              maxlength="6"
-            >
-          </div>
+            <div class="form-group">
+              <label for="email" class="label-md">Email</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">mail</span>
+                <input 
+                  type="email" 
+                  id="email" 
+                  v-model="email" 
+                  required 
+                  class="form-control" 
+                  :readonly="!!route.query.email"
+                >
+              </div>
+            </div>
 
-          <button type="submit" class="btn btn-primary w-100" :disabled="loading">
-            <span v-if="!loading">Verificar Cuenta</span>
-            <span v-else>Verificando...</span>
-          </button>
+            <div class="form-group">
+              <label for="code" class="label-md">Código de verificación</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">key</span>
+                <input 
+                  type="text" 
+                  id="code" 
+                  v-model="code" 
+                  required 
+                  class="form-control code-input" 
+                  placeholder="123456" 
+                  maxlength="6"
+                >
+              </div>
+            </div>
 
-          <div class="auth-footer text-center">
-            <p class="body-md text-muted">
-              ¿No has recibido el código? 
-              <button type="button" class="btn-text" @click="handleResendCode" :disabled="loading">Reenviar código</button>
-            </p>
-          </div>
-        </form>
+            <button type="submit" class="btn btn-primary w-100" :disabled="loading">
+              <span v-if="!loading" style="display: inline-flex; align-items: center; gap: 8px;">
+                Verificar cuenta
+                <span class="material-symbols-outlined" style="font-size: 18px;">verified_user</span>
+              </span>
+              <span v-else>Verificando...</span>
+            </button>
+
+            <div class="auth-footer text-center">
+              <p class="body-md text-muted" style="margin: 0;">
+                ¿No has recibido el código? <br>
+                <button type="button" class="link-resend" @click="handleResendCode" :disabled="loading">Reenviar código</button>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.auth-view {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-surface);
-  padding: var(--space-xl) var(--space-md);
-}
-
-.auth-container {
-  max-width: 480px;
-}
-
-.auth-card {
-  padding: var(--space-lg);
-  background: white;
-  border-radius: var(--radius-lg);
-}
-
-.auth-header {
-  margin-bottom: var(--space-lg);
-}
-
-.icon-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-surface-container-high);
-  color: var(--color-primary);
-  margin-bottom: var(--space-md);
-}
-
-.icon-circle .material-symbols-outlined {
-  font-size: 40px;
-}
-
-.form-group {
-  margin-bottom: var(--space-md);
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: var(--space-xs);
-  color: var(--color-on-surface);
-  font-weight: 700;
-}
-
-.form-control {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid var(--color-outline-variant);
-  border-radius: var(--radius-default);
-  background: var(--color-surface-container-low);
-  font-family: var(--font-family);
-  font-size: var(--body-md-size);
-  transition: all var(--transition-base);
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  background: white;
-}
-
-.code-input {
-  text-align: center;
-  font-size: 1.5rem;
-  letter-spacing: 0.2em;
-  font-weight: 800;
-  font-family: monospace;
-  color: var(--color-primary);
-}
-
-.error-box {
-  background: var(--color-secondary-container);
-  color: var(--color-on-secondary-container);
-  padding: var(--space-md);
-  border-radius: var(--radius-default);
-  margin-bottom: var(--space-md);
-  font-size: var(--label-lg-size);
-  text-align: center;
-  border-left: 4px solid var(--color-secondary);
-}
-
-.btn-text {
-  background: none;
-  border: none;
-  color: var(--color-secondary);
-  font-weight: 800;
-  cursor: pointer;
-  padding: 0;
-  font-family: inherit;
-  font-size: inherit;
-}
-
-.btn-text:hover {
-  text-decoration: underline;
-}
-
-.auth-footer {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--color-outline-variant);
-}
-
 .w-100 {
   width: 100%;
-  justify-content: center;
 }
-
-.text-center { text-align: center; }
-.mx-auto { margin-left: auto; margin-right: auto; }
 </style>
 
