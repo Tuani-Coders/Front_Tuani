@@ -316,7 +316,12 @@ const specialties = computed(() => {
   gap: var(--space-md);
 }
 
+/* .border-secondary hereda el borde normal (fino) del .card por defecto */
 .border-secondary {
+  transition: border-top-width var(--transition-base), border-top-color var(--transition-base);
+}
+
+.border-secondary:hover {
   border-top: 4px solid var(--color-secondary);
 }
 
