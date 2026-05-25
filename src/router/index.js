@@ -18,8 +18,9 @@ const ApoyandoInsercionView = () => import('../views/ApoyandoInsercionView.vue')
 const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
-const RegisterView = () => import('../views/auth/RegisterView.vue')
-const VerifyEmailView = () => import('../views/auth/VerifyEmailView.vue')
+const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
+const DashboardView = () => import('../views/dashboard/DashboardView.vue')
+const EquipoView = () => import('../views/EquipoView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
 
 const routes = [
@@ -30,7 +31,7 @@ const routes = [
     meta: { title: 'Inicio - Peñascal Koop.' }
   },
 
-  /* ── Autenticación ──────────────────────────── */
+  /* ── Autenticación (Solo Admin) ─────────────── */
   {
     path: '/login',
     name: 'Login',
@@ -38,16 +39,28 @@ const routes = [
     meta: { title: 'Iniciar Sesión - Peñascal Koop.' }
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: RegisterView,
-    meta: { title: 'Registrarse - Peñascal Koop.' }
+    path: '/verify-admin',
+    name: 'VerifyAdmin',
+    component: VerifyAdminView,
+    meta: { title: 'Verificación Admin - Peñascal Koop.' }
   },
   {
-    path: '/verify-email',
-    name: 'VerifyEmail',
-    component: VerifyEmailView,
-    meta: { title: 'Verificar Email - Peñascal Koop.' }
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: DashboardView,
+    meta: {
+      title: 'Dashboard - Peñascal Koop.',
+      layout: 'dashboard',
+      requiresAuth: true
+    }
+  },
+
+  /* ── Equipo ────────────────────────────────── */
+  {
+    path: '/equipo',
+    name: 'Equipo',
+    component: EquipoView,
+    meta: { title: 'Equipo - Tuani Coders' }
   },
 
   /* ── Formación ──────────────────────────────── */
@@ -169,6 +182,16 @@ const router = createRouter({
 
 /* Actualizar título de la pestaña en cada navegación */
 router.beforeEach((to, _from, next) => {
+  const token = localStorage.getItem('token')
+
+  if (to.meta.requiresAuth && !token) {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+    return
+  }
+
   document.title = to.meta.title || 'Grupo Peñascal Kooperatiba'
   next()
 })

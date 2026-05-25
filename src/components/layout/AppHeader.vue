@@ -118,6 +118,10 @@ const handleNavClick = (item, event) => {
           <div class="topbar-auth">
             <template v-if="isLoggedIn">
               <span class="user-greeting">Hola, <strong>{{ user?.username }}</strong></span>
+              <RouterLink to="/dashboard" class="topbar-link dashboard-link">
+                <span class="material-symbols-outlined">dashboard</span>
+                Panel
+              </RouterLink>
               <button @click="logout" class="topbar-link logout-btn">
                 <span class="material-symbols-outlined">logout</span>
                 Salir
@@ -267,6 +271,11 @@ const handleNavClick = (item, event) => {
 .login-btn {
   color: var(--color-primary) !important;
   font-weight: 700;
+}
+
+.dashboard-link {
+  color: var(--color-primary) !important;
+  font-weight: 800;
 }
 
 .topbar-contact {

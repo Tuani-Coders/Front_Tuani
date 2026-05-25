@@ -1,5 +1,15 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useContent } from '../composables/useContent'
+
+const { collaborationsList } = useContent()
+
+const approvedEntities = computed(() => {
+  return collaborationsList.value.filter(
+    c => c.type === 'Donando Productos' && c.status === 'Aprobada'
+  )
+})
 
 const categories = [
   {
@@ -87,6 +97,13 @@ const categories = [
           </div>
         </div>
 
+        <div v-if="approvedEntities.length > 0" class="collab-entities mt-xl card p-lg">
+          <h3 class="mb-md text-center">Empresas colaboradoras en esta modalidad</h3>
+          <div class="entities-tags">
+            <span v-for="entity in approvedEntities" :key="entity.id" class="entity-tag">{{ entity.entity }}</span>
+          </div>
+        </div>
+
         <div class="actions mt-xl text-center">
           <RouterLink to="/contacto" class="btn btn-primary btn-lg">Tengo material para donar</RouterLink>
         </div>
@@ -120,6 +137,22 @@ const categories = [
 .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
 .step { text-align: center; position: relative; }
 .step-num { width: 32px; height: 32px; background: var(--color-primary); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: var(--space-sm); }
+
+.entities-tags {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.entity-tag {
+  background: var(--color-surface-container);
+  color: var(--color-on-surface);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  border: 1px solid var(--color-outline-variant);
+  font-size: 0.9rem;
+}
 
 @media (max-width: 992px) {
   .categories-grid { grid-template-columns: 1fr; }

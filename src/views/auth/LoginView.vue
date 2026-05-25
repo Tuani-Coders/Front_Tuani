@@ -1,55 +1,33 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
 
+const route = useRoute()
 const router = useRouter()
-const { login, loginWithGoogle, error, loading } = useAuth()
-
-let tokenClient = null
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
+const { loginInit, error, loading } = useAuth()
 
 const form = ref({
-  username: '',
-  password: ''
+  email: ''
 })
 
 const handleLogin = async () => {
   try {
-    await login(form.value.username, form.value.password)
-    router.push('/')
+    // Paso 1: Enviar email para verificar admin y enviar codigo
+    const result = await loginInit(form.value.email)
+    // Redirigir a pagina de verificacion con timestamp de expiracion
+    const expiresAt = result.data?.expires_at || (Date.now() / 1000 + 300)
+    router.push({
+      path: '/verify-admin',
+      query: {
+        email: form.value.email,
+        expires: expiresAt,
+        code: result.data?.code || '',
+        redirect: route.query.redirect || '/dashboard'
+      }
+    })
   } catch (err) {
     console.error('Error de login:', err)
-  }
-}
-
-onMounted(() => {
-  // Inicializar Google Token Client
-  if (typeof google !== 'undefined') {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: GOOGLE_CLIENT_ID,
-      scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-      callback: async (response) => {
-        if (response.access_token) {
-          try {
-            await loginWithGoogle(response.access_token)
-            router.push('/')
-          } catch (err) {
-            console.error('Error login Google:', err)
-          }
-        }
-      },
-    })
-  } else {
-    console.error('Google SDK no cargado')
-  }
-})
-
-const handleGoogleLogin = () => {
-  if (tokenClient) {
-    tokenClient.requestAccessToken()
-  } else {
-    alert('El servicio de Google no está disponible en este momento.')
   }
 }
 </script>
@@ -70,54 +48,25 @@ const handleGoogleLogin = () => {
           </div>
 
           <div class="form-group">
-            <label for="username" class="label-md">Nombre de usuario</label>
-            <input 
-              type="text" 
-              id="username" 
-              v-model="form.username" 
-              required 
-              class="form-control" 
-              placeholder="Ej: juancarlos"
+            <label for="email" class="label-md">Email de administrador</label>
+            <input
+              type="email"
+              id="email"
+              v-model="form.email"
+              required
+              class="form-control"
+              placeholder="admin@ejemplo.com"
             >
           </div>
 
-          <div class="form-group">
-            <div class="d-flex justify-between align-center mb-xs">
-              <label for="password" class="label-md mb-0">Contraseña</label>
-            </div>
-            <input 
-              type="password" 
-              id="password" 
-              v-model="form.password" 
-              required 
-              class="form-control" 
-              placeholder="••••••••"
-            >
-            <div class="text-right mt-xs">
-              <RouterLink to="/forgot-password" class="link-forgot">¿Olvidaste tu contraseña?</RouterLink>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary w-100" :disabled="loading">
-            <span v-if="!loading">Iniciar Sesión</span>
-            <span v-else>Cargando...</span>
+          <button type="submit" class="btn btn-primary w-100" :disabled="loading || !form.email">
+            <span v-if="!loading">Enviar código</span>
+            <span v-else>Enviando...</span>
           </button>
-
-          <div class="social-auth">
-            <div class="divider">
-              <span>O continúa con</span>
-            </div>
-            
-            <button type="button" @click="handleGoogleLogin" class="btn btn-outline w-100 btn-google" :disabled="loading">
-              <img src="../../assets/icons/google.png" alt="Google" class="btn-icon">
-              <span>Google</span>
-            </button>
-          </div>
 
           <div class="auth-footer text-center">
             <p class="body-md text-muted">
-              ¿Aún no tienes cuenta? 
-              <RouterLink to="/register" class="link-primary">Regístrate gratis</RouterLink>
+              Acceso solo para administradores
             </p>
           </div>
         </form>
@@ -285,8 +234,32 @@ const handleGoogleLogin = () => {
   object-fit: contain;
 }
 
-.btn-google {
+.btn-social {
   font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+
+.btn-google {
+  color: #3c4043;
+}
+
+.btn-discord {
+  color: #5865F2;
+  border-color: #5865F2;
+}
+
+.btn-discord:hover {
+  background: #f0f1ff;
+  border-color: #4752c4;
+}
+
+.btn-github {
+  color: #24292f;
+  border-color: #d0d7de;
+}
+
+.btn-github:hover {
+  background: #f6f8fa;
+  border-color: #24292f;
 }
 </style>
-

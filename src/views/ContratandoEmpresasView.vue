@@ -1,5 +1,15 @@
 <script setup>
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useContent } from '../composables/useContent'
+
+const { collaborationsList } = useContent()
+
+const approvedEntities = computed(() => {
+  return collaborationsList.value.filter(
+    c => c.type === 'Contratando Empresas' && c.status === 'Aprobada'
+  )
+})
 
 const services = [
   {
@@ -9,7 +19,7 @@ const services = [
   },
   {
     name: 'Talleres Peñascal',
-    desc: 'Fabricación metálica, carpintería y mantenimiento industrial con estándares de mercado.',
+    desc: 'Fabricación metálica, carpintería and mantenimiento industrial con estándares de mercado.',
     icon: 'settings'
   },
   {

@@ -1,6 +1,11 @@
-import { ref, reactive, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070/api'
+
+// Estado para verificacion de admin
+const pendingVerification = ref(false)
+const pendingEmail = ref('')
+const pendingExpiresAt = ref(null)
 
 // Estado global (fuera de la función para persistir entre componentes)
 const user = ref(JSON.parse(localStorage.getItem('user')) || null)
@@ -31,6 +36,25 @@ export function useAuth() {
     token.value = null
     localStorage.removeItem('user')
     localStorage.removeItem('token')
+  }
+
+  const updateCurrentUser = (updates) => {
+    const nextUser = {
+      ...(user.value || {}),
+      ...updates,
+      profile: {
+        ...(user.value?.profile || {}),
+        ...(updates.profile || {})
+      },
+      profileSettings: {
+        ...(user.value?.profileSettings || {}),
+        ...(updates.profileSettings || {})
+      }
+    }
+
+    user.value = nextUser
+    localStorage.setItem('user', JSON.stringify(nextUser))
+    return nextUser
   }
 
   const register = async (username, email, password) => {
@@ -93,22 +117,23 @@ export function useAuth() {
     }
   }
 
-  const login = async (username, password) => {
+  // Paso 1: Verificar admin y enviar codigo (solo email, sin password)
+  const loginInit = async (email) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      const response = await fetch(`${API_BASE_URL}/auth/admin/login-init`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email })
       })
       const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error en el login')
-      
-      // La respuesta del backend según GUIA_AUTH tiene { access_token, user } dentro de data
-      const userData = data.data ? data.data.user : data.user
-      const tokenData = data.data ? data.data.access_token : data.access_token
-      setAuth(userData, tokenData)
+      if (!response.ok) throw new Error(data.message || 'Error en la verificación')
+
+      // Guardar estado de verificacion pendiente con tiempo de expiracion
+      pendingVerification.value = true
+      pendingEmail.value = email
+      pendingExpiresAt.value = data.data?.expires_at || null
       return data
     } catch (err) {
       error.value = err.message
@@ -118,21 +143,26 @@ export function useAuth() {
     }
   }
 
-  const loginWithGoogle = async (googleAccessToken) => {
+  // Paso 2: Verificar codigo y completar login
+  const verifyAdminCode = async (code) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/oauth/google`, {
+      const response = await fetch(`${API_BASE_URL}/auth/admin/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_token: googleAccessToken })
+        body: JSON.stringify({ email: pendingEmail.value, code })
       })
       const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error en el login con Google')
+      if (!response.ok) throw new Error(data.message || 'Código incorrecto')
       
+      // Guardar auth y limpiar estado pendiente
       const userData = data.data ? data.data.user : data.user
       const tokenData = data.data ? data.data.access_token : data.access_token
       setAuth(userData, tokenData)
+      pendingVerification.value = false
+      pendingEmail.value = ''
+      pendingExpiresAt.value = null
       return data
     } catch (err) {
       error.value = err.message
@@ -141,6 +171,7 @@ export function useAuth() {
       loading.value = false
     }
   }
+
 
   return {
     user,
@@ -148,11 +179,16 @@ export function useAuth() {
     loading,
     error,
     isLoggedIn,
+    pendingVerification,
+    pendingEmail,
+    pendingExpiresAt,
+    setAuth,
     register,
     verifyEmail,
     resendCode,
-    login,
-    loginWithGoogle,
+    loginInit,
+    verifyAdminCode,
+    updateCurrentUser,
     logout
   }
 }
