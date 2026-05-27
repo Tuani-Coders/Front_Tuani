@@ -309,13 +309,19 @@ const saveProfile = async () => {
       return
     }
 
-    const response = await fetch(`${API_BASE_URL}/auth/admin/users/${user.value.id}`, {
+    const response = await fetch(`${API_BASE_URL}/users/${user.value.id}`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${tokenVal}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updates)
+      body: JSON.stringify({
+        username: updates.username,
+        email: updates.email,
+        name: updates.profile.name,
+        lastNames: updates.profile.lastNames,
+        telefono: updates.profile.telefono
+      })
     })
 
     const data = await response.json()
@@ -362,7 +368,7 @@ const newsForm = reactive({
   imageName: ''
 })
 const courseForm = reactive({ id: '', name: '', category: 'Grado Básico', duration: '2000h', enrolled: 0, capacity: 15, status: 'Activo', imageUrl: '', imageName: '' })
-const collabForm = reactive({ entity: '', type: 'Apoyando Proyectos', date: '', status: 'Pendiente' })
+const collabForm = reactive({ entity: '', type: 'Apoyando Proyectos', date: '', status: 'Pendiente', imageUrl: '', imageName: '' })
 const selectedCourseId = ref('')
 const selectedStudentId = ref(null)
 const studentForm = reactive({
@@ -471,6 +477,29 @@ const clearCourseImage = () => {
   courseForm.imageName = ''
 }
 
+const handleCollabImageFile = (event) => {
+  const file = event.target.files?.[0]
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    showToast('Selecciona un archivo de imagen válido', 'error')
+    event.target.value = ''
+    return
+  }
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    collabForm.imageUrl = reader.result
+    collabForm.imageName = file.name
+  }
+  reader.readAsDataURL(file)
+}
+
+const clearCollabImage = () => {
+  collabForm.imageUrl = ''
+  collabForm.imageName = ''
+}
+
 const openModal = (type, mode = 'create', data = null, index = -1) => {
   modalType.value = type.toLowerCase()
   modalMode.value = mode
@@ -479,7 +508,14 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
 
   if (modalType.value === 'noticias') {
     if (mode === 'edit' && data) {
-      Object.assign(newsForm, data)
+      newsForm.title = data.title || ''
+      newsForm.tag = data.tag || 'Formación'
+      newsForm.excerpt = data.excerpt || ''
+      newsForm.date = data.date || ''
+      newsForm.status = data.status || 'Publicado'
+      newsForm.author = data.author || 'Administrador'
+      newsForm.imageUrl = data.imageUrl || ''
+      newsForm.imageName = data.imageName || ''
     } else {
       newsForm.title = ''
       newsForm.tag = 'Formación'
@@ -492,7 +528,15 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
     }
   } else if (modalType.value === 'formación' || modalType.value === 'formacion') {
     if (mode === 'edit' && data) {
-      Object.assign(courseForm, data)
+      courseForm.id = data.id || ''
+      courseForm.name = data.name || ''
+      courseForm.category = data.category || 'Grado Básico'
+      courseForm.duration = data.duration || '2000h'
+      courseForm.enrolled = data.enrolled || 0
+      courseForm.capacity = data.capacity || 15
+      courseForm.status = data.status || 'Activo'
+      courseForm.imageUrl = data.imageUrl || ''
+      courseForm.imageName = data.imageName || ''
     } else {
       courseForm.id = ''
       courseForm.name = ''
@@ -506,12 +550,19 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
     }
   } else if (modalType.value === 'colabora') {
     if (mode === 'edit' && data) {
-      Object.assign(collabForm, data)
+      collabForm.entity = data.entity || ''
+      collabForm.type = data.type || 'Apoyando Proyectos'
+      collabForm.date = data.date || ''
+      collabForm.status = data.status || 'Pendiente'
+      collabForm.imageUrl = data.imageUrl || ''
+      collabForm.imageName = data.imageName || ''
     } else {
       collabForm.entity = ''
       collabForm.type = 'Apoyando Proyectos'
       collabForm.date = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
       collabForm.status = 'Pendiente'
+      collabForm.imageUrl = ''
+      collabForm.imageName = ''
     }
   } else if (modalType.value === 'usuarios' || modalType.value === 'usuario') {
     if (mode === 'edit' && data) {
@@ -523,8 +574,8 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
       userForm.name = data.profile?.name || ''
       userForm.lastNames = data.profile?.lastNames || ''
       userForm.telefono = data.profile?.telefono || ''
-      userForm.role = data.role || 'user'
-      userForm.rolId = data.profile?.rolId || ''
+      userForm.role = getGlobalRoleName(data)
+      userForm.rolId = data.roleId || data.profile?.rolId || ''
       userForm.is_verified = data.is_verified || false
     } else {
       userForm.id = ''
@@ -687,7 +738,7 @@ const fetchUsers = async () => {
   usersError.value = null
   try {
     const tokenVal = localStorage.getItem('token')
-    const response = await fetch(`${API_BASE_URL}/auth/admin/users`, {
+    const response = await fetch(`${API_BASE_URL}/users`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${tokenVal}`,
@@ -724,6 +775,14 @@ const fetchRoles = async () => {
   }
 }
 
+const getSystemRoleName = (userItem) => {
+  return dbRoles.value.find(role => role.id === userItem.roleId)?.name || ''
+}
+
+const getGlobalRoleName = (userItem) => {
+  return getSystemRoleName(userItem) === 'admin' ? 'admin' : 'user'
+}
+
 const submitUserForm = async () => {
   // Validaciones básicas
   if (!userForm.username || !userForm.email || !userForm.name || !userForm.lastNames || !userForm.rolId) {
@@ -750,8 +809,8 @@ const submitUserForm = async () => {
   try {
     const tokenVal = localStorage.getItem('token')
     const url = modalMode.value === 'create' 
-      ? `${API_BASE_URL}/auth/admin/users`
-      : `${API_BASE_URL}/auth/admin/users/${userForm.id}`
+      ? `${API_BASE_URL}/users`
+      : `${API_BASE_URL}/users/${userForm.id}`
       
     const method = modalMode.value === 'create' ? 'POST' : 'PUT'
     
@@ -761,8 +820,7 @@ const submitUserForm = async () => {
       name: userForm.name,
       lastNames: userForm.lastNames,
       telefono: userForm.telefono,
-      role: userForm.role,
-      rolId: userForm.rolId,
+      roleId: userForm.rolId,
       is_verified: userForm.is_verified
     }
     
@@ -799,7 +857,7 @@ const deleteUser = async (userId) => {
   usersLoading.value = true
   try {
     const tokenVal = localStorage.getItem('token')
-    const response = await fetch(`${API_BASE_URL}/auth/admin/users/${userId}`, {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${tokenVal}`,
@@ -826,7 +884,7 @@ const filteredUsers = computed(() => {
     u.email.toLowerCase().includes(query) ||
     (u.profile?.name && u.profile.name.toLowerCase().includes(query)) ||
     (u.profile?.lastNames && u.profile.lastNames.toLowerCase().includes(query)) ||
-    (u.system_role?.name && u.system_role.name.toLowerCase().includes(query))
+    getSystemRoleName(u).toLowerCase().includes(query)
   )
 })
 
@@ -1359,7 +1417,14 @@ onMounted(() => {
           </thead>
           <tbody>
             <tr v-for="(item, index) in filteredCollabs" :key="item.id">
-              <td class="primary-cell"><strong>{{ item.entity }}</strong></td>
+              <td class="primary-cell">
+                <div class="collab-thumbnail" v-if="item.imageUrl">
+                  <img :src="item.imageUrl" alt="Logo">
+                </div>
+                <div class="primary-cell-text">
+                  <strong>{{ item.entity }}</strong>
+                </div>
+              </td>
               <td>{{ item.type }}</td>
               <td>{{ item.date }}</td>
               <td>
@@ -1665,13 +1730,13 @@ onMounted(() => {
                 </span>
               </td>
               <td>
-                <span :class="['table-chip', user.role === 'admin' ? 'chip-amber' : 'chip-gray']">
-                  {{ user.role === 'admin' ? 'Administrador' : 'Usuario' }}
+                <span :class="['table-chip', getGlobalRoleName(user) === 'admin' ? 'chip-amber' : 'chip-gray']">
+                  {{ getGlobalRoleName(user) === 'admin' ? 'Administrador' : 'Usuario' }}
                 </span>
               </td>
               <td>
-                <span class="table-chip chip-blue" v-if="user.system_role?.name">
-                  {{ user.system_role.name }}
+                <span class="table-chip chip-blue" v-if="getSystemRoleName(user)">
+                  {{ getSystemRoleName(user) }}
                 </span>
                 <span class="table-chip chip-red" v-else>
                   Ninguno
@@ -1983,6 +2048,29 @@ onMounted(() => {
               <label class="label-md">Fecha de Registro</label>
               <input type="text" class="form-control-dash" v-model="collabForm.date" readonly>
             </div>
+            <div class="form-group-full">
+              <label class="label-md">Logo o Imagen de la Colaboración</label>
+              <div class="news-image-field">
+                <div class="news-image-preview">
+                  <img v-if="collabForm.imageUrl" :src="collabForm.imageUrl" alt="Vista previa del logo">
+                  <span v-else class="material-symbols-outlined">handshake</span>
+                </div>
+                <div class="news-image-controls">
+                  <input type="url" class="form-control-dash" v-model="collabForm.imageUrl" placeholder="Pega aquí el enlace de una imagen">
+                  <label class="file-upload-button">
+                    <span class="material-symbols-outlined">upload</span>
+                    Subir logo local
+                    <input type="file" accept="image/*" @change="handleCollabImageFile">
+                  </label>
+                  <div class="image-helper-row">
+                    <span>{{ collabForm.imageName || 'Puedes usar una URL o seleccionar una imagen de tu equipo.' }}</span>
+                    <button v-if="collabForm.imageUrl" type="button" class="link-button" @click="clearCollabImage">
+                      Quitar logo
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Formulario Usuarios -->
@@ -2205,24 +2293,24 @@ onMounted(() => {
 }
 
 .dark-button {
-  background: #ffffff;
-  color: var(--color-primary);
-  border: 1px solid #ffffff;
+  background: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-surface-container-lowest);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .dark-button:hover {
   background: var(--color-primary-container);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-on-primary-container);
+  border-color: var(--color-primary-container);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
 .primary-button-accent {
   background: var(--color-secondary);
-  color: white;
+  color: var(--color-on-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -2250,17 +2338,17 @@ onMounted(() => {
   border-radius: var(--radius-default);
   font-size: 12px;
   font-weight: 800;
-  border: 1px solid #ffdad6;
-  background: #fff;
+  border: 1px solid var(--color-secondary-container);
+  background: var(--color-surface-container-lowest);
   color: var(--color-secondary);
   cursor: pointer;
   transition: all var(--transition-base);
 }
 
 .danger-button-outline:hover {
-  background: #ffdad6;
+  background: var(--color-secondary-container);
   border-color: var(--color-secondary);
-  color: #600006;
+  color: var(--color-on-secondary-container);
 }
 
 .hero-status-card {
@@ -2300,7 +2388,7 @@ onMounted(() => {
   width: 86%;
   height: 100%;
   border-radius: inherit;
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
 }
 
 .metrics-grid {
@@ -2395,7 +2483,7 @@ onMounted(() => {
   padding: 8px 10px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-on-surface);
   font-family: var(--font-family);
   font-size: 13px;
@@ -2441,7 +2529,7 @@ onMounted(() => {
   height: 34px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-outline);
   cursor: pointer;
   transition: all var(--transition-base);
@@ -2548,7 +2636,7 @@ onMounted(() => {
   padding: 8px 10px;
   border: 1px solid rgba(46, 125, 50, 0.16);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-on-surface-variant);
   font-size: 13px;
   font-weight: 750;
@@ -2906,6 +2994,23 @@ onMounted(() => {
   object-fit: cover;
 }
 
+.collab-thumbnail {
+  flex-shrink: 0;
+  width: 48px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.collab-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: white;
+}
+
 .primary-cell strong {
   display: block;
   color: var(--color-on-surface);
@@ -2967,7 +3072,7 @@ onMounted(() => {
   height: 34px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-outline);
   cursor: pointer;
   transition: all var(--transition-base);
@@ -3049,7 +3154,7 @@ onMounted(() => {
   padding: 14px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
 }
 
 .students-panel-header {
@@ -3235,7 +3340,7 @@ onMounted(() => {
 
 .badge-count {
   background: var(--color-secondary);
-  color: #fff;
+  color: var(--color-on-secondary);
   font-size: 11px;
   font-weight: 800;
   padding: 2px 8px;
@@ -3425,7 +3530,7 @@ onMounted(() => {
   font-family: var(--font-family);
   font-size: 14px;
   resize: vertical;
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   outline: 0;
   transition: border-color var(--transition-base);
 }
@@ -3524,7 +3629,7 @@ onMounted(() => {
   overflow: hidden;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-outline);
 }
 
@@ -3549,7 +3654,7 @@ onMounted(() => {
   padding: 0 14px;
   border: 1px dashed var(--color-primary);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-primary);
   font-size: 13px;
   font-weight: 800;
@@ -3930,9 +4035,9 @@ textarea.form-control-dash {
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-  background-color: #ffffff;
+  background-color: var(--color-surface-container-lowest);
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-outline-variant);
   gap: 16px;
   margin: 20px 0;
 }

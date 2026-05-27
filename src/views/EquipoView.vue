@@ -18,8 +18,8 @@
             <div class="team-member">
               <span class="material-symbols-outlined">code</span>
               <div class="member-info">
-                <span class="label-lg">Yeremis Yesus</span>
-                <span class="label-lg">Gino</span>
+                <span class="label-lg">Yeremi Jesus</span>
+                <span class="label-lg">Gino Maranha</span>
               </div>
             </div>
           </div>
@@ -32,7 +32,7 @@
               <div class="member-info">
                 <span class="label-lg">Achraf RZZ</span>
                 <span class="label-lg">Luis Alfonso</span>
-                <span class="label-lg">Yo Andress</span>
+                <span class="label-lg">Yoandres La Cruz</span>
               </div>
             </div>
           </div>

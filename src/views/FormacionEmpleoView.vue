@@ -162,13 +162,21 @@ const courses = computed(() => {
     </section>
 
     <!-- CTA -->
-    <section class="section">
+    <section class="section bg-primary">
       <div class="container">
-        <div class="cta-box card bg-primary-container text-white text-center">
-          <h2>¿Necesitas ayuda para decidir?</h2>
-          <p class="body-lg mb-lg">Nuestro servicio de orientación te ayudará a elegir el itinerario más adecuado para tu situación.</p>
-          <div class="cta-actions justify-center">
-            <RouterLink to="/la-cooperativa/servicio-de-orientacion" class="btn btn-primary btn-lg">Servicio de Orientación</RouterLink>
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">
+            <span class="material-symbols-outlined">help_outline</span>
+            ¿Necesitas ayuda para decidir?
+          </h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">Nuestro servicio de orientación te ayudará a elegir el itinerario más adecuado para tu situación.</p>
+            <div class="cta-actions justify-center">
+              <RouterLink to="/la-cooperativa/servicio-de-orientacion" class="btn cta-panel-btn">
+                Servicio de Orientación
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+              </RouterLink>
+            </div>
           </div>
         </div>
       </div>
@@ -336,11 +344,25 @@ const courses = computed(() => {
 
 /* CTA */
 .cta-box {
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
+  color: var(--color-on-primary);
   padding: var(--space-xl);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
 }
 
-.cta-box h2 { color: white; }
+.cta-box h2 { 
+  color: var(--color-on-primary);
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.cta-box p {
+  color: var(--color-on-primary);
+  opacity: 0.82;
+}
 
 .cta-actions {
   display: flex;

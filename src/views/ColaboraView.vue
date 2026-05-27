@@ -51,11 +51,17 @@ import { RouterLink } from 'vue-router'
     </section>
 
     <!-- Transparencia CTA -->
-    <section class="section bg-surface-container">
-      <div class="container text-center">
-        <h2>Compromiso Ético</h2>
-        <p class="body-lg text-muted mb-lg">Todas las colaboraciones se gestionan bajo estrictos criterios de transparencia y ética social.</p>
-        <RouterLink to="/la-cooperativa" class="btn btn-ghost">Leer sobre transparencia</RouterLink>
+    <section class="section bg-primary">
+      <div class="container">
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">Compromiso Ético</h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">Todas las colaboraciones se gestionan bajo estrictos criterios de transparencia y ética social.</p>
+            <div class="cta-actions justify-center">
+              <RouterLink to="/la-cooperativa" class="btn btn-outline-white">Leer sobre transparencia <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span></RouterLink>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>

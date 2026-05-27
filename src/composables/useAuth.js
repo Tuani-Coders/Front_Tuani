@@ -13,6 +13,11 @@ const token = ref(localStorage.getItem('token') || null)
 const loading = ref(false)
 const error = ref(null)
 
+const readAuthResponse = (data) => ({
+  userData: data.data ? data.data.user : data.user,
+  tokenData: data.data ? data.data.access_token : data.access_token
+})
+
 export function useAuth() {
   const isLoggedIn = computed(() => !!token.value)
 
@@ -117,14 +122,93 @@ export function useAuth() {
     }
   }
 
-  // Paso 1: Verificar admin y enviar codigo (solo email, sin password)
+  const login = async (username, password) => {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        const loginError = new Error(data.message || 'Error al iniciar sesión')
+        loginError.status = response.status
+        loginError.data = data.data
+        throw loginError
+      }
+
+      const { userData, tokenData } = readAuthResponse(data)
+      setAuth(userData, tokenData)
+      return data
+    } catch (err) {
+      error.value = err.message
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const loginWithOAuthToken = async (provider, accessToken) => {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/oauth/${provider}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_token: accessToken })
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.message || `Error al iniciar sesión con ${provider}`)
+
+      const { userData, tokenData } = readAuthResponse(data)
+      setAuth(userData, tokenData)
+      return data
+    } catch (err) {
+      error.value = err.message
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const loginWithGoogle = (accessToken) => loginWithOAuthToken('google', accessToken)
+
+  const handleOAuthCallback = async (provider, code) => {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/oauth/exchange/${provider}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.message || `Error al conectar con ${provider}`)
+
+      const { userData, tokenData } = readAuthResponse(data)
+      setAuth(userData, tokenData)
+      return data
+    } catch (err) {
+      error.value = err.message
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Paso 1: solicitar codigo admin. El backend exige JWT, asi que debe existir token.
   const loginInit = async (email) => {
     loading.value = true
     error.value = null
     try {
       const response = await fetch(`${API_BASE_URL}/auth/admin/login-init`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Authorization': `Bearer ${token.value || localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ email })
       })
       const data = await response.json()
@@ -150,8 +234,11 @@ export function useAuth() {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/admin/verify-code`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: pendingEmail.value, code })
+        headers: {
+          'Authorization': `Bearer ${token.value || localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code })
       })
       const data = await response.json()
       if (!response.ok) throw new Error(data.message || 'Código incorrecto')
@@ -184,8 +271,12 @@ export function useAuth() {
     pendingExpiresAt,
     setAuth,
     register,
+    login,
     verifyEmail,
     resendCode,
+    loginWithOAuthToken,
+    loginWithGoogle,
+    handleOAuthCallback,
     loginInit,
     verifyAdminCode,
     updateCurrentUser,

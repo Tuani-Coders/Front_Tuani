@@ -161,19 +161,25 @@ const specialties = computed(() => {
     </section>
 
     <!-- CTA -->
-    <section class="section">
+    <section class="section bg-primary">
       <div class="container">
-        <div class="cta-card bg-surface-container-low border-primary">
-          <div class="cta-content">
-            <h2>¿Te interesa empezar?</h2>
-            <p class="body-lg text-muted">El periodo de preinscripción suele ser en mayo/junio. Llámanos y te informamos sin compromiso.</p>
-          </div>
-          <div class="cta-actions">
-            <a href="tel:+34944430000" class="btn btn-primary btn-lg">
-              <span class="material-symbols-outlined">phone</span>
-              Llamar ahora
-            </a>
-            <RouterLink to="/contacto" class="btn btn-secondary btn-lg">Solicitar info</RouterLink>
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">
+            <span class="material-symbols-outlined">edit_calendar</span>
+            ¿Te interesa empezar?
+          </h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">El periodo de preinscripción suele ser en mayo/junio. Llámanos y te informamos sin compromiso.</p>
+            <div class="cta-actions justify-center">
+              <a href="tel:+34944430000" class="btn cta-panel-btn">
+                <span class="material-symbols-outlined">phone</span>
+                Llamar ahora
+              </a>
+              <RouterLink to="/contacto" class="btn btn-outline-white">
+                Solicitar info
+                <span class="material-symbols-outlined">chevron_right</span>
+              </RouterLink>
+            </div>
           </div>
         </div>
       </div>
@@ -353,13 +359,28 @@ const specialties = computed(() => {
 }
 
 .cta-card {
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
+  color: var(--color-on-primary);
   padding: var(--space-xl);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--space-xl);
-  box-shadow: var(--shadow-md);
+}
+
+.cta-card h2 {
+  color: var(--color-on-primary);
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.cta-card p {
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .cta-actions {

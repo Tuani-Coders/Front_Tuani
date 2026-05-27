@@ -211,7 +211,7 @@ onUnmounted(() => {
 
 .main-btn {
   min-height: 72px;
-  background: white;
+  background: var(--color-surface-container-lowest);
   border: 1px solid var(--color-outline-variant);
   color: var(--color-primary);
   padding: 16px 24px;
@@ -229,14 +229,14 @@ onUnmounted(() => {
 
 .main-btn.active {
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
   border-color: var(--color-primary);
 }
 
 .main-btn:hover:not(.active) {
-  background: white;
+  background: var(--color-surface-container-low);
   color: var(--color-secondary);
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
@@ -284,7 +284,7 @@ onUnmounted(() => {
   position: absolute;
   top: var(--space-md);
   left: var(--space-md);
-  color: white;
+  color: var(--color-on-primary);
   background: rgba(0, 52, 41, 0.82);
   border-left: 4px solid var(--color-secondary);
   padding: 8px 12px;

@@ -51,8 +51,8 @@ const services = [
       <div class="container">
         <div class="intro-grid">
           <div class="intro-visual">
-            <div class="image-placeholder bg-primary-fixed">
-              <span class="material-symbols-outlined display-icon">groups_3</span>
+            <div class="image-placeholder">
+              <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&auto=format&fit=crop&q=80" alt="Orientación y acompañamiento profesional">
             </div>
           </div>
           <div class="intro-content">
@@ -120,14 +120,25 @@ const services = [
     </section>
 
     <!-- CTA -->
-    <section class="section">
+    <section class="section bg-primary">
       <div class="container">
-        <div class="cta-box card text-center border-primary">
-          <h2 class="mb-sm">Pide tu cita hoy mismo</h2>
-          <p class="body-lg text-muted mb-lg">Puedes venir a vernos o llamarnos para concertar una primera entrevista de acogida.</p>
-          <div class="cta-actions justify-center">
-            <RouterLink to="/contacto" class="btn btn-primary btn-lg">Solicitar Cita</RouterLink>
-            <a href="tel:+34944430000" class="btn btn-secondary btn-lg">Llamar 944 43 00 00</a>
+        <div class="accent-card text-center">
+          <h2 class="accent-card-title justify-center">
+            <span class="material-symbols-outlined">calendar_today</span>
+            Pide tu cita hoy mismo
+          </h2>
+          <div class="accent-card-content">
+            <p class="body-lg mb-md">Puedes venir a vernos o llamarnos para concertar una primera entrevista de acogida.</p>
+            <div class="cta-actions justify-center">
+              <RouterLink to="/contacto" class="btn cta-panel-btn">
+                Solicitar Cita
+                <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+              </RouterLink>
+              <a href="tel:+34944430000" class="btn btn-outline-white">
+                Llamar 944 43 00 00
+                <span class="material-symbols-outlined" aria-hidden="true">call</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -173,7 +184,14 @@ const services = [
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary-container);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .display-icon {
@@ -259,8 +277,24 @@ const services = [
 }
 
 .cta-box {
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
+  color: var(--color-on-primary);
   padding: var(--space-xl);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
+}
+
+.cta-box h2 {
+  color: var(--color-on-primary);
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.cta-box p {
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .cta-actions {

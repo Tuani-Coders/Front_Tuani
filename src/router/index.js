@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import i18n from '../i18n'
 
 /* ── Vistas (lazy-loaded) ──────────────────────── */
 const HomeView = () => import('../views/HomeView.vue')
@@ -19,6 +20,8 @@ const NoticiasView = () => import('../views/NoticiasView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
 const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
+const VerifyEmailView = () => import('../views/auth/VerifyEmailView.vue')
+const OAuthCallbackView = () => import('../views/auth/OAuthCallbackView.vue')
 const DashboardView = () => import('../views/dashboard/DashboardView.vue')
 const EquipoView = () => import('../views/EquipoView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue')
@@ -28,7 +31,7 @@ const routes = [
     path: '/',
     name: 'Inicio',
     component: HomeView,
-    meta: { title: 'Inicio - Peñascal Koop.' }
+    meta: { titleKey: 'pages.home' }
   },
 
   /* ── Autenticación (Solo Admin) ─────────────── */
@@ -36,20 +39,32 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView,
-    meta: { title: 'Iniciar Sesión - Peñascal Koop.' }
+    meta: { titleKey: 'pages.login' }
   },
   {
     path: '/verify-admin',
     name: 'VerifyAdmin',
     component: VerifyAdminView,
-    meta: { title: 'Verificación Admin - Peñascal Koop.' }
+    meta: { titleKey: 'pages.verifyAdmin' }
+  },
+  {
+    path: '/verificacion',
+    name: 'VerifyEmail',
+    component: VerifyEmailView,
+    meta: { titleKey: 'pages.verifyEmail' }
+  },
+  {
+    path: '/auth/callback/:provider',
+    name: 'OAuthCallback',
+    component: OAuthCallbackView,
+    meta: { titleKey: 'pages.login' }
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: DashboardView,
     meta: {
-      title: 'Dashboard - Peñascal Koop.',
+      titleKey: 'pages.dashboard',
       layout: 'dashboard',
       requiresAuth: true
     }
@@ -60,7 +75,7 @@ const routes = [
     path: '/equipo',
     name: 'Equipo',
     component: EquipoView,
-    meta: { title: 'Equipo - Tuani Coders' }
+    meta: { titleKey: 'pages.team' }
   },
 
   /* ── Formación ──────────────────────────────── */
@@ -68,25 +83,25 @@ const routes = [
     path: '/formacion-profesional',
     name: 'Formación',
     component: FormacionView,
-    meta: { title: 'Formación Profesional - Peñascal Koop.' }
+    meta: { titleKey: 'pages.training' }
   },
   {
     path: '/formacion-profesional/grado-basico',
     name: 'GradoBasico',
     component: GradoBasicoView,
-    meta: { title: 'Grado Básico - Peñascal Koop.' }
+    meta: { titleKey: 'pages.basicGrade' }
   },
   {
     path: '/formacion-profesional/grado-medio',
     name: 'GradoMedio',
     component: GradoMedioView,
-    meta: { title: 'Grado Medio - Peñascal Koop.' }
+    meta: { titleKey: 'pages.mediumGrade' }
   },
   {
     path: '/formacion-profesional/formacion-para-el-empleo',
     name: 'FormacionEmpleo',
     component: FormacionEmpleoView,
-    meta: { title: 'Formación para el Empleo - Peñascal Koop.' }
+    meta: { titleKey: 'pages.employmentTraining' }
   },
 
   /* ── La Cooperativa ─────────────────────────── */
@@ -94,25 +109,25 @@ const routes = [
     path: '/la-cooperativa',
     name: 'Cooperativa',
     component: CooperativaView,
-    meta: { title: 'Quiénes Somos - Peñascal Koop.' }
+    meta: { titleKey: 'pages.cooperative' }
   },
   {
     path: '/la-cooperativa/que-hacemos',
     name: 'QueHacemos',
     component: QueHacemosView,
-    meta: { title: 'Qué Hacemos - Peñascal Koop.' }
+    meta: { titleKey: 'pages.whatWeDo' }
   },
   {
     path: '/la-cooperativa/cooperan-con-nosotros',
     name: 'Cooperan',
     component: CooperanView,
-    meta: { title: 'Cooperan con Nosotros - Peñascal Koop.' }
+    meta: { titleKey: 'pages.partners' }
   },
   {
     path: '/la-cooperativa/servicio-de-orientacion',
     name: 'Orientacion',
     component: OrientacionView,
-    meta: { title: 'Servicio de Orientación - Peñascal Koop.' }
+    meta: { titleKey: 'pages.orientation' }
   },
 
   /* ── Colabora ───────────────────────────────── */
@@ -120,31 +135,31 @@ const routes = [
     path: '/colabora',
     name: 'Colabora',
     component: ColaboraView,
-    meta: { title: 'Colabora - Peñascal Koop.' }
+    meta: { titleKey: 'pages.collaborate' }
   },
   {
     path: '/colabora/apoyando-proyectos',
     name: 'ApoyandoProyectos',
     component: ApoyandoProyectosView,
-    meta: { title: 'Apoyando Proyectos - Peñascal Koop.' }
+    meta: { titleKey: 'pages.supportProjects' }
   },
   {
     path: '/colabora/donando-productos',
     name: 'DonandoProductos',
     component: DonandoProductosView,
-    meta: { title: 'Donando Productos - Peñascal Koop.' }
+    meta: { titleKey: 'pages.donateProducts' }
   },
   {
     path: '/colabora/contratando-empresas',
     name: 'ContratandoEmpresas',
     component: ContratandoEmpresasView,
-    meta: { title: 'Contratando Empresas - Peñascal Koop.' }
+    meta: { titleKey: 'pages.hireCompanies' }
   },
   {
     path: '/colabora/apoyando-insercion',
     name: 'ApoyandoInsercion',
     component: ApoyandoInsercionView,
-    meta: { title: 'Apoyando Inserción - Peñascal Koop.' }
+    meta: { titleKey: 'pages.supportInsertion' }
   },
 
   /* ── Noticias ───────────────────────────────── */
@@ -152,7 +167,7 @@ const routes = [
     path: '/noticias',
     name: 'Noticias',
     component: NoticiasView,
-    meta: { title: 'Noticias - Peñascal Koop.' }
+    meta: { titleKey: 'pages.news' }
   },
 
   /* ── Contacto ───────────────────────────────── */
@@ -160,7 +175,7 @@ const routes = [
     path: '/contacto',
     name: 'Contacto',
     component: ContactoView,
-    meta: { title: 'Contacto - Peñascal Koop.' }
+    meta: { titleKey: 'pages.contact' }
   },
 
   /* ── 404 ────────────────────────────────────── */
@@ -168,7 +183,7 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFoundView,
-    meta: { title: 'Página no encontrada - Peñascal Koop.' }
+    meta: { titleKey: 'pages.notFound' }
   }
 ]
 
@@ -192,7 +207,9 @@ router.beforeEach((to, _from, next) => {
     return
   }
 
-  document.title = to.meta.title || 'Grupo Peñascal Kooperatiba'
+  document.title = to.meta.titleKey
+    ? i18n.global.t(to.meta.titleKey)
+    : 'Grupo Peñascal Kooperatiba'
   next()
 })
 

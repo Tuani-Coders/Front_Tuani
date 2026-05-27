@@ -312,7 +312,7 @@ const openGoogleMaps = () => {
   bottom: 12px;
   right: 12px;
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   padding: 4px 12px;
   border-radius: var(--radius-full);
   display: flex;

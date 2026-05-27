@@ -352,13 +352,24 @@ const textExpanded = ref(false)
 .transparencia-banner {
   padding: var(--space-xl);
   text-align: center;
-  background: linear-gradient(135deg, var(--color-surface-container-lowest), var(--color-secondary-fixed));
-  box-shadow: var(--shadow-lg);
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
+  color: var(--color-on-primary);
+  border-radius: var(--radius-sm);
 }
 
-.transparencia-content {
-  max-width: 700px;
-  margin: 0 auto;
+.transparencia-banner h2 { 
+  color: var(--color-on-primary);
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+}
+
+.transparencia-banner p {
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .doc-links {

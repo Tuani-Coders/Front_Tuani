@@ -46,7 +46,7 @@
 
 .btn-primary {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
 }
 
 .btn-primary:hover {
@@ -63,7 +63,7 @@
 
 .btn-secondary:hover {
   background-color: var(--color-secondary);
-  color: white;
+  color: var(--color-on-secondary);
 }
 
 .btn-ghost {
@@ -74,6 +74,33 @@
 
 .btn-ghost:hover {
   background-color: var(--color-surface-container);
+}
+
+.btn-outline-white {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.btn-outline-white:hover {
+  background-color: white;
+  color: var(--color-primary);
+}
+
+.cta-panel-btn {
+  gap: 4px;
+  color: var(--color-on-secondary);
+  border: 0;
+  background: var(--color-secondary);
+  padding: 14px 30px;
+  box-shadow: none;
+}
+
+.cta-panel-btn:hover {
+  background: var(--color-on-secondary-container);
+  color: var(--color-secondary-container);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* ── Cards (Grounded & Built) ─────────────────── */
@@ -108,21 +135,43 @@
 
 .chip-green {
   background-color: var(--color-primary-container);
-  color: white;
+  color: var(--color-on-primary-container);
 }
 
 .chip-red {
   background-color: var(--color-secondary);
-  color: white;
+  color: var(--color-on-secondary);
 }
+
+/* ── Utilities ──────────────────────────────────── */
+.card {
+  background-color: var(--color-surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-outline-variant);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.bg-surface-container { background-color: var(--color-surface-container); }
+.bg-surface-container-lowest { background-color: var(--color-surface-container-lowest); }
+.bg-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.text-center { text-align: center; }
+.justify-center { justify-content: center; }
 
 /* ── Section spacing ──────────────────────────── */
 .section {
   padding-block: var(--space-xl);
 }
-
-.bg-surface { background-color: var(--color-surface); }
-.bg-primary { background-color: var(--color-primary); }
 
 /* ── Breadcrumbs (Route Style) ────────────────── */
 .breadcrumb {

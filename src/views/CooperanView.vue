@@ -379,8 +379,24 @@ const collabTypes = [
 }
 
 .cta-box {
+  background: var(--color-primary);
+  border-top: 4px solid var(--color-secondary);
+  color: var(--color-on-primary);
   padding: var(--space-xl);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
+}
+
+.cta-box h2 {
+  color: var(--color-on-primary);
+  text-transform: uppercase;
+  font-size: var(--label-lg-size);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.cta-box p {
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .cta-actions {

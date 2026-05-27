@@ -1,0 +1,79 @@
+{
+  "brand": {
+    "name": "Grupo Peñascal Kooperatiba",
+    "description": "Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública desde 1986."
+  },
+  "common": {
+    "phone": "+34 944 029 300",
+    "email": "info{'@'}grupopenascal.com",
+    "location": "Ubicación"
+  },
+  "auth": {
+    "hello": "Hola,",
+    "dashboard": "Panel",
+    "logout": "Salir",
+    "login": "Entrar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "training": "Formación",
+    "professionalTraining": "Formación Profesional",
+    "basicGrade": "Grado Básico",
+    "mediumGrade": "Grado medio",
+    "employmentTraining": "Formación para el Empleo",
+    "cooperative": "La Cooperativa",
+    "whoWeAre": "Quiénes somos",
+    "whatWeDo": "Qué hacemos",
+    "partners": "Cooperan con nosotros",
+    "orientation": "Servicio de orientación",
+    "collaborate": "Colabora",
+    "supportProjects": "Colabora apoyando proyectos sin recursos",
+    "donateProducts": "Colabora donando productos y servicios",
+    "hireCompanies": "Colabora contratando empresas de inserción",
+    "supportInsertion": "Colabora apoyando la inserción laboral",
+    "news": "Noticias",
+    "contact": "Contacto"
+  },
+  "footer": {
+    "resources": "Recursos",
+    "institutional": "Institucional",
+    "transparency": "Transparencia",
+    "team": "Equipo",
+    "legal": "Aviso Legal",
+    "privacy": "Política de Privacidad",
+    "cookies": "Cookies",
+    "copyright": "© {year} Grupo Peñascal Kooperatiba. Todos los derechos reservados.",
+    "madeBy": "Este sitio web ha sido creado por",
+    "creator": "Tuani Coders"
+  },
+  "languages": {
+    "label": "Idioma",
+    "es": "ES",
+    "eu": "EU",
+    "en": "EN"
+  },
+  "pages": {
+    "home": "Inicio - Peñascal Koop.",
+    "login": "Iniciar Sesión - Peñascal Koop.",
+    "verifyAdmin": "Verificación Admin - Peñascal Koop.",
+    "verifyEmail": "Verificación - Peñascal Koop.",
+    "dashboard": "Dashboard - Peñascal Koop.",
+    "team": "Equipo - Tuani Coders",
+    "training": "Formación Profesional - Peñascal Koop.",
+    "basicGrade": "Grado Básico - Peñascal Koop.",
+    "mediumGrade": "Grado Medio - Peñascal Koop.",
+    "employmentTraining": "Formación para el Empleo - Peñascal Koop.",
+    "cooperative": "Quiénes Somos - Peñascal Koop.",
+    "whatWeDo": "Qué Hacemos - Peñascal Koop.",
+    "partners": "Cooperan con Nosotros - Peñascal Koop.",
+    "orientation": "Servicio de Orientación - Peñascal Koop.",
+    "collaborate": "Colabora - Peñascal Koop.",
+    "supportProjects": "Apoyando Proyectos - Peñascal Koop.",
+    "donateProducts": "Donando Productos - Peñascal Koop.",
+    "hireCompanies": "Contratando Empresas - Peñascal Koop.",
+    "supportInsertion": "Apoyando Inserción - Peñascal Koop.",
+    "news": "Noticias - Peñascal Koop.",
+    "contact": "Contacto - Peñascal Koop.",
+    "notFound": "Página no encontrada - Peñascal Koop."
+  }
+}
