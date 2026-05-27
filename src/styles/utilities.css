@@ -46,7 +46,7 @@
 
 .btn-primary {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
 }
 
 .btn-primary:hover {
@@ -63,7 +63,7 @@
 
 .btn-secondary:hover {
   background-color: var(--color-secondary);
-  color: white;
+  color: var(--color-on-secondary);
 }
 
 .btn-ghost {
@@ -89,7 +89,7 @@
 
 .cta-panel-btn {
   gap: 4px;
-  color: white;
+  color: var(--color-on-secondary);
   border: 0;
   background: var(--color-secondary);
   padding: 14px 30px;
@@ -98,7 +98,7 @@
 
 .cta-panel-btn:hover {
   background: var(--color-on-secondary-container);
-  color: white;
+  color: var(--color-secondary-container);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
@@ -135,12 +135,12 @@
 
 .chip-green {
   background-color: var(--color-primary-container);
-  color: white;
+  color: var(--color-on-primary-container);
 }
 
 .chip-red {
   background-color: var(--color-secondary);
-  color: white;
+  color: var(--color-on-secondary);
 }
 
 /* ── Utilities ──────────────────────────────────── */
@@ -160,7 +160,10 @@
 
 .bg-surface-container { background-color: var(--color-surface-container); }
 .bg-surface-container-lowest { background-color: var(--color-surface-container-lowest); }
-.bg-primary { background-color: var(--color-primary); }
+.bg-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
 
 .text-center { text-align: center; }
 .justify-center { justify-content: center; }

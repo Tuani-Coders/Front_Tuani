@@ -5,7 +5,7 @@ import { useAuth } from '../../composables/useAuth'
 
 const router = useRouter()
 const route = useRoute()
-const { verifyEmail, resendCode, error, loading } = useAuth()
+const { verifyEmail, resendCode, login, error, loading } = useAuth()
 
 const email = ref(route.query.email || '')
 const code = ref('')
@@ -13,7 +13,24 @@ const code = ref('')
 const handleVerify = async () => {
   try {
     await verifyEmail(email.value, code.value)
-    alert('Email verificado correctamente. Ahora puedes iniciar sesión.')
+    
+    // Auto-login using temporary credentials
+    const tempCredsStr = sessionStorage.getItem('temp_credentials')
+    if (tempCredsStr) {
+      try {
+        const creds = JSON.parse(tempCredsStr)
+        if (creds.username && creds.password) {
+          await login(creds.username, creds.password)
+          sessionStorage.removeItem('temp_credentials')
+          router.push('/dashboard')
+          return
+        }
+      } catch (loginErr) {
+        console.error('Error auto-logging in after verification:', loginErr)
+      }
+    }
+    
+    // Fallback if no credentials stored
     router.push('/login')
   } catch (err) {
     console.error('Error de verificación:', err)

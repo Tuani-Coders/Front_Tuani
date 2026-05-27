@@ -156,7 +156,7 @@ const services = [
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 .entity-tag.has-logo {
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   padding: 6px 12px;
 }
 .entity-logo {

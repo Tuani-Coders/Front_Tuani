@@ -296,14 +296,14 @@ import { RouterLink } from 'vue-router'
 .cta-banner {
   background: var(--color-primary);
   border-top: 4px solid var(--color-secondary);
-  color: white;
+  color: var(--color-on-primary);
   padding: 80px;
   border-radius: var(--radius-sm);
   text-align: center;
 }
 
 .cta-banner h2 { 
-  color: white;
+  color: var(--color-on-primary);
   text-transform: uppercase;
   font-size: var(--label-lg-size);
   font-weight: 800;
@@ -311,7 +311,8 @@ import { RouterLink } from 'vue-router'
 }
 
 .cta-banner p {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .text-white { color: white; }

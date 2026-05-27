@@ -139,7 +139,7 @@ const categories = [
 
 .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
 .step { text-align: center; position: relative; }
-.step-num { width: 32px; height: 32px; background: var(--color-primary); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: var(--space-sm); }
+.step-num { width: 32px; height: 32px; background: var(--color-primary); color: var(--color-on-primary); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: var(--space-sm); }
 
 .entities-tags {
   display: flex;
@@ -166,7 +166,7 @@ const categories = [
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 .entity-tag.has-logo {
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   padding: 6px 12px;
 }
 .entity-logo {

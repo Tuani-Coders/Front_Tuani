@@ -1,11 +1,20 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import AppHeader from './components/layout/AppHeader.vue'
 import AppFooter from './components/layout/AppFooter.vue'
 
 const route = useRoute()
+const { t, locale } = useI18n()
 const isDashboardLayout = computed(() => route.meta.layout === 'dashboard')
+
+watchEffect(() => {
+  document.title = route.meta.titleKey
+    ? t(route.meta.titleKey)
+    : 'Grupo Peñascal Kooperatiba'
+  document.documentElement.lang = locale.value
+})
 </script>
 
 <template>

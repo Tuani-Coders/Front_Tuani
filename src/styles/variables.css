@@ -6,13 +6,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
+  color-scheme: light;
+
   /* ── Colores — Basque Heritage Identity ──────── */
   --color-primary: #003429;           /* Deep Forest Green */
+  --color-primary-rgb: 0, 52, 41;
   --color-primary-container: #004d3d;
   --color-on-primary: #ffffff;
   --color-on-primary-container: #aff0d9;
   
   --color-secondary: #b52424;         /* Terracotta Red */
+  --color-secondary-rgb: 181, 36, 36;
   --color-secondary-container: #ffdad6;
   --color-on-secondary: #ffffff;
   --color-on-secondary-container: #600006;
@@ -94,7 +98,10 @@
   --shadow-sm: 0 2px 4px rgba(0, 52, 41, 0.08);
   --shadow-md: 0 4px 8px rgba(0, 52, 41, 0.12);
   --shadow-lg: 0 12px 24px rgba(0, 52, 41, 0.15);
+  --shadow-xl: 0 18px 42px rgba(0, 52, 41, 0.18);
 
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --z-header: 200;
 }
+
+

@@ -348,14 +348,14 @@ const specialties = computed(() => {
 .cta-banner-blue {
   background: var(--color-primary);
   border-top: 4px solid var(--color-secondary);
-  color: white;
+  color: var(--color-on-primary);
   padding: var(--space-xl);
   border-radius: var(--radius-sm);
   text-align: center;
 }
 
 .cta-inner h2 { 
-  color: white; 
+  color: var(--color-on-primary); 
   margin-bottom: var(--space-sm);
   text-transform: uppercase;
   font-size: var(--label-lg-size);
@@ -364,7 +364,8 @@ const specialties = computed(() => {
 }
 
 .cta-inner p {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .cta-btns {

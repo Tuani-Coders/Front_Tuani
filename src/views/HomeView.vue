@@ -186,7 +186,7 @@ const news = computed(() => {
 }
 
 .service-card {
-  background-color: white;
+  background-color: var(--color-surface-container-lowest);
   padding: var(--space-lg);
   text-decoration: none;
   transition: all var(--transition-base);
@@ -195,11 +195,11 @@ const news = computed(() => {
   gap: var(--space-sm);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-  border: 1px solid rgba(0,0,0,0.05); /* Very subtle border */
+  border: 1px solid var(--color-outline-variant);
 }
 
 .service-card:hover {
-  background-color: white;
+  background-color: var(--color-surface-container-low);
   box-shadow: var(--shadow-xl);
   transform: translateY(-8px);
 }
@@ -240,7 +240,7 @@ const news = computed(() => {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  background: white;
+  background: var(--color-surface-container-lowest);
   padding: var(--space-md);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);

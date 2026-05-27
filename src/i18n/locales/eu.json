@@ -1,0 +1,79 @@
+{
+  "brand": {
+    "name": "Grupo Peñascal Kooperatiba",
+    "description": "Gizarte-ekimeneko erakundea gara, irabazi-asmorik gabea eta 1986tik onura publikokoa."
+  },
+  "common": {
+    "phone": "+34 944 029 300",
+    "email": "info{'@'}grupopenascal.com",
+    "location": "Kokapena"
+  },
+  "auth": {
+    "hello": "Kaixo,",
+    "dashboard": "Panela",
+    "logout": "Irten",
+    "login": "Sartu"
+  },
+  "nav": {
+    "home": "Hasiera",
+    "training": "Prestakuntza",
+    "professionalTraining": "Lanbide Heziketa",
+    "basicGrade": "Oinarrizko Gradua",
+    "mediumGrade": "Erdi-mailako Gradua",
+    "employmentTraining": "Enplegurako Prestakuntza",
+    "cooperative": "Kooperatiba",
+    "whoWeAre": "Nor gara",
+    "whatWeDo": "Zer egiten dugu",
+    "partners": "Gurekin lankidetzan",
+    "orientation": "Orientazio zerbitzua",
+    "collaborate": "Lagundu",
+    "supportProjects": "Baliabiderik gabeko proiektuak babestu",
+    "donateProducts": "Produktuak eta zerbitzuak eman",
+    "hireCompanies": "Gizarteratze-enpresak kontratatu",
+    "supportInsertion": "Laneratzea babestu",
+    "news": "Albisteak",
+    "contact": "Kontaktua"
+  },
+  "footer": {
+    "resources": "Baliabideak",
+    "institutional": "Instituzionala",
+    "transparency": "Gardentasuna",
+    "team": "Taldea",
+    "legal": "Lege oharra",
+    "privacy": "Pribatutasun politika",
+    "cookies": "Cookieak",
+    "copyright": "© {year} Grupo Peñascal Kooperatiba. Eskubide guztiak erreserbatuta.",
+    "madeBy": "Webgune hau honek sortu du:",
+    "creator": "Tuani Coders"
+  },
+  "languages": {
+    "label": "Hizkuntza",
+    "es": "ES",
+    "eu": "EU",
+    "en": "EN"
+  },
+  "pages": {
+    "home": "Hasiera - Peñascal Koop.",
+    "login": "Saioa hasi - Peñascal Koop.",
+    "verifyAdmin": "Admin egiaztapena - Peñascal Koop.",
+    "verifyEmail": "Egiaztapena - Peñascal Koop.",
+    "dashboard": "Panela - Peñascal Koop.",
+    "team": "Taldea - Tuani Coders",
+    "training": "Lanbide Heziketa - Peñascal Koop.",
+    "basicGrade": "Oinarrizko Gradua - Peñascal Koop.",
+    "mediumGrade": "Erdi-mailako Gradua - Peñascal Koop.",
+    "employmentTraining": "Enplegurako Prestakuntza - Peñascal Koop.",
+    "cooperative": "Nor gara - Peñascal Koop.",
+    "whatWeDo": "Zer egiten dugu - Peñascal Koop.",
+    "partners": "Gurekin lankidetzan - Peñascal Koop.",
+    "orientation": "Orientazio zerbitzua - Peñascal Koop.",
+    "collaborate": "Lagundu - Peñascal Koop.",
+    "supportProjects": "Proiektuak babestu - Peñascal Koop.",
+    "donateProducts": "Produktuak eman - Peñascal Koop.",
+    "hireCompanies": "Enpresak kontratatu - Peñascal Koop.",
+    "supportInsertion": "Laneratzea babestu - Peñascal Koop.",
+    "news": "Albisteak - Peñascal Koop.",
+    "contact": "Kontaktua - Peñascal Koop.",
+    "notFound": "Orria ez da aurkitu - Peñascal Koop."
+  }
+}

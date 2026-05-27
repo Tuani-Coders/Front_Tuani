@@ -23,6 +23,10 @@ const handleRegister = async () => {
   }
 
   try {
+    sessionStorage.setItem('temp_credentials', JSON.stringify({
+      username: form.value.username,
+      password: form.value.password
+    }))
     await register(form.value.username, form.value.email, form.value.password)
     router.push({ name: 'VerifyEmail', query: { email: form.value.email } })
   } catch (err) {

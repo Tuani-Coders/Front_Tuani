@@ -309,13 +309,19 @@ const saveProfile = async () => {
       return
     }
 
-    const response = await fetch(`${API_BASE_URL}/auth/admin/users/${user.value.id}`, {
+    const response = await fetch(`${API_BASE_URL}/users/${user.value.id}`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${tokenVal}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updates)
+      body: JSON.stringify({
+        username: updates.username,
+        email: updates.email,
+        name: updates.profile.name,
+        lastNames: updates.profile.lastNames,
+        telefono: updates.profile.telefono
+      })
     })
 
     const data = await response.json()
@@ -568,8 +574,8 @@ const openModal = (type, mode = 'create', data = null, index = -1) => {
       userForm.name = data.profile?.name || ''
       userForm.lastNames = data.profile?.lastNames || ''
       userForm.telefono = data.profile?.telefono || ''
-      userForm.role = data.role || 'user'
-      userForm.rolId = data.profile?.rolId || ''
+      userForm.role = getGlobalRoleName(data)
+      userForm.rolId = data.roleId || data.profile?.rolId || ''
       userForm.is_verified = data.is_verified || false
     } else {
       userForm.id = ''
@@ -732,7 +738,7 @@ const fetchUsers = async () => {
   usersError.value = null
   try {
     const tokenVal = localStorage.getItem('token')
-    const response = await fetch(`${API_BASE_URL}/auth/admin/users`, {
+    const response = await fetch(`${API_BASE_URL}/users`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${tokenVal}`,
@@ -769,6 +775,14 @@ const fetchRoles = async () => {
   }
 }
 
+const getSystemRoleName = (userItem) => {
+  return dbRoles.value.find(role => role.id === userItem.roleId)?.name || ''
+}
+
+const getGlobalRoleName = (userItem) => {
+  return getSystemRoleName(userItem) === 'admin' ? 'admin' : 'user'
+}
+
 const submitUserForm = async () => {
   // Validaciones básicas
   if (!userForm.username || !userForm.email || !userForm.name || !userForm.lastNames || !userForm.rolId) {
@@ -795,8 +809,8 @@ const submitUserForm = async () => {
   try {
     const tokenVal = localStorage.getItem('token')
     const url = modalMode.value === 'create' 
-      ? `${API_BASE_URL}/auth/admin/users`
-      : `${API_BASE_URL}/auth/admin/users/${userForm.id}`
+      ? `${API_BASE_URL}/users`
+      : `${API_BASE_URL}/users/${userForm.id}`
       
     const method = modalMode.value === 'create' ? 'POST' : 'PUT'
     
@@ -806,8 +820,7 @@ const submitUserForm = async () => {
       name: userForm.name,
       lastNames: userForm.lastNames,
       telefono: userForm.telefono,
-      role: userForm.role,
-      rolId: userForm.rolId,
+      roleId: userForm.rolId,
       is_verified: userForm.is_verified
     }
     
@@ -844,7 +857,7 @@ const deleteUser = async (userId) => {
   usersLoading.value = true
   try {
     const tokenVal = localStorage.getItem('token')
-    const response = await fetch(`${API_BASE_URL}/auth/admin/users/${userId}`, {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${tokenVal}`,
@@ -871,7 +884,7 @@ const filteredUsers = computed(() => {
     u.email.toLowerCase().includes(query) ||
     (u.profile?.name && u.profile.name.toLowerCase().includes(query)) ||
     (u.profile?.lastNames && u.profile.lastNames.toLowerCase().includes(query)) ||
-    (u.system_role?.name && u.system_role.name.toLowerCase().includes(query))
+    getSystemRoleName(u).toLowerCase().includes(query)
   )
 })
 
@@ -1717,13 +1730,13 @@ onMounted(() => {
                 </span>
               </td>
               <td>
-                <span :class="['table-chip', user.role === 'admin' ? 'chip-amber' : 'chip-gray']">
-                  {{ user.role === 'admin' ? 'Administrador' : 'Usuario' }}
+                <span :class="['table-chip', getGlobalRoleName(user) === 'admin' ? 'chip-amber' : 'chip-gray']">
+                  {{ getGlobalRoleName(user) === 'admin' ? 'Administrador' : 'Usuario' }}
                 </span>
               </td>
               <td>
-                <span class="table-chip chip-blue" v-if="user.system_role?.name">
-                  {{ user.system_role.name }}
+                <span class="table-chip chip-blue" v-if="getSystemRoleName(user)">
+                  {{ getSystemRoleName(user) }}
                 </span>
                 <span class="table-chip chip-red" v-else>
                   Ninguno
@@ -2280,24 +2293,24 @@ onMounted(() => {
 }
 
 .dark-button {
-  background: #ffffff;
-  color: var(--color-primary);
-  border: 1px solid #ffffff;
+  background: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-surface-container-lowest);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .dark-button:hover {
   background: var(--color-primary-container);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-on-primary-container);
+  border-color: var(--color-primary-container);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
 .primary-button-accent {
   background: var(--color-secondary);
-  color: white;
+  color: var(--color-on-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -2325,17 +2338,17 @@ onMounted(() => {
   border-radius: var(--radius-default);
   font-size: 12px;
   font-weight: 800;
-  border: 1px solid #ffdad6;
-  background: #fff;
+  border: 1px solid var(--color-secondary-container);
+  background: var(--color-surface-container-lowest);
   color: var(--color-secondary);
   cursor: pointer;
   transition: all var(--transition-base);
 }
 
 .danger-button-outline:hover {
-  background: #ffdad6;
+  background: var(--color-secondary-container);
   border-color: var(--color-secondary);
-  color: #600006;
+  color: var(--color-on-secondary-container);
 }
 
 .hero-status-card {
@@ -2375,7 +2388,7 @@ onMounted(() => {
   width: 86%;
   height: 100%;
   border-radius: inherit;
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
 }
 
 .metrics-grid {
@@ -2470,7 +2483,7 @@ onMounted(() => {
   padding: 8px 10px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-on-surface);
   font-family: var(--font-family);
   font-size: 13px;
@@ -2516,7 +2529,7 @@ onMounted(() => {
   height: 34px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-outline);
   cursor: pointer;
   transition: all var(--transition-base);
@@ -2623,7 +2636,7 @@ onMounted(() => {
   padding: 8px 10px;
   border: 1px solid rgba(46, 125, 50, 0.16);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-on-surface-variant);
   font-size: 13px;
   font-weight: 750;
@@ -3059,7 +3072,7 @@ onMounted(() => {
   height: 34px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-outline);
   cursor: pointer;
   transition: all var(--transition-base);
@@ -3141,7 +3154,7 @@ onMounted(() => {
   padding: 14px;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
 }
 
 .students-panel-header {
@@ -3327,7 +3340,7 @@ onMounted(() => {
 
 .badge-count {
   background: var(--color-secondary);
-  color: #fff;
+  color: var(--color-on-secondary);
   font-size: 11px;
   font-weight: 800;
   padding: 2px 8px;
@@ -3517,7 +3530,7 @@ onMounted(() => {
   font-family: var(--font-family);
   font-size: 14px;
   resize: vertical;
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   outline: 0;
   transition: border-color var(--transition-base);
 }
@@ -3616,7 +3629,7 @@ onMounted(() => {
   overflow: hidden;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-outline);
 }
 
@@ -3641,7 +3654,7 @@ onMounted(() => {
   padding: 0 14px;
   border: 1px dashed var(--color-primary);
   border-radius: var(--radius-default);
-  background: #ffffff;
+  background: var(--color-surface-container-lowest);
   color: var(--color-primary);
   font-size: 13px;
   font-weight: 800;
@@ -4022,9 +4035,9 @@ textarea.form-control-dash {
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-  background-color: #ffffff;
+  background-color: var(--color-surface-container-lowest);
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-outline-variant);
   gap: 16px;
   margin: 20px 0;
 }

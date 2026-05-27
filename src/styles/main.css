@@ -27,7 +27,7 @@
 }
 
 .accent-card-title {
-  color: white;
+  color: var(--color-on-primary);
   text-transform: uppercase;
   font-size: var(--label-lg-size);
   font-weight: 800;
@@ -44,7 +44,8 @@
 }
 
 .accent-card-content {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-on-primary);
+  opacity: 0.82;
   font-size: var(--body-md-size);
   line-height: 1.6;
 }
@@ -70,7 +71,7 @@
 }
 
 .accent-card-list a {
-  color: white;
+  color: var(--color-on-primary);
   text-decoration: none;
 }
 
@@ -103,7 +104,7 @@ div.accent-card.text-center .accent-card-title {
   letter-spacing: normal !important;
   margin-bottom: var(--space-sm) !important;
   justify-content: center !important;
-  color: white !important;
+  color: var(--color-on-primary) !important;
 }
 
 div.accent-card.text-center .accent-card-title .material-symbols-outlined {
@@ -115,7 +116,7 @@ div.accent-card.text-center p {
   font-size: var(--body-lg-size) !important;
   max-width: 720px !important;
   margin-inline: auto !important;
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: var(--color-on-primary) !important;
 }
 
 div.accent-card.text-center .accent-card-content p {
@@ -144,7 +145,7 @@ section.bg-primary:has(div.accent-card.text-center) {
   width: 100%;
   max-width: 1100px;
   min-height: 650px;
-  background: white;
+  background: var(--color-surface-container-lowest);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
@@ -161,7 +162,7 @@ section.bg-primary:has(div.accent-card.text-center) {
   display: flex;
   flex-direction: column;
   padding: var(--space-xl);
-  color: white;
+  color: var(--color-on-primary);
   overflow: hidden;
 }
 
@@ -213,7 +214,7 @@ section.bg-primary:has(div.accent-card.text-center) {
 }
 
 .sidebar-title {
-  color: white !important;
+  color: var(--color-on-primary) !important;
   font-size: 38px !important;
   font-weight: 800 !important;
   line-height: 1.25 !important;
@@ -311,8 +312,8 @@ section.bg-primary:has(div.accent-card.text-center) {
 .form-control:focus {
   outline: none;
   border-color: var(--color-primary);
-  background: white;
-  box-shadow: 0 0 0 4px rgba(0, 52, 41, 0.08);
+  background: var(--color-surface-container-lowest);
+  box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.16);
 }
 
 /* Special styling for verification code input */

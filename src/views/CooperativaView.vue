@@ -354,12 +354,12 @@ const textExpanded = ref(false)
   text-align: center;
   background: var(--color-primary);
   border-top: 4px solid var(--color-secondary);
-  color: white;
+  color: var(--color-on-primary);
   border-radius: var(--radius-sm);
 }
 
 .transparencia-banner h2 { 
-  color: white;
+  color: var(--color-on-primary);
   text-transform: uppercase;
   font-size: var(--label-lg-size);
   font-weight: 800;
@@ -368,7 +368,8 @@ const textExpanded = ref(false)
 }
 
 .transparencia-banner p {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .doc-links {

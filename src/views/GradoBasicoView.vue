@@ -361,7 +361,7 @@ const specialties = computed(() => {
 .cta-card {
   background: var(--color-primary);
   border-top: 4px solid var(--color-secondary);
-  color: white;
+  color: var(--color-on-primary);
   padding: var(--space-xl);
   border-radius: var(--radius-sm);
   display: flex;
@@ -371,7 +371,7 @@ const specialties = computed(() => {
 }
 
 .cta-card h2 {
-  color: white;
+  color: var(--color-on-primary);
   text-transform: uppercase;
   font-size: var(--label-lg-size);
   font-weight: 800;
@@ -379,7 +379,8 @@ const specialties = computed(() => {
 }
 
 .cta-card p {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-on-primary);
+  opacity: 0.82;
 }
 
 .cta-actions {
