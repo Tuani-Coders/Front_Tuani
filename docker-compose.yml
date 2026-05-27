@@ -1,0 +1,16 @@
+name: frontend-penascal-production
+
+services:
+  app:
+    build:
+      context: .
+      target: production
+    ports:
+      - "${APP_PORT:-80}:80"
+    restart: unless-stopped
+    networks:
+      - frontend-network
+
+networks:
+  frontend-network:
+    driver: bridge
