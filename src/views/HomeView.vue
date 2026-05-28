@@ -70,6 +70,12 @@ const news = computed(() => {
 
     <!-- Hero Section: Grounded & Minimalist -->
     <section class="hero-section">
+      <!-- Elementos dinámicos de fondo -->
+      <div class="dynamic-bg">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+      </div>
       <div class="container">
         <div class="hero-content">
           <h1 class="headline-xl">Compromiso social y arraigo.</h1>
@@ -145,19 +151,110 @@ const news = computed(() => {
 
 <style scoped>
 .home-view {
-  background-color: var(--color-surface);
+  background: linear-gradient(
+    to bottom,
+    var(--color-surface) 0%,
+    rgba(248, 250, 247, 0.4) 500px,
+    transparent 1000px
+  );
 }
 
 .justify-center { justify-content: center; }
 
 /* ── Hero ─────────────────────────────────────── */
 .hero-section {
+  position: relative;
   padding: 120px 0 80px;
-  background-color: var(--color-surface);
+  background-color: transparent;
   border-bottom: 2px solid var(--color-outline-variant);
+  overflow: hidden;
+}
+
+.dynamic-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+.shape-1 {
+  top: -10%;
+  right: 10%;
+  width: 450px;
+  height: 450px;
+  background: var(--color-primary);
+  animation: float-shape-1 25s infinite alternate ease-in-out;
+}
+
+.shape-2 {
+  bottom: -20%;
+  left: 5%;
+  width: 500px;
+  height: 500px;
+  background: var(--color-secondary);
+  animation: float-shape-2 30s infinite alternate ease-in-out;
+}
+
+.shape-3 {
+  top: 30%;
+  right: 40%;
+  width: 300px;
+  height: 300px;
+  background: var(--color-primary-container);
+  animation: float-shape-3 20s infinite alternate ease-in-out;
+}
+
+@keyframes float-shape-1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(40px, 30px) scale(1.1);
+  }
+  100% {
+    transform: translate(-20px, 50px) scale(0.95);
+  }
+}
+
+@keyframes float-shape-2 {
+  0% {
+    transform: translate(0, 0) scale(0.9);
+  }
+  50% {
+    transform: translate(-50px, 20px) scale(1.05);
+  }
+  100% {
+    transform: translate(30px, -40px) scale(1);
+  }
+}
+
+@keyframes float-shape-3 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(20px, -30px) rotate(180deg);
+  }
+  100% {
+    transform: translate(-30px, 10px) rotate(360deg);
+  }
 }
 
 .hero-content {
+  position: relative;
+  z-index: 5;
   max-width: 800px;
 }
 

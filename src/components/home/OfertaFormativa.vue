@@ -78,6 +78,11 @@ onUnmounted(() => {
 
 <template>
   <section class="oferta-formativa section">
+    <!-- Elementos dinámicos de fondo -->
+    <div class="dynamic-bg">
+      <div class="bg-shape shape-1"></div>
+      <div class="bg-shape shape-2"></div>
+    </div>
     <div class="container">
       <header class="section-header">
         <div class="section-heading">
@@ -161,9 +166,77 @@ onUnmounted(() => {
 
 <style scoped>
 .oferta-formativa {
-  background-color: var(--color-surface);
+  position: relative;
+  background-color: transparent;
   padding: 72px 0 88px;
   border-bottom: 2px solid var(--color-outline-variant);
+  overflow: hidden;
+}
+
+.dynamic-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+.shape-1 {
+  top: -10%;
+  left: 10%;
+  width: 350px;
+  height: 350px;
+  background: var(--color-primary);
+  animation: float-shape-1-left 22s infinite alternate ease-in-out;
+}
+
+.shape-2 {
+  bottom: -15%;
+  right: 15%;
+  width: 400px;
+  height: 400px;
+  background: var(--color-secondary);
+  animation: float-shape-2-left 28s infinite alternate ease-in-out;
+}
+
+@keyframes float-shape-1-left {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, -20px) scale(1.08);
+  }
+  100% {
+    transform: translate(-10px, 30px) scale(0.95);
+  }
+}
+
+@keyframes float-shape-2-left {
+  0% {
+    transform: translate(0, 0) scale(0.95);
+  }
+  50% {
+    transform: translate(-40px, 40px) scale(1.05);
+  }
+  100% {
+    transform: translate(20px, -20px) scale(1);
+  }
+}
+
+.container {
+  position: relative;
+  z-index: 5;
 }
 
 .section-header {

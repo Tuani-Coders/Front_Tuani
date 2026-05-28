@@ -36,6 +36,10 @@ watchEffect(() => {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-image: linear-gradient(rgba(232, 242, 235, 0.93), rgba(232, 242, 235, 0.93)), url('@/assets/icons/fondo.PNG');
+  background-size: 360px;
+  background-attachment: fixed;
+  background-repeat: repeat;
 }
 
 #content {
@@ -45,7 +49,8 @@ watchEffect(() => {
 }
 
 .dashboard-wrapper {
-  background: var(--color-surface);
+  background: var(--color-surface) !important;
+  background-image: none !important;
 }
 
 #content.dashboard-content {

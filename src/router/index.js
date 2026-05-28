@@ -17,6 +17,7 @@ const DonandoProductosView = () => import('../views/DonandoProductosView.vue')
 const ContratandoEmpresasView = () => import('../views/ContratandoEmpresasView.vue')
 const ApoyandoInsercionView = () => import('../views/ApoyandoInsercionView.vue')
 const NoticiasView = () => import('../views/NoticiasView.vue')
+const NoticiaDetalleView = () => import('../views/NoticiaDetalleView.vue')
 const ContactoView = () => import('../views/ContactoView.vue')
 const LoginView = () => import('../views/auth/LoginView.vue')
 const VerifyAdminView = () => import('../views/auth/VerifyAdminView.vue')
@@ -167,6 +168,12 @@ const routes = [
     path: '/noticias',
     name: 'Noticias',
     component: NoticiasView,
+    meta: { titleKey: 'pages.news' }
+  },
+  {
+    path: '/noticias/:id',
+    name: 'NoticiaDetalle',
+    component: NoticiaDetalleView,
     meta: { titleKey: 'pages.news' }
   },
 

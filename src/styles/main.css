@@ -7,6 +7,7 @@
 @import './reset.css';
 @import './typography.css';
 @import './utilities.css';
+@import './dashboard.css';
 
 /* ── Footer-style cards (from reference image) ── */
 .accent-card {
@@ -213,7 +214,7 @@ section.bg-primary:has(div.accent-card.text-center) {
   max-width: 440px;
 }
 
-.sidebar-title {
+.auth-sidebar .sidebar-title {
   color: var(--color-on-primary) !important;
   font-size: 38px !important;
   font-weight: 800 !important;
@@ -222,7 +223,7 @@ section.bg-primary:has(div.accent-card.text-center) {
   letter-spacing: -0.02em !important;
 }
 
-.sidebar-subtitle {
+.auth-sidebar .sidebar-subtitle {
   color: rgba(255, 255, 255, 0.85) !important;
   font-size: var(--body-lg-size) !important;
   line-height: 1.6 !important;
