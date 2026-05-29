@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import AppHeader from './components/layout/AppHeader.vue'
 import AppFooter from './components/layout/AppFooter.vue'
+import VoiceAccessibility from './components/VoiceAccessibility.vue'
 
 const route = useRoute()
 const isDashboardLayout = computed(() => route.meta.layout === 'dashboard')
@@ -19,6 +20,7 @@ const isDashboardLayout = computed(() => route.meta.layout === 'dashboard')
       </router-view>
     </main>
     <AppFooter v-if="!isDashboardLayout" />
+    <VoiceAccessibility />
   </div>
 </template>
 
