@@ -1,9 +1,13 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useContent } from '../composables/useContent'
+import { useContent } from '@/composables/useContent'
 
-const { newsList } = useContent()
+const { newsList, newsLoading, fetchPublishedNews } = useContent()
+
+onMounted(() => {
+  fetchPublishedNews()
+})
 
 const categories = [
   { id: 'all', label: 'Todas', icon: 'apps' },

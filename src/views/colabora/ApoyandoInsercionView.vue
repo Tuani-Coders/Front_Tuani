@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useContent } from '../composables/useContent'
+import { useContent } from '@/composables/useContent'
 
 const { collaborationsList } = useContent()
 

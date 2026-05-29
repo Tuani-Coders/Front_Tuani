@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { useContent } from '../../../composables/useContent'
+import { useContent } from '@/composables/useContent'
 
 const emit = defineEmits(['toast'])
 

@@ -1,18 +1,16 @@
 import { ref, reactive, computed } from 'vue'
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070/api'
+import { usersApi, rolesApi } from '@/api/users.js'
 
 export function useUserManagement(options = {}) {
   const { onToast } = options
 
-  // --- State ---
   const usersList = ref([])
   const dbRoles = ref([])
   const usersLoading = ref(false)
   const usersError = ref(null)
   const userSearchQuery = ref('')
   const isModalOpen = ref(false)
-  const modalMode = ref('create') // 'create', 'edit'
+  const modalMode = ref('create')
 
   const userForm = reactive({
     id: '',
@@ -28,7 +26,6 @@ export function useUserManagement(options = {}) {
     is_verified: true
   })
 
-  // --- Computed ---
   const getSystemRoleName = (userItem) => {
     return dbRoles.value.find(role => role.id === userItem.roleId)?.name || ''
   }
@@ -40,8 +37,8 @@ export function useUserManagement(options = {}) {
   const filteredUsers = computed(() => {
     if (!userSearchQuery.value.trim()) return usersList.value
     const query = userSearchQuery.value.toLowerCase()
-    return usersList.value.filter(u => 
-      u.username.toLowerCase().includes(query) || 
+    return usersList.value.filter(u =>
+      u.username.toLowerCase().includes(query) ||
       u.email.toLowerCase().includes(query) ||
       (u.profile?.name && u.profile.name.toLowerCase().includes(query)) ||
       (u.profile?.lastNames && u.profile.lastNames.toLowerCase().includes(query)) ||
@@ -49,21 +46,11 @@ export function useUserManagement(options = {}) {
     )
   })
 
-  // --- API Calls ---
   const fetchUsers = async () => {
     usersLoading.value = true
     usersError.value = null
     try {
-      const tokenVal = localStorage.getItem('token')
-      const response = await fetch(`${API_BASE_URL}/users`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${tokenVal}`,
-          'Content-Type': 'application/json'
-        }
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error al obtener usuarios')
+      const data = await usersApi.list()
       usersList.value = data.data || []
     } catch (err) {
       usersError.value = err.message
@@ -75,18 +62,8 @@ export function useUserManagement(options = {}) {
 
   const fetchRoles = async () => {
     try {
-      const tokenVal = localStorage.getItem('token')
-      const response = await fetch(`${API_BASE_URL}/roles`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${tokenVal}`,
-          'Content-Type': 'application/json'
-        }
-      })
-      const data = await response.json()
-      if (response.ok) {
-        dbRoles.value = data.data || []
-      }
+      const data = await rolesApi.list()
+      dbRoles.value = data.data || []
     } catch (err) {
       console.error('Error fetching roles:', err)
     }
@@ -147,13 +124,6 @@ export function useUserManagement(options = {}) {
 
     usersLoading.value = true
     try {
-      const tokenVal = localStorage.getItem('token')
-      const url = modalMode.value === 'create' 
-        ? `${API_BASE_URL}/users`
-        : `${API_BASE_URL}/users/${userForm.id}`
-        
-      const method = modalMode.value === 'create' ? 'POST' : 'PUT'
-      
       const bodyObj = {
         username: userForm.username,
         email: userForm.email,
@@ -163,25 +133,19 @@ export function useUserManagement(options = {}) {
         roleId: userForm.rolId,
         is_verified: userForm.is_verified
       }
-      
+
       if (modalMode.value === 'create' || userForm.password) {
         bodyObj.password = userForm.password
       }
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${tokenVal}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(bodyObj)
-      })
-      
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error al guardar usuario')
-      
+
+      if (modalMode.value === 'create') {
+        await usersApi.create(bodyObj)
+      } else {
+        await usersApi.update(userForm.id, bodyObj)
+      }
+
       if (onToast) {
-        onToast({ 
+        onToast({
           message: modalMode.value === 'create' ? 'Usuario creado correctamente' : 'Usuario actualizado correctamente',
           type: 'success'
         })
@@ -199,17 +163,7 @@ export function useUserManagement(options = {}) {
     if (!confirm('¿Estás seguro de que deseas eliminar este usuario?')) return
     usersLoading.value = true
     try {
-      const tokenVal = localStorage.getItem('token')
-      const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${tokenVal}`,
-          'Content-Type': 'application/json'
-        }
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error al eliminar usuario')
-      
+      await usersApi.remove(userId)
       if (onToast) onToast({ message: 'Usuario eliminado correctamente', type: 'success' })
       await fetchUsers()
     } catch (err) {

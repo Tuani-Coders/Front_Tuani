@@ -2,8 +2,9 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import MetricCard from '../MetricCard.vue'
-import { useContent } from '../../../composables/useContent'
-import { useAuth } from '../../../composables/useAuth'
+import { useContent } from '@/composables/useContent'
+import { useAuth } from '@/composables/useAuth'
+import { usersApi } from '@/api/users.js'
 
 const emit = defineEmits(['change-tab', 'toast'])
 
@@ -80,24 +81,13 @@ const contentModules = computed(() => {
 })
 
 // --- Available Users for Tasks ---
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070/api'
 const usersList = ref([])
 
 const fetchUsers = async () => {
   try {
-    const tokenVal = localStorage.getItem('token')
-    if (!tokenVal) return
-    const response = await fetch(`${API_BASE_URL}/users`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${tokenVal}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    const data = await response.json()
-    if (response.ok) {
-      usersList.value = data.data || []
-    }
+    if (!localStorage.getItem('token')) return
+    const data = await usersApi.list()
+    usersList.value = data.data || []
   } catch (err) {
     console.error('Error fetching users for tasks:', err)
   }

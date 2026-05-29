@@ -1,10 +1,21 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { useContent } from '../../../composables/useContent'
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useContent } from '@/composables/useContent'
 
 const emit = defineEmits(['toast'])
 
-const { coursesList } = useContent()
+const {
+  coursesList,
+  centersList,
+  coursesLoading,
+  coursesError,
+  fetchAdminCourses,
+  createCourseItem,
+  updateCourseItem,
+  deleteCourseItem,
+  persistStudentsForCourse,
+  syncCourseEnrollment
+} = useContent()
 
 // --- State ---
 const courseSearchQuery = ref('')
@@ -13,18 +24,25 @@ const expandedCourseId = ref('')
 const isModalOpen = ref(false)
 const modalType = ref('formacion') // 'formacion', 'alumno'
 const modalMode = ref('create') // 'create', 'edit'
-const editIndex = ref(-1)
+const editId = ref(null)
+const saving = ref(false)
+
+onMounted(() => {
+  fetchAdminCourses()
+})
 
 const courseForm = reactive({
-  id: '',
+  code: '',
   name: '',
   category: 'Grado Básico',
+  centerId: '',
   duration: '2000h',
   enrolled: 0,
   capacity: 15,
   status: 'Activo',
   imageUrl: '',
-  imageName: ''
+  imageName: '',
+  description: ''
 })
 
 const selectedCourseId = ref('')
@@ -43,9 +61,9 @@ const studentForm = reactive({
 const filteredCourses = computed(() => {
   if (!courseSearchQuery.value.trim()) return coursesList.value
   const query = courseSearchQuery.value.toLowerCase()
-  return coursesList.value.filter(c => 
-    c.name.toLowerCase().includes(query) || 
-    c.id.toLowerCase().includes(query) ||
+  return coursesList.value.filter(c =>
+    c.name.toLowerCase().includes(query) ||
+    String(c.code || c.id).toLowerCase().includes(query) ||
     c.category.toLowerCase().includes(query)
   )
 })
@@ -88,6 +106,35 @@ const toggleCourseStudents = (courseId) => {
   expandedCourseId.value = expandedCourseId.value === courseId ? '' : courseId
 }
 
+const brokenImages = ref(new Set())
+
+const onCourseImageError = (courseId) => {
+  brokenImages.value.add(String(courseId))
+}
+
+const hasCourseImage = (item) => {
+  return Boolean(item.imageUrl) && !brokenImages.value.has(String(item.id))
+}
+
+const getCourseCodeLabel = (item) => {
+  if (item.code?.trim()) return item.code.trim()
+  return 'Sin código asignado'
+}
+
+const getCategoryChipClass = (category) => {
+  if (category === 'Grado Medio') return 'chip-blue'
+  if (category === 'Empleo') return 'chip-amber'
+  if (category === 'General') return 'chip-gray'
+  return 'chip-green'
+}
+
+const getOccupancyTone = (item) => {
+  const occupancy = getCourseOccupancy(item)
+  if (occupancy >= 100) return 'tone-full'
+  if (occupancy >= 70) return 'tone-high'
+  return 'tone-normal'
+}
+
 // --- Image Handling ---
 const handleCourseImageFile = (event) => {
   const file = event.target.files?.[0]
@@ -116,39 +163,50 @@ const clearCourseImage = () => {
 const openCreateModal = () => {
   modalType.value = 'formacion'
   modalMode.value = 'create'
-  editIndex.value = -1
-  courseForm.id = ''
+  editId.value = null
+  courseForm.code = ''
   courseForm.name = ''
   courseForm.category = 'Grado Básico'
+  courseForm.centerId = centersList.value[0]?.id || ''
   courseForm.duration = '2000h'
   courseForm.enrolled = 0
   courseForm.capacity = 15
   courseForm.status = 'Activo'
   courseForm.imageUrl = ''
   courseForm.imageName = ''
+  courseForm.description = ''
   isModalOpen.value = true
 }
 
-const openEditModal = (item, index) => {
+const openEditModal = (item) => {
   modalType.value = 'formacion'
   modalMode.value = 'edit'
-  editIndex.value = index
-  courseForm.id = item.id || ''
+  editId.value = item.id
+  courseForm.code = item.code || ''
   courseForm.name = item.name || ''
   courseForm.category = item.category || 'Grado Básico'
+  courseForm.centerId = item.centerId || centersList.value[0]?.id || ''
   courseForm.duration = item.duration || '2000h'
   courseForm.enrolled = item.enrolled || 0
   courseForm.capacity = item.capacity || 15
   courseForm.status = item.status || 'Activo'
   courseForm.imageUrl = item.imageUrl || ''
   courseForm.imageName = item.imageName || ''
+  courseForm.description = item.description || ''
   isModalOpen.value = true
 }
 
-const deleteCourse = (index) => {
-  if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
-    coursesList.value.splice(index, 1)
-    emit('toast', { message: 'Curso eliminado correctamente', type: 'error' })
+const deleteCourse = async (item) => {
+  if (!confirm('¿Estás seguro de que deseas eliminar este curso?')) return
+
+  saving.value = true
+  try {
+    await deleteCourseItem(item.id)
+    emit('toast', { message: 'Curso eliminado correctamente', type: 'success' })
+  } catch (err) {
+    emit('toast', { message: err.message || 'Error al eliminar el curso', type: 'error' })
+  } finally {
+    saving.value = false
   }
 }
 
@@ -197,10 +255,12 @@ const deleteStudent = (course, studentId) => {
   course.students = students
   course.enrolled = Math.max(0, getCourseStudents(course).length)
   syncCourseStatus(course)
-  emit('toast', { message: `${removedStudent.firstName} ${removedStudent.lastNames} eliminado del curso`, type: 'error' })
+  persistStudentsForCourse(course.id, course.students)
+  syncCourseEnrollment(course.id).catch(() => {})
+  emit('toast', { message: `${removedStudent.firstName} ${removedStudent.lastNames} eliminado del curso`, type: 'success' })
 }
 
-const saveStudentData = () => {
+const saveStudentData = async () => {
   const course = selectedCourse.value
   if (!course) {
     emit('toast', { message: 'No se ha encontrado el curso seleccionado', type: 'error' })
@@ -256,31 +316,47 @@ const saveStudentData = () => {
   }
 
   syncCourseStatus(course)
+  persistStudentsForCourse(course.id, course.students)
+  try {
+    await syncCourseEnrollment(course.id)
+  } catch {
+    // Alumnos guardados localmente aunque falle la sincronización de plazas
+  }
   isModalOpen.value = false
 }
 
 // --- Save Course or Student Data ---
-const saveModalData = () => {
+const saveModalData = async () => {
   if (modalType.value === 'alumno') {
-    saveStudentData()
+    await saveStudentData()
     return
   }
 
-  if (!courseForm.id.trim() || !courseForm.name.trim()) {
+  if (!courseForm.code.trim() || !courseForm.name.trim()) {
     emit('toast', { message: 'El código y el nombre del curso son obligatorios', type: 'error' })
     return
   }
 
-  if (modalMode.value === 'create') {
-    coursesList.value.push({ ...courseForm, students: [] })
-    emit('toast', { message: 'Curso añadido correctamente', type: 'success' })
-  } else {
-    // Keep existing students list when editing a course
-    const existingStudents = coursesList.value[editIndex.value]?.students || []
-    coursesList.value[editIndex.value] = { ...courseForm, students: existingStudents }
-    emit('toast', { message: 'Curso actualizado correctamente', type: 'success' })
+  if (!courseForm.centerId) {
+    emit('toast', { message: 'Selecciona un centro formativo', type: 'error' })
+    return
   }
-  isModalOpen.value = false
+
+  saving.value = true
+  try {
+    if (modalMode.value === 'create') {
+      await createCourseItem(courseForm)
+      emit('toast', { message: 'Curso añadido correctamente', type: 'success' })
+    } else {
+      await updateCourseItem(editId.value, courseForm)
+      emit('toast', { message: 'Curso actualizado correctamente', type: 'success' })
+    }
+    isModalOpen.value = false
+  } catch (err) {
+    emit('toast', { message: err.message || 'Error al guardar el curso', type: 'error' })
+  } finally {
+    saving.value = false
+  }
 }
 
 defineExpose({
@@ -301,8 +377,19 @@ defineExpose({
       </button>
     </div>
 
-    <div class="data-table-container">
-      <table class="data-table">
+    <div v-if="coursesError" class="courses-error-banner">
+      <span class="material-symbols-outlined">error</span>
+      <p>{{ coursesError }}</p>
+      <button type="button" class="secondary-button" @click="fetchAdminCourses">Reintentar</button>
+    </div>
+
+    <div v-if="coursesLoading" class="courses-loading">
+      <span class="material-symbols-outlined spin">progress_activity</span>
+      Cargando cursos...
+    </div>
+
+    <div v-else class="data-table-container courses-table-wrap">
+      <table class="data-table courses-table">
         <thead>
           <tr>
             <th>Curso</th>
@@ -323,29 +410,49 @@ defineExpose({
               @click="toggleCourseStudents(item.id)"
             >
               <td class="primary-cell">
-                <div class="course-thumbnail">
-                  <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.name">
-                  <span v-else class="material-symbols-outlined">school</span>
+                <div class="course-thumb">
+                  <img
+                    v-if="hasCourseImage(item)"
+                    :src="item.imageUrl"
+                    :alt="item.name"
+                    loading="lazy"
+                    @error="onCourseImageError(item.id)"
+                  >
+                  <span v-else class="material-symbols-outlined" aria-hidden="true">school</span>
                 </div>
                 <div class="primary-cell-text">
-                  <strong>{{ item.name }}</strong>
-                  <span class="cell-excerpt code-cell">{{ item.id }}</span>
+                  <strong class="course-title">{{ item.name }}</strong>
+                  <span class="course-code" :class="{ 'course-code--missing': !item.code }">
+                    {{ getCourseCodeLabel(item) }}
+                  </span>
+                  <span v-if="item.centerName" class="course-meta">{{ item.centerName }}</span>
                 </div>
               </td>
               <td>
-                <span class="table-chip chip-gray">{{ item.category }}</span>
+                <span :class="['table-chip', getCategoryChipClass(item.category)]">
+                  {{ item.category }}
+                </span>
               </td>
-              <td>{{ item.duration }}</td>
+              <td class="duration-cell">{{ item.duration || '—' }}</td>
               <td>
                 <div class="progress-bar-cell">
-                  <span class="progress-text">{{ getCourseEnrollment(item) }} / {{ getCourseCapacity(item) }} plazas</span>
-                  <div class="progress-bar-mini">
-                    <span :style="{ width: `${getCourseOccupancy(item)}%` }"></span>
+                  <div class="progress-bar-head">
+                    <span class="progress-text">
+                      <strong>{{ getCourseEnrollment(item) }}</strong>
+                      <span>/ {{ getCourseCapacity(item) }} plazas</span>
+                    </span>
+                    <span class="progress-pct">{{ Math.round(getCourseOccupancy(item)) }}%</span>
+                  </div>
+                  <div class="progress-bar-mini" role="progressbar" :aria-valuenow="Math.round(getCourseOccupancy(item))" aria-valuemin="0" aria-valuemax="100">
+                    <span
+                      :class="getOccupancyTone(item)"
+                      :style="{ width: `${Math.max(getCourseOccupancy(item), getCourseEnrollment(item) > 0 ? 8 : 0)}%` }"
+                    ></span>
                   </div>
                 </div>
               </td>
               <td>
-                <span :class="['table-chip', item.status === 'Activo' ? 'chip-green' : item.status === 'Completo' ? 'chip-yellow' : 'chip-red']">
+                <span :class="['table-chip', item.status === 'Activo' ? 'chip-green' : item.status === 'Completo' ? 'chip-yellow' : 'chip-stone']">
                   {{ item.status }}
                 </span>
               </td>
@@ -365,10 +472,10 @@ defineExpose({
                 >
                   <span class="material-symbols-outlined">group</span>
                 </button>
-                <button class="action-btn edit" title="Editar Curso" @click="openEditModal(item, index)">
+                <button class="action-btn edit" title="Editar Curso" @click.stop="openEditModal(item)">
                   <span class="material-symbols-outlined">edit</span>
                 </button>
-                <button class="action-btn delete" title="Eliminar Curso" @click="deleteCourse(index)">
+                <button class="action-btn delete" title="Eliminar Curso" @click.stop="deleteCourse(item)">
                   <span class="material-symbols-outlined">delete</span>
                 </button>
               </td>
@@ -434,8 +541,9 @@ defineExpose({
           </template>
           <tr v-if="filteredCourses.length === 0">
             <td colspan="6" class="empty-state-row">
-              <span class="material-symbols-outlined">find_in_page</span>
-              No se encontraron cursos con los filtros aplicados.
+              <span class="material-symbols-outlined">school</span>
+              <p>No hay cursos que coincidan con la búsqueda.</p>
+              <button type="button" class="secondary-button" @click="openCreateModal">Añadir primer curso</button>
             </td>
           </tr>
         </tbody>
@@ -460,7 +568,7 @@ defineExpose({
           <div v-if="modalType === 'formacion'" class="form-grid">
             <div class="form-group-half">
               <label class="label-md">Código de Curso *</label>
-              <input type="text" class="form-control-dash" v-model="courseForm.id" placeholder="Ej: GM-SOL" :disabled="modalMode === 'edit'">
+              <input type="text" class="form-control-dash" v-model="courseForm.code" placeholder="Ej: GM-SOL">
             </div>
             <div class="form-group-half">
               <label class="label-md">Categoría *</label>
@@ -468,6 +576,15 @@ defineExpose({
                 <option value="Grado Básico">Grado Básico</option>
                 <option value="Grado Medio">Grado Medio</option>
                 <option value="Empleo">Formación Empleo</option>
+              </select>
+            </div>
+            <div class="form-group-full">
+              <label class="label-md">Centro formativo *</label>
+              <select class="form-control-dash" v-model="courseForm.centerId">
+                <option value="" disabled>Selecciona un centro</option>
+                <option v-for="center in centersList" :key="center.id" :value="center.id">
+                  {{ center.name }}
+                </option>
               </select>
             </div>
             <div class="form-group-full">
@@ -577,6 +694,55 @@ defineExpose({
 </template>
 
 <style scoped>
+.courses-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(181, 36, 36, 0.35);
+  border-radius: var(--radius-default);
+  background: rgba(181, 36, 36, 0.08);
+  color: var(--color-secondary);
+}
+
+.courses-error-banner p {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.courses-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 220px;
+  border: 1px dashed var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  color: var(--color-on-surface-variant);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.courses-loading .spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.courses-table .actions-col {
+  width: 196px;
+  min-width: 196px;
+}
+
+.courses-table .primary-cell {
+  max-width: 420px;
+}
+
 .course-row-clickable {
   cursor: pointer;
 }
@@ -586,26 +752,97 @@ defineExpose({
   background: rgba(0, 52, 41, 0.045) !important;
 }
 
-.course-thumbnail {
+.course-thumb {
+  display: grid;
+  place-items: center;
   flex-shrink: 0;
-  width: 48px;
-  height: 32px;
-  border-radius: var(--radius-sm);
+  width: 64px;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 1px solid var(--color-outline-variant);
-  background: var(--color-surface-container-low);
+  border-radius: var(--radius-default);
+  background: linear-gradient(145deg, var(--color-surface-container-low), var(--color-surface-container));
+  color: var(--color-primary);
 }
 
-.course-thumbnail img {
+.course-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+.course-thumb .material-symbols-outlined {
+  font-size: 28px;
+  opacity: 0.7;
+}
+
+.primary-cell-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.course-title {
+  display: block;
+  color: var(--color-on-surface);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.course-code {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0, 52, 41, 0.08);
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.course-code--missing {
+  background: var(--color-surface-container);
+  color: var(--color-outline);
+  text-transform: none;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.course-meta {
+  color: var(--color-on-surface-variant);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.duration-cell {
+  color: var(--color-on-surface);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .code-cell {
   font-family: monospace;
   font-weight: 700;
-  color: var(--color-secondary);
+  color: var(--color-on-surface-variant);
+}
+
+.chip-blue {
+  background: rgba(25, 118, 210, 0.12);
+  color: #1565c0;
+}
+
+.chip-amber {
+  background: rgba(196, 138, 24, 0.14);
+  color: #9a680d;
+}
+
+.chip-stone {
+  background: var(--color-surface-container-high);
+  color: var(--color-on-surface-variant);
 }
 
 .action-btn:disabled {
@@ -729,27 +966,40 @@ defineExpose({
   font-weight: 700;
 }
 
-.chip-red {
-  background: rgba(181, 36, 36, 0.1);
-  color: var(--color-secondary);
-}
-
 .progress-bar-cell {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  width: 120px;
+  gap: 8px;
+  min-width: 168px;
+}
+
+.progress-bar-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .progress-text {
   font-size: 12px;
-  font-weight: 700;
   color: var(--color-on-surface-variant);
 }
 
+.progress-text strong {
+  color: var(--color-on-surface);
+  font-size: 13px;
+}
+
+.progress-pct {
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .progress-bar-mini {
-  height: 6px;
-  background: var(--color-surface-container);
+  height: 8px;
+  background: var(--color-surface-container-high);
+  border: 1px solid var(--color-outline-variant);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -757,8 +1007,26 @@ defineExpose({
 .progress-bar-mini span {
   display: block;
   height: 100%;
-  background: var(--color-primary);
+  min-width: 0;
   border-radius: inherit;
+  transition: width 0.25s ease;
+}
+
+.progress-bar-mini span.tone-normal {
+  background: linear-gradient(90deg, #2e7d32, #43a047);
+}
+
+.progress-bar-mini span.tone-high {
+  background: linear-gradient(90deg, #9a680d, #c48a18);
+}
+
+.progress-bar-mini span.tone-full {
+  background: linear-gradient(90deg, #b52424, #d32f2f);
+}
+
+.empty-state-row p {
+  margin: 8px 0 14px;
+  font-weight: 600;
 }
 
 .news-image-field {

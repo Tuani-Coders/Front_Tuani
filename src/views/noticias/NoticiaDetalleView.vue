@@ -1,21 +1,46 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
-import { useContent } from '../composables/useContent'
+import { useContent } from '@/composables/useContent'
 
 const activeImage = ref(null)
+const detailItem = ref(null)
+const detailLoading = ref(false)
 
 const route = useRoute()
 const router = useRouter()
-const { newsList } = useContent()
+const { newsList, fetchPublishedNews, fetchNewsById } = useContent()
 
-// Find news item by ID
-const newsItem = computed(() => {
-  const idParam = route.params.id
-  // Parse ID to number if possible
-  const id = isNaN(idParam) ? idParam : Number(idParam)
-  return newsList.value.find(item => item.id === id)
-})
+const loadDetail = async () => {
+  const idParam = String(route.params.id)
+  const cached = newsList.value.find((item) => String(item.id) === idParam)
+  if (cached) {
+    detailItem.value = cached
+    return
+  }
+
+  detailLoading.value = true
+  try {
+    if (!newsList.value.length) {
+      await fetchPublishedNews()
+      const fromList = newsList.value.find((item) => String(item.id) === idParam)
+      if (fromList) {
+        detailItem.value = fromList
+        return
+      }
+    }
+    detailItem.value = await fetchNewsById(idParam)
+  } catch {
+    detailItem.value = null
+  } finally {
+    detailLoading.value = false
+  }
+}
+
+onMounted(loadDetail)
+watch(() => route.params.id, loadDetail)
+
+const newsItem = computed(() => detailItem.value)
 
 // Split content by newlines to render paragraphs nicely
 const paragraphs = computed(() => {

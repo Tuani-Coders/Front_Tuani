@@ -2,8 +2,8 @@
 import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import AppHeader from './components/layout/AppHeader.vue'
-import AppFooter from './components/layout/AppFooter.vue'
+import AppHeader from '@/components/layout/AppHeader.vue'
+import AppFooter from '@/components/layout/AppFooter.vue'
 
 const route = useRoute()
 const { t, locale } = useI18n()

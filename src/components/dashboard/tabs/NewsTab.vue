@@ -1,10 +1,18 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { useContent } from '../../../composables/useContent'
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useContent } from '@/composables/useContent'
 
 const emit = defineEmits(['toast'])
 
-const { newsList } = useContent()
+const {
+  newsList,
+  newsLoading,
+  newsError,
+  fetchAdminNews,
+  createNewsItem,
+  updateNewsItem,
+  deleteNewsItem
+} = useContent()
 
 // --- News Module State ---
 const newsSearchQuery = ref('')
@@ -22,7 +30,12 @@ const filteredNews = computed(() => {
 // --- Modal State ---
 const isModalOpen = ref(false)
 const modalMode = ref('create') // 'create', 'edit'
-const editIndex = ref(-1)
+const editId = ref(null)
+const saving = ref(false)
+
+onMounted(() => {
+  fetchAdminNews()
+})
 
 const newGalleryUrl = ref('')
 
@@ -107,7 +120,7 @@ const removeAdditionalImage = (index) => {
 
 const openCreateModal = () => {
   modalMode.value = 'create'
-  editIndex.value = -1
+  editId.value = null
   newsForm.title = ''
   newsForm.tag = 'Formación'
   newsForm.excerpt = ''
@@ -122,9 +135,9 @@ const openCreateModal = () => {
   isModalOpen.value = true
 }
 
-const openEditModal = (item, index) => {
+const openEditModal = (item) => {
   modalMode.value = 'edit'
-  editIndex.value = index
+  editId.value = item.id
   newsForm.title = item.title || ''
   newsForm.tag = item.tag || 'Formación'
   newsForm.excerpt = item.excerpt || ''
@@ -139,29 +152,40 @@ const openEditModal = (item, index) => {
   isModalOpen.value = true
 }
 
-const saveModalData = () => {
+const saveModalData = async () => {
   if (!newsForm.title.trim() || !newsForm.excerpt.trim() || !newsForm.content.trim()) {
     emit('toast', { message: 'El título, el resumen y el contenido son obligatorios', type: 'error' })
     return
   }
 
-  const tagClass = newsForm.tag === 'Formación' ? 'chip-green' : newsForm.tag === 'Empresas' ? 'chip-blue' : 'chip-amber'
-  const newsData = { ...newsForm, tagClass }
-
-  if (modalMode.value === 'create') {
-    newsList.value.unshift({ id: Date.now(), ...newsData })
-    emit('toast', { message: 'Noticia publicada correctamente', type: 'success' })
-  } else {
-    newsList.value[editIndex.value] = { ...newsList.value[editIndex.value], ...newsData }
-    emit('toast', { message: 'Noticia actualizada correctamente', type: 'success' })
+  saving.value = true
+  try {
+    if (modalMode.value === 'create') {
+      await createNewsItem(newsForm)
+      emit('toast', { message: 'Noticia creada correctamente', type: 'success' })
+    } else {
+      await updateNewsItem(editId.value, newsForm)
+      emit('toast', { message: 'Noticia actualizada correctamente', type: 'success' })
+    }
+    isModalOpen.value = false
+  } catch (err) {
+    emit('toast', { message: err.message || 'Error al guardar la noticia', type: 'error' })
+  } finally {
+    saving.value = false
   }
-  isModalOpen.value = false
 }
 
-const deleteNews = (index) => {
-  if (confirm('¿Estás seguro de que deseas eliminar esta noticia?')) {
-    newsList.value.splice(index, 1)
-    emit('toast', { message: 'Noticia eliminada correctamente', type: 'error' })
+const deleteNews = async (item) => {
+  if (!confirm('¿Estás seguro de que deseas eliminar esta noticia?')) return
+
+  saving.value = true
+  try {
+    await deleteNewsItem(item.id)
+    emit('toast', { message: 'Noticia eliminada correctamente', type: 'success' })
+  } catch (err) {
+    emit('toast', { message: err.message || 'Error al eliminar la noticia', type: 'error' })
+  } finally {
+    saving.value = false
   }
 }
 
@@ -184,7 +208,18 @@ defineExpose({
       </button>
     </div>
 
-    <div class="data-table-container">
+    <div v-if="newsError" class="news-error-banner">
+      <span class="material-symbols-outlined">error</span>
+      <p>{{ newsError }}</p>
+      <button type="button" class="secondary-button" @click="fetchAdminNews()">Reintentar</button>
+    </div>
+
+    <div v-if="newsLoading" class="news-loading">
+      <span class="material-symbols-outlined spin">progress_activity</span>
+      <p>Cargando noticias...</p>
+    </div>
+
+    <div class="data-table-container" v-else>
       <table class="data-table">
         <thead>
           <tr>
@@ -222,10 +257,10 @@ defineExpose({
               </span>
             </td>
             <td class="actions-cell">
-              <button class="action-btn edit" title="Editar Noticia" @click="openEditModal(item, index)">
+              <button class="action-btn edit" title="Editar Noticia" @click="openEditModal(item)">
                 <span class="material-symbols-outlined">edit</span>
               </button>
-              <button class="action-btn delete" title="Eliminar Noticia" @click="deleteNews(index)">
+              <button class="action-btn delete" title="Eliminar Noticia" @click="deleteNews(item)">
                 <span class="material-symbols-outlined">delete</span>
               </button>
             </td>
@@ -543,6 +578,42 @@ defineExpose({
 
 .file-upload-button-gallery input {
   display: none;
+}
+
+.news-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(181, 36, 36, 0.35);
+  border-radius: var(--radius-default);
+  background: rgba(181, 36, 36, 0.08);
+  color: var(--color-secondary);
+}
+
+.news-error-banner p {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.news-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 16px;
+  color: var(--color-on-surface-variant);
+}
+
+.news-loading .spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 @media (max-width: 720px) {

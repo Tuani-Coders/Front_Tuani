@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from 'vue'
-import { useUserManagement } from '../../../composables/useUserManagement'
+import { useUserManagement } from '@/composables/useUserManagement'
 
 const emit = defineEmits(['toast'])
 

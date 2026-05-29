@@ -1,6 +1,6 @@
 <script setup>
 import { reactive } from 'vue'
-import { useContent } from '../composables/useContent'
+import { useContent } from '@/composables/useContent'
 
 const { settings, addMessage } = useContent()
 

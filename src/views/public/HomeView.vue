@@ -1,10 +1,14 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import OfertaFormativa from '../components/home/OfertaFormativa.vue'
-import { useContent } from '../composables/useContent'
+import OfertaFormativa from '@/components/home/OfertaFormativa.vue'
+import { useContent } from '@/composables/useContent'
 
-const { newsList } = useContent()
+const { newsList, fetchPublishedNews } = useContent()
+
+onMounted(() => {
+  fetchPublishedNews()
+})
 
 const services = [
   {

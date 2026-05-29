@@ -1,22 +1,15 @@
 import { computed, ref } from 'vue'
+import { ApiError } from '@/api/client.js'
+import { authApi, readAuthResponse } from '@/api/auth.js'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070/api'
-
-// Estado para verificacion de admin
 const pendingVerification = ref(false)
 const pendingEmail = ref('')
 const pendingExpiresAt = ref(null)
 
-// Estado global (fuera de la función para persistir entre componentes)
 const user = ref(JSON.parse(localStorage.getItem('user')) || null)
 const token = ref(localStorage.getItem('token') || null)
 const loading = ref(false)
 const error = ref(null)
-
-const readAuthResponse = (data) => ({
-  userData: data.data ? data.data.user : data.user,
-  tokenData: data.data ? data.data.access_token : data.access_token
-})
 
 export function useAuth() {
   const isLoggedIn = computed(() => !!token.value)
@@ -62,18 +55,11 @@ export function useAuth() {
     return nextUser
   }
 
-  const register = async (username, email, password) => {
+  const withAuthCall = async (fn) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password })
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error en el registro')
-      return data
+      return await fn()
     } catch (err) {
       error.value = err.message
       throw err
@@ -82,67 +68,31 @@ export function useAuth() {
     }
   }
 
-  const verifyEmail = async (email, code) => {
-    loading.value = true
-    error.value = null
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/verify-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code })
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error en la verificación')
-      return data
-    } catch (err) {
-      error.value = err.message
-      throw err
-    } finally {
-      loading.value = false
-    }
-  }
+  const register = (username, email, password) =>
+    withAuthCall(() => authApi.register({ username, email, password }))
 
-  const resendCode = async (email) => {
-    loading.value = true
-    error.value = null
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/resend-code`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error al reenviar código')
-      return data
-    } catch (err) {
-      error.value = err.message
-      throw err
-    } finally {
-      loading.value = false
-    }
-  }
+  const verifyEmail = (email, code) =>
+    withAuthCall(() => authApi.verifyEmail({ email, code }))
+
+  const resendCode = (email) =>
+    withAuthCall(() => authApi.resendCode({ email }))
 
   const login = async (username, password) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      })
-      const data = await response.json()
-      if (!response.ok) {
-        const loginError = new Error(data.message || 'Error al iniciar sesión')
-        loginError.status = response.status
-        loginError.data = data.data
-        throw loginError
-      }
-
+      const data = await authApi.login({ username, password })
       const { userData, tokenData } = readAuthResponse(data)
       setAuth(userData, tokenData)
       return data
     } catch (err) {
+      if (err instanceof ApiError) {
+        const loginError = new Error(err.message)
+        loginError.status = err.status
+        loginError.data = err.data
+        error.value = err.message
+        throw loginError
+      }
       error.value = err.message
       throw err
     } finally {
@@ -154,14 +104,7 @@ export function useAuth() {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/oauth/${provider}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_token: accessToken })
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || `Error al iniciar sesión con ${provider}`)
-
+      const data = await authApi.oauthToken(provider, { access_token: accessToken })
       const { userData, tokenData } = readAuthResponse(data)
       setAuth(userData, tokenData)
       return data
@@ -179,14 +122,7 @@ export function useAuth() {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/oauth/exchange/${provider}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code })
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || `Error al conectar con ${provider}`)
-
+      const data = await authApi.oauthExchange(provider, { code })
       const { userData, tokenData } = readAuthResponse(data)
       setAuth(userData, tokenData)
       return data
@@ -198,23 +134,11 @@ export function useAuth() {
     }
   }
 
-  // Paso 1: solicitar codigo admin. El backend exige JWT, asi que debe existir token.
   const loginInit = async (email) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/admin/login-init`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token.value || localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Error en la verificación')
-
-      // Guardar estado de verificacion pendiente con tiempo de expiracion
+      const data = await authApi.adminLoginInit({ email })
       pendingVerification.value = true
       pendingEmail.value = email
       pendingExpiresAt.value = data.data?.expires_at || null
@@ -227,25 +151,12 @@ export function useAuth() {
     }
   }
 
-  // Paso 2: Verificar codigo y completar login
   const verifyAdminCode = async (code) => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/admin/verify-code`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token.value || localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ code })
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Código incorrecto')
-      
-      // Guardar auth y limpiar estado pendiente
-      const userData = data.data ? data.data.user : data.user
-      const tokenData = data.data ? data.data.access_token : data.access_token
+      const data = await authApi.adminVerifyCode({ code })
+      const { userData, tokenData } = readAuthResponse(data)
       setAuth(userData, tokenData)
       pendingVerification.value = false
       pendingEmail.value = ''
@@ -258,7 +169,6 @@ export function useAuth() {
       loading.value = false
     }
   }
-
 
   return {
     user,

@@ -2,7 +2,7 @@
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useAuth } from '../../composables/useAuth'
+import { useAuth } from '@/composables/useAuth'
 import { setLocale, SUPPORTED_LOCALES } from '../../i18n'
 
 const { user, isLoggedIn, logout } = useAuth()

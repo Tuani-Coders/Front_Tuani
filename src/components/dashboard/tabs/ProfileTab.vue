@@ -1,11 +1,11 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
-import { useAuth } from '../../../composables/useAuth'
+import { useAuth } from '@/composables/useAuth'
+import { usersApi } from '@/api/users.js'
 
 const emit = defineEmits(['toast'])
 
 const { user, updateCurrentUser } = useAuth()
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:7070/api'
 
 // --- Constants ---
 const avatarPresets = [
@@ -119,29 +119,18 @@ const saveProfile = async () => {
 
   // Sync with the server
   try {
-    const tokenVal = localStorage.getItem('token')
-    if (!tokenVal || !user.value?.id) {
+    if (!localStorage.getItem('token') || !user.value?.id) {
       emit('toast', { message: 'Perfil actualizado localmente', type: 'success' })
       return
     }
 
-    const response = await fetch(`${API_BASE_URL}/users/${user.value.id}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${tokenVal}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: updates.username,
-        email: updates.email,
-        name: updates.profile.name,
-        lastNames: updates.profile.lastNames,
-        telefono: updates.profile.telefono
-      })
+    await usersApi.update(user.value.id, {
+      username: updates.username,
+      email: updates.email,
+      name: updates.profile.name,
+      lastNames: updates.profile.lastNames,
+      telefono: updates.profile.telefono
     })
-
-    const data = await response.json()
-    if (!response.ok) throw new Error(data.message || 'Error al sincronizar con el servidor')
 
     emit('toast', { message: 'Perfil actualizado y sincronizado correctamente', type: 'success' })
   } catch (err) {

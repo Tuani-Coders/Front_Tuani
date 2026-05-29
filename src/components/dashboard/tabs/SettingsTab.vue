@@ -1,5 +1,5 @@
 <script setup>
-import { useContent } from '../../../composables/useContent'
+import { useContent } from '@/composables/useContent'
 
 const emit = defineEmits(['toast'])
 

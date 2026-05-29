@@ -1,14 +1,22 @@
 <script setup>
-import { ref } from 'vue'
-import DashboardShell from '../../components/dashboard/DashboardShell.vue'
-import SummaryTab from '../../components/dashboard/tabs/SummaryTab.vue'
-import NewsTab from '../../components/dashboard/tabs/NewsTab.vue'
-import CoursesTab from '../../components/dashboard/tabs/CoursesTab.vue'
-import CollabTab from '../../components/dashboard/tabs/CollabTab.vue'
-import MessagesTab from '../../components/dashboard/tabs/MessagesTab.vue'
-import ProfileTab from '../../components/dashboard/tabs/ProfileTab.vue'
-import UsersTab from '../../components/dashboard/tabs/UsersTab.vue'
-import SettingsTab from '../../components/dashboard/tabs/SettingsTab.vue'
+import { ref, onMounted } from 'vue'
+import { useContent } from '@/composables/useContent'
+import DashboardShell from '@/components/dashboard/DashboardShell.vue'
+import SummaryTab from '@/components/dashboard/tabs/SummaryTab.vue'
+import NewsTab from '@/components/dashboard/tabs/NewsTab.vue'
+import CoursesTab from '@/components/dashboard/tabs/CoursesTab.vue'
+import CollabTab from '@/components/dashboard/tabs/CollabTab.vue'
+import MessagesTab from '@/components/dashboard/tabs/MessagesTab.vue'
+import ProfileTab from '@/components/dashboard/tabs/ProfileTab.vue'
+import UsersTab from '@/components/dashboard/tabs/UsersTab.vue'
+import SettingsTab from '@/components/dashboard/tabs/SettingsTab.vue'
+
+const { fetchAdminNews, fetchAdminCourses } = useContent()
+
+onMounted(() => {
+  fetchAdminNews()
+  fetchAdminCourses()
+})
 
 // --- Active Tab State ---
 const activeTab = ref('Resumen')

@@ -1,9 +1,13 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useContent } from '../composables/useContent'
+import { useContent } from '@/composables/useContent'
 
-const { coursesList } = useContent()
+const { coursesList, fetchPublishedCourses } = useContent()
+
+onMounted(() => {
+  fetchPublishedCourses()
+})
 
 const courses = computed(() => {
   const activeEmpleo = coursesList.value.filter(c => c.category === 'Empleo' && c.status === 'Activo')
