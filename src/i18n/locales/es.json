@@ -1,0 +1,684 @@
+{
+  "lang": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "eu": "Euskara",
+    "ar": "العربية"
+  },
+  "common": {
+    "home": "Inicio",
+    "training": "Formación",
+    "cooperative": "La Cooperativa",
+    "collaborate": "Colabora",
+    "news": "Noticias",
+    "contact": "Contacto",
+    "seeMore": "Ver más",
+    "readMore": "Leer más",
+    "readLess": "Ver menos",
+    "learnMore": "Saber más",
+    "send": "Enviar",
+    "submit": "Enviar Mensaje",
+    "search": "Buscar",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "all": "Todas",
+    "yes": "Sí",
+    "no": "No",
+    "backToHome": "Volver al inicio",
+    "contactNow": "Contactar ahora",
+    "requestInfo": "Solicitar info",
+    "requestAppointment": "Solicitar Cita",
+    "callNow": "Llamar ahora",
+    "seeAllAreas": "Ver todas las áreas",
+    "actualidad": "ACTUALIDAD",
+    "howWeTeach": "Cómo enseñamos",
+    "ourOffer": "Nuestra oferta",
+    "whatWeOffer": "Qué ofrecemos",
+    "howCanWeHelp": "Cómo podemos ayudarte",
+    "ourApproach": "Nuestro Enfoque",
+    "ourTrajectory": "Nuestra trayectoria",
+    "howToCollaborate": "Cómo colaborar",
+    "collaborationWays": "Vías de cooperación",
+    "currentOffer": "Oferta Actual",
+    "upcomingCalls": "Próximas convocatorias",
+    "howToRegister": "¿Cómo inscribirse?",
+    "ourInsertionCompanies": "Nuestras Empresas de Inserción",
+    "technicalAreas": "Áreas Técnicas",
+    "institutional": "Institucional",
+    "howIsYourHelpUsed": "¿Cómo se utiliza tu ayuda?",
+    "howIsTheProcess": "¿Cómo es el proceso?",
+    "advantagesForYourCompany": "Ventajas para tu empresa",
+    "whatDoWeBringToYourCompany": "¿Qué aportamos a tu empresa?",
+    "yourCompanyAsAgentOfChange": "Tu empresa como agente de cambio",
+    "transparency": "Transparencia",
+    "ethicCommitment": "Compromiso Ético",
+    "readAboutTransparency": "Leer sobre transparencia",
+    "wantToBeVolunteer": "Quiero ser voluntario",
+    "makeContribution": "Hacer una aportación",
+    "wantToCollaborateEconomically": "Quiero colaborar económicamente",
+    "iHaveMaterialToDonate": "Tengo material para donar",
+    "wantToBeCollaboratingCompany": "Quiero ser empresa colaboradora",
+    "knowOurNetworkOfCompanies": "Conocer nuestra red de empresas",
+    "readArticle": "Leer artículo"
+  },
+  "header": {
+    "location": "Ubicación",
+    "hello": "Hola",
+    "logout": "Salir",
+    "login": "Entrar",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "nav": {
+      "home": "Inicio",
+      "training": "Formación",
+      "trainingPro": "Formación Profesional",
+      "basicDegree": "Grado Básico",
+      "mediumDegree": "Grado medio",
+      "trainingForEmployment": "Formación para el Empleo",
+      "cooperative": "La Cooperativa",
+      "whoWeAre": "Quiénes somos",
+      "whatWeDo": "Qué hacemos",
+      "cooperateWithUs": "Cooperan con nosotros",
+      "orientationService": "Servicio de orientación",
+      "collaborate": "Colabora",
+      "supportingProjects": "Colabora apoyando proyectos sin recursos",
+      "donatingProducts": "Colabora donando productos y servicios",
+      "hiringCompanies": "Colabora contratando empresas de inserción",
+      "supportingInsertion": "Colabora apoyando la inserción laboral",
+      "news": "Noticias",
+      "contact": "Contacto"
+    }
+  },
+  "footer": {
+    "resources": "RECURSOS",
+    "training": "Formación",
+    "employment": "Empleo",
+    "companies": "Empresas",
+    "institutional": "INSTITUCIONAL",
+    "transparency": "Transparencia",
+    "team": "Equipo",
+    "news": "Noticias",
+    "contactTitle": "CONTACTO",
+    "address": "C/ Ctra. Bilbao-Galdakao, 10 48004 BILBAO",
+    "brandDesc": "Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública desde 1986.",
+    "legalNotice": "Aviso Legal",
+    "privacyPolicy": "Política de Privacidad",
+    "cookies": "Cookies",
+    "copyright": "Grupo Peñascal Kooperatiba. Todos los derechos reservados.",
+    "madeBy": "Este sitio web ha sido creado por",
+    "tuaniCoders": "Tuani Coders",
+    "selectLanguage": "Idioma",
+    "languages": {
+      "en": "Inglés (EN)",
+      "fr": "Francés (FR)",
+      "eu": "Euskera (EU)",
+      "ar": "Árabe (AR)"
+    }
+  },
+  "home": {
+    "heroTitle": "Compromiso social y arraigo.",
+    "heroSubtitle": "Trabajamos para generar oportunidades reales de inclusión social y laboral en nuestra comunidad.",
+    "services": {
+      "training": {
+        "title": "Formación Profesional",
+        "desc": "Capacitación técnica de alta calidad adaptada a las necesidades reales del mercado laboral actual."
+      },
+      "jobSearch": {
+        "title": "Búsqueda de Empleo",
+        "desc": "Orientación personalizada y herramientas para tu inserción en el mundo laboral."
+      },
+      "insertionCompanies": {
+        "title": "Empresas de Inserción",
+        "desc": "Unidades de producción real para el aprendizaje práctico en entornos profesionales."
+      },
+      "socialIntervention": {
+        "title": "Intervención Social",
+        "desc": "Acompañamiento integral para colectivos en situación de vulnerabilidad."
+      }
+    },
+    "news1": {
+      "title": "Nueva convocatoria de cursos 2024",
+      "desc": "Abrimos el plazo de inscripción para los nuevos módulos de automoción y hostelería."
+    },
+    "news2": {
+      "title": "Acuerdo con empresas locales",
+      "desc": "Fortalecemos nuestra red de empresas colaboradoras para las prácticas del alumnado."
+    },
+    "news3": {
+      "title": "Historias de inserción laboral",
+      "desc": "Entrevistamos a antiguos alumnos que hoy lideran sus propios proyectos."
+    },
+    "ctaTitle": "¿Necesitas orientación?",
+    "ctaText": "Nuestro equipo está preparado para asesorarte en tu camino hacia el empleo o para colaborar con tu empresa.",
+    "ofertaFormativa": {
+      "sectionTitle": "Formación y empleo",
+      "sectionDesc": "Elige un itinerario y descubre cómo acompañamos cada proceso con aprendizaje práctico, orientación y conexión con empresas.",
+      "gradoBasico": {
+        "title": "Grado Básico",
+        "eyebrow": "Itinerarios iniciales",
+        "btnText": "Ver Cursos de Grado Básico",
+        "text": "En el Grado Básico de Peñascal aprenderás trabajando mediante un sistema práctico basado en proyectos reales. Esta metodología fomenta la motivación profesional y te permite elegir entre entrar al mercado laboral o continuar tu formación."
+      },
+      "gradoMedio": {
+        "title": "Grado Medio",
+        "eyebrow": "Titulación técnica",
+        "btnText": "Ver Cursos de Grado Medio",
+        "text": "El Grado Medio ofrece una titulación técnica mediante un sistema educativo práctico que te acredita como experto en tu especialidad. Nuestra formación está plenamente orientada al empleo, logrando altísimas tasas de inserción laboral."
+      },
+      "fp": {
+        "title": "Formación Profesional",
+        "eyebrow": "Aprender trabajando",
+        "btnText": "Ver Formación",
+        "text": "Bajo el lema \"Aprender Trabajando\", nuestra FP combina pedagogía innovadora con una sólida formación humana y técnica. La formación dual y las prácticas en empresas reales te brindan una experiencia inmejorable."
+      },
+      "empleo": {
+        "title": "Formación para el empleo",
+        "eyebrow": "Activación sociolaboral",
+        "btnText": "Ver Formación",
+        "text": "Ofrecemos cursos para personas ocupadas y desempleadas que buscan una verdadera activación sociolaboral mediante una metodología práctica. Nuestras instalaciones replican fielmente la maquinaria de las empresas."
+      },
+      "imageLabel": "Formación"
+    }
+  },
+  "contact": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbContact": "Contacto",
+    "pageTitle": "Hablemos",
+    "pageSubtitle": "Estamos aquí para ayudarte. Rellena el formulario o utiliza nuestra información de contacto directa.",
+    "infoTitle": "Información principal",
+    "infoDesc": "Nuestra sede central en Bilbao.",
+    "addressLabel": "Dirección",
+    "address": "Barrio Peñascal, s/n. 48002 Bilbao",
+    "phoneLabel": "Teléfono",
+    "hoursLabel": "Horario",
+    "hours": "Lunes a Viernes: 8:00 - 15:00",
+    "mapHint": "Ver en Google Maps",
+    "formTitle": "Envíanos un mensaje",
+    "nameLabel": "Nombre y apellidos *",
+    "namePlaceholder": "Tu nombre",
+    "emailLabel": "Email *",
+    "emailPlaceholder": "tu@email.com",
+    "phonePlaceholder": "Tu teléfono",
+    "subjectLabel": "Asunto *",
+    "subjectPlaceholder": "Selecciona un asunto",
+    "subjectOptions": {
+      "courses": "Información sobre cursos",
+      "orientation": "Servicio de orientación",
+      "companies": "Colaboración para empresas",
+      "other": "Otros"
+    },
+    "messageLabel": "Mensaje *",
+    "messagePlaceholder": "¿En qué podemos ayudarte?",
+    "privacyText": "He leído y acepto la",
+    "privacyLink": "Política de Privacidad",
+    "privacyRequired": "*",
+    "alertSuccess": "Gracias por tu mensaje. Nos pondremos en contacto contigo pronto."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "subtitle": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
+    "backButton": "Volver al inicio"
+  },
+  "formacion": {
+    "breadcrumb": "Formación",
+    "pageTitle": "Programas Formativos",
+    "pageSubtitle": "Capacitación técnica de alta calidad adaptada a las necesidades reales del mercado laboral actual.",
+    "sectionTitle": "Nuestra oferta",
+    "sectionDesc": "Descubre nuestros programas diseñados para la inserción laboral efectiva.",
+    "basicDegree": {
+      "title": "Grado Básico",
+      "desc": "Para jóvenes que quieren iniciarse en una profesión y obtener la titulación básica obligatoria.",
+      "features": ["Mantenimiento de Vehículos", "Cocina y Restauración", "Fabricación y Montaje"],
+      "btnText": "Ver Grado Básico"
+    },
+    "mediumDegree": {
+      "title": "Grado Medio",
+      "desc": "Especialización técnica para adquirir competencias profesionales completas y acceso al empleo.",
+      "features": ["Mecanizado Industrial", "Gastronomía Profesional", "Electromecánica"],
+      "btnText": "Ver Grado Medio"
+    },
+    "empleo": {
+      "title": "Formación para el Empleo",
+      "desc": "Cursos intensivos dirigidos a personas desempleadas para la mejora de su empleabilidad inmediata.",
+      "features": ["Certificados de Profesionalidad", "Formación 100% subvencionada", "Orientación laboral directa"],
+      "btnText": "Ver Formación Empleo"
+    },
+    "methodology": {
+      "eyebrow": "Cómo enseñamos",
+      "title": "Metodología Peñascal",
+      "desc": "Apostamos por una formación práctica y humana, donde el alumno es el centro de un proceso de aprendizaje basado en la realidad industrial.",
+      "perks": {
+        "tutoring": "Tutorización individual",
+        "workshops": "Talleres especializados",
+        "network": "Red de 500+ empresas"
+      }
+    },
+    "ctaTitle": "¿Necesitas orientación?",
+    "ctaText": "Nuestro servicio de orientación te ayudará a elegir el itinerario más adecuado para tu situación personal y profesional.",
+    "ctaBtn": "Solicitar Cita"
+  },
+  "gradoBasico": {
+    "breadcrumbFormacion": "Formación",
+    "breadcrumbTitle": "Grado Básico",
+    "pageTitle": "Formación Profesional de Grado Básico",
+    "pageSubtitle": "Una oportunidad para retomar tus estudios, aprender un oficio y obtener el título de Graduado en ESO.",
+    "introTitle": "¿Qué es el Grado Básico?",
+    "introDesc": "Son ciclos formativos de dos años de duración dirigidos a jóvenes que prefieren un aprendizaje práctico y quieren orientarse hacia el mundo laboral o continuar con un Grado Medio.",
+    "benefits": {
+      "esoTitle": "Título de Graduado en ESO",
+      "fpTitle": "Título Profesional Básico",
+      "accessTitle": "Acceso a Grado Medio"
+    },
+    "infoCard": {
+      "title": "Aprender Haciendo",
+      "desc": "El 70% de la formación se realiza en talleres prácticos."
+    },
+    "specialtiesEyebrow": "Nuestra Oferta",
+    "specialtiesTitle": "Especialidades disponibles",
+    "specialties": {
+      "vehicles": { "title": "Mantenimiento de Vehículos", "desc": "Aprende las bases de la mecánica y electricidad del automóvil en talleres reales." },
+      "cooking": { "title": "Cocina y Restauración", "desc": "Iníciate en el mundo de la hostelería cocinando en nuestra escuela-restaurante." },
+      "manufacturing": { "title": "Fabricación y Montaje", "desc": "Descubre el mundo del metal, la soldadura y el montaje industrial." },
+      "commercial": { "title": "Servicios Comerciales", "desc": "Aprende gestión de almacén, atención al cliente y técnicas de venta." }
+    },
+    "requirementsTitle": "Requisitos de acceso",
+    "requirements": {
+      "age": { "label": "Edad", "desc": "Tener entre 15 y 17 años cumplidos en el año natural." },
+      "academic": { "label": "Nivel académico", "desc": "Haber cursado el primer ciclo de ESO (o excepcionalmente 2º de ESO)." },
+      "recommendation": { "label": "Recomendación", "desc": "Contar con la recomendación del equipo docente de tu centro actual." }
+    },
+    "ctaTitle": "¿Te interesa empezar?",
+    "ctaText": "El periodo de preinscripción suele ser en mayo/junio. Llámanos y te informamos sin compromiso.",
+    "callBtn": "Llamar ahora",
+    "infoBtn": "Solicitar info"
+  },
+  "gradoMedio": {
+    "breadcrumbFormacion": "Formación",
+    "breadcrumbTitle": "Grado Medio",
+    "pageTitle": "Formación Profesional de Grado Medio",
+    "pageSubtitle": "Especialización técnica de calidad para acceder con garantías al mercado laboral o continuar hacia un Grado Superior.",
+    "infoCard": {
+      "title": "Profesionalización",
+      "desc": "Formación técnica avanzada conectada directamente con las necesidades de la industria actual."
+    },
+    "introTitle": "Ciclos de Grado Medio",
+    "introDesc": "Nuestros ciclos de Grado Medio tienen una duración de 2.000 horas (2 años) e incluyen un periodo fundamental de Formación en Centros de Trabajo (FCT) en empresas líderes del sector.",
+    "perks": {
+      "title": "Título de Técnico/a Oficial",
+      "practice": "Prácticas en empresas reales",
+      "employability": "Alta tasa de empleabilidad"
+    },
+    "specialtiesEyebrow": "Áreas Técnicas",
+    "specialtiesTitle": "Especialidades de Grado Medio",
+    "specialties": {
+      "mechanics": { "title": "Mecanizado", "desc": "Especialízate en procesos de fabricación por arranque de viruta, control numérico (CNC) y metrología." },
+      "cooking": { "title": "Cocina y Gastronomía", "desc": "Domina las técnicas culinarias profesionales, gestión de cocina y seguridad alimentaria." },
+      "electromechanics": { "title": "Electromecánica de Vehículos", "desc": "Formación avanzada en diagnosis de averías, sistemas eléctricos y mantenimiento de motores." },
+      "commercial": { "title": "Actividades Comerciales", "desc": "Gestión integral del comercio, marketing en el punto de venta y operaciones de almacenaje." }
+    },
+    "requirementsTitle": "Requisitos de acceso",
+    "requirementsList": [
+      "Título de Graduado en ESO",
+      "Título de Formación Profesional Básica",
+      "Superar la prueba de acceso a ciclos formativos",
+      "Título de Técnico o Técnico Auxiliar"
+    ],
+    "careerPathsTitle": "Salidas profesionales",
+    "careerPathsDesc": "Al finalizar, estarás cualificado para incorporarte directamente al mercado laboral en tu sector de especialización o para acceder a:",
+    "careerPaths": ["Ciclos de Grado Superior", "Bachillerato", "Cursos de especialización técnica"],
+    "ctaTitle": "Especialízate con Peñascal",
+    "ctaText": "Nuestros talleres e instructores te preparan para los retos reales de tu futura profesión.",
+    "infoBtn": "Solicitar Información",
+    "companiesBtn": "Empresas colaboradoras"
+  },
+  "formacionEmpleo": {
+    "breadcrumbFormacion": "Formación",
+    "breadcrumbTitle": "Formación para el Empleo",
+    "pageTitle": "Formación para el Empleo",
+    "pageSubtitle": "Cursos prácticos y Certificados de Profesionalidad diseñados para mejorar tu empleabilidad y conectarte con el mercado laboral actual.",
+    "introTitle": "Certificados de Profesionalidad",
+    "introDesc": "Son titulaciones oficiales con validez en todo el territorio nacional que acreditan que una persona tiene las capacidades para desempeñar una profesión. Es la vía más rápida y directa para volver al mundo laboral con una garantía oficial.",
+    "features": {
+      "official": { "title": "Título Oficial", "desc": "Acreditado por el SEPE / Lanbide." },
+      "intensive": { "title": "Formación Intensiva", "desc": "Enfoque 100% práctico y ágil." }
+    },
+    "highlightCard": {
+      "title": "Impulsa tu carrera",
+      "desc": "Formación gratuita para personas desempleadas cofinanciada por fondos europeos y autonómicos."
+    },
+    "coursesEyebrow": "Oferta Actual",
+    "coursesTitle": "Próximas convocatorias",
+    "courses": {
+      "restaurant": { "title": "Operaciones de Restaurante y Bar", "level": "Certificado Nivel 1", "duration": "290h" },
+      "electrical": { "title": "Mantenimiento de Sistemas Eléctricos", "level": "Certificado Nivel 2", "duration": "420h" },
+      "welding": { "title": "Soldadura Oxigás y MIG/MAG", "level": "Certificado Nivel 2", "duration": "600h" },
+      "admin": { "title": "Actividades de Gestión Administrativa", "level": "Certificado Nivel 2", "duration": "880h" }
+    },
+    "durationLabel": "Duración",
+    "inscriptionTitle": "¿Cómo inscribirse?",
+    "steps": {
+      "1": { "title": "Infórmate", "desc": "Elige el curso que mejor se adapte a tu perfil y objetivos." },
+      "2": { "title": "Inscripción", "desc": "A través de Lanbide o contactando directamente con nosotros." },
+      "3": { "title": "Selección", "desc": "Realizamos una pequeña entrevista para confirmar tu idoneidad para el curso." }
+    },
+    "consultPlace": "Consultar plaza",
+    "ctaTitle": "¿Necesitas ayuda para decidir?",
+    "ctaText": "Nuestro servicio de orientación te ayudará a elegir el itinerario más adecuado para tu situación.",
+    "orientationBtn": "Servicio de Orientación"
+  },
+  "cooperativa": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbTitle": "La Cooperativa",
+    "pageTitle": "Quiénes Somos",
+    "pageSubtitle": "Grupo Peñascal es una iniciativa social sin ánimo de lucro dedicada a la integración y el desarrollo personal, social y laboral de personas en situación de vulnerabilidad o exclusión.",
+    "about": {
+      "p1": "Somos una entidad de iniciativa social, sin ánimo de lucro y declarada de utilidad pública, que nació en Bilbao en 1986 y cuyo propósito se centra en integrar en la sociedad a personas que están en situación o en riesgo de exclusión por diversas circunstancias personales, académicas o sociales.",
+      "p2": "Promovemos una cualificación profesional, con valores y actitudes de responsabilidad y solidaridad, para que las personas sean soberanas y protagonistas activas, en sus propias vidas y en la sociedad.",
+      "p3": "En Peñascal Kooperatiba tenemos como misión la integración de las personas, especialmente aquellas en situación de desventaja y para ello trabajamos en su formación y cualificación profesional, activación laboral, la creación de empleo, fomentando actitudes y valores solidarios y de ciudadanía. Atendemos a personas que necesitan un cambio positivo en sus competencias profesionales, personales y sociales, ayudándolas a encontrar la motivación y acompañándolas a recorrer un itinerario integral para poder vivir integradas en nuestra sociedad.",
+      "p4": "Trabajamos como titulares de varios centros formativos en distintas zonas del País Vasco y Navarra en los que aprenden desde jóvenes de 14 años hasta personas adultas de hasta 65 años. En nuestros espacios formativos las personas aprenden enseñanzas del sistema educativo (FP, Educación Básica para Personas Adultas, Programas Complementarios de Escolarización), o realizan acciones de formación profesional para el empleo o actuaciones de mejora de su situación personal y laboral a lo largo de la vida.",
+      "p5": "Además de la actividad en el plano formativo, estamos comprometidos con el empleo. Colaboramos activamente con los Servicios de Empleo, realizamos orientación para el empleo e intermediamos con las empresas para lograr que los usuarios logren un empleo.",
+      "p6": "Conscientes también de la necesidad de contribuir en la generación de riqueza en nuestro entorno, creamos y gestionamos empresas de inserción que respetan los valores y el estilo de la entidad."
+    },
+    "mission": {
+      "title": "Nuestra Misión",
+      "desc": "Promover la inclusión social y laboral a través de la formación integral, la orientación personalizada y la creación de empleo en empresas de inserción, apostando por el desarrollo del entorno comunitario."
+    },
+    "values": {
+      "title": "Nuestros Valores",
+      "commitment": { "title": "Compromiso Social", "desc": "Trabajamos para y con las personas que más lo necesitan." },
+      "diversity": { "title": "Igualdad y Diversidad", "desc": "Apostamos por una sociedad inclusiva donde todos sumamos." },
+      "sustainability": { "title": "Sostenibilidad", "desc": "Desarrollamos proyectos viables con impacto positivo." }
+    },
+    "timeline": {
+      "eyebrow": "Nuestra trayectoria",
+      "title": "Más de 35 años de historia",
+      "items": {
+        "1986": { "title": "El inicio", "desc": "Fundación en el barrio bilbaíno de Rekaldeberri (Peñascal) como respuesta al alto desempleo juvenil." },
+        "1999": { "title": "Empresas de Inserción", "desc": "Creación de las primeras unidades productivas para generar empleo real de tránsito." },
+        "2010": { "title": "Expansión territorial", "desc": "Apertura de nuevos centros en Bizkaia, Gipuzkoa y Navarra para ampliar el impacto." },
+        "present": { "title": "Consolidación", "desc": "Un equipo de más de 200 profesionales atendiendo a más de 3.500 personas anualmente." }
+      }
+    },
+    "transparency": {
+      "title": "Compromiso con la Transparencia",
+      "desc": "Como entidad declarada de Utilidad Pública, gestionamos nuestros recursos con rigor y responsabilidad, rindiendo cuentas ante la sociedad.",
+      "annualReport": "Memoria Anual",
+      "auditedAccounts": "Cuentas Auditadas"
+    }
+  },
+  "queHacemos": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbCoop": "La Cooperativa",
+    "breadcrumbTitle": "Qué Hacemos",
+    "pageTitle": "Qué Hacemos",
+    "pageSubtitle": "Nuestra labor se centra en transformar vidas a través de la educación, el empleo digno y el apoyo social continuo.",
+    "pillars": {
+      "eyebrow": "Nuestro Enfoque",
+      "title": "Pilares de nuestra intervención",
+      "training": { "title": "Formación para la vida", "desc": "No solo enseñamos oficios, acompañamos en el crecimiento personal y social de cada individuo." },
+      "employment": { "title": "Empleo con Propósito", "desc": "Creamos entornos de trabajo reales donde el aprendizaje se transforma en experiencia profesional." },
+      "intervention": { "title": "Intervención Cercana", "desc": "Acompañamiento integral para superar barreras y construir proyectos de vida autónomos." }
+    },
+    "impact": {
+      "title": "Impacto que transforma",
+      "desc": "Los números reflejan nuestro compromiso, pero las historias de éxito de cada persona son nuestro verdadero motor.",
+      "insertion": "Inserción laboral",
+      "people": "Personas atendidas",
+      "partnerCompanies": "Empresas colaboradoras",
+      "years": "Años de impacto"
+    },
+    "areas": {
+      "educationChip": "Educación",
+      "educationTitle": "Formación Profesional y Básica",
+      "educationDesc": "Ofrecemos itinerarios formativos adaptados a diferentes niveles, desde el Grado Básico hasta el Grado Medio, además de formación específica para el empleo y certificados de profesionalidad.",
+      "educationFeatures": ["Talleres industriales propios", "Metodología práctica (aprender haciendo)", "Orientación académica personalizada"],
+      "educationBtn": "Ver oferta formativa",
+      "employmentChip": "Empleo",
+      "employmentTitle": "Empresas de Inserción",
+      "employmentDesc": "Gestionamos unidades productivas reales en sectores como hostelería, automoción y servicios, donde las personas pueden realizar su primer contacto con el mercado laboral en un entorno protegido.",
+      "employmentFeatures": ["Contratos de inserción", "Entornos de producción real", "Tránsito al mercado laboral ordinario"],
+      "employmentBtn": "Nuestras empresas"
+    },
+    "cta": {
+      "title": "¿Quieres saber más?",
+      "desc": "Estamos encantados de explicarte en detalle nuestra forma de trabajar.",
+      "contactBtn": "Contactar ahora",
+      "aboutBtn": "Más sobre nosotros"
+    }
+  },
+  "cooperan": {
+    "chip": "Empresas",
+    "pageTitle": "Cooperan con Nosotros",
+    "pageSubtitle": "Construimos puentes entre la formación y el mercado laboral real gracias a una red de más de 500 empresas colaboradoras.",
+    "intro": {
+      "title": "Uniendo talento y oportunidad",
+      "desc": "La colaboración con el tejido empresarial es fundamental para nuestra misión. No solo proporcionamos perfiles técnicos preparados, sino que facilitamos una integración laboral exitosa y sostenible.",
+      "perks": { "pool": "Bolsa de empleo", "filtered": "Candidatos filtrados", "followup": "Seguimiento técnico" }
+    },
+    "visualLabel": "Red de Colaboración",
+    "modalitiesTitle": "Vías de cooperación",
+    "modalities": {
+      "fct": { "title": "Prácticas (FCT)", "desc": "Acoge a alumnos en su fase final de formación para realizar prácticas no laborales en tu empresa." },
+      "hiring": { "title": "Contratación", "desc": "Accede a nuestra bolsa de empleo con perfiles técnicos cualificados y acompañamiento en la inserción." },
+      "social": { "title": "Proyectos Sociales", "desc": "Colabora en iniciativas de Responsabilidad Social Corporativa (RSC) con impacto local directo." }
+    },
+    "insertionCompanies": {
+      "title": "Nuestras Empresas de Inserción",
+      "desc": "Son unidades productivas propias que funcionan bajo lógica de mercado pero con un fin social: proporcionar experiencia laboral real a personas en proceso de inserción.",
+      "sectors": ["Hostelería y Catering", "Automoción y Talleres", "Mantenimiento y Reformas"]
+    },
+    "entitiesTitle": "Entidades que hacen posible nuestro trabajo",
+    "entitiesSubtitle": "Agradecemos el apoyo de las instituciones públicas y organizaciones privadas.",
+    "publicEntities": "Entidades Públicas",
+    "privateEntities": "Organizaciones Privadas",
+    "publicList": [
+      "FSE-Fondo Social Europeo (FSE+, Proyecto SENDOTU)",
+      "FEDER- Fondo Europeo de Desarrollo Regional",
+      "SEPE - Servicio Público de Empleo Estatal",
+      "Gobierno Vasco (Empleo, Educación, Lanbide)",
+      "Gobierno de Navarra (Servicio Navarro de Empleo)",
+      "Diputación Foral de Bizkaia (Acción Social, Empleo)",
+      "Diputación Foral de Gipuzkoa (Política Social)",
+      "Ayuntamiento de Bilbao (Bilbao Ekintza, Salud, Acción Social)",
+      "Ayuntamiento de Tolosa (Tolosaldea Garatzen)",
+      "Mancomunidad Lea-Artibai",
+      "Behargintza (Galdakao, Basauri, Txorierri, Getxolan)"
+    ],
+    "privateList": [
+      "Obra Social BBK",
+      "Fundación Bancaria \"la Caixa\" (Incorpora, Pobreza Infantil)",
+      "Fundación Víctor Tapia y Dolores Sainz",
+      "CEPES, Confederación Empresarial Española",
+      "Fundación Accenture",
+      "Porticus Iberia",
+      "Erkide, Federación de Cooperativas",
+      "ROBODK, Software de simulación"
+    ],
+    "testimonial": "\"Colaborar con Peñascal nos permite incorporar personal con una base técnica sólida y, sobre todo, con una actitud y compromiso excepcionales.\"",
+    "testimonialAuthor": "— Empresa del sector Industrial (Bizkaia)",
+    "ctaTitle": "¿Tu empresa quiere sumarse?",
+    "ctaDesc": "Únete a la red de empresas que apuestan por el talento local y la responsabilidad social.",
+    "ctaBtn": "Contactar con Empresas"
+  },
+  "orientacion": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbCoop": "La Cooperativa",
+    "breadcrumbTitle": "Servicio de Orientación",
+    "pageTitle": "Servicio de Orientación",
+    "pageSubtitle": "Te acompañamos en la toma de decisiones sobre tu futuro profesional y personal, ofreciéndote herramientas para alcanzar tus metas.",
+    "introTitle": "Un recurso para todos",
+    "introP1": "Todas las personas que entran en nuestro itinerario de formación tienen acceso a los recursos de Peñascal para la mejora de sus posibilidades de búsqueda de empleo. Además, ofrecemos estos recursos a cualquier persona que se acerque, en especial aquellas que pertenecen a colectivos con mayor dificultad para encontrar empleo.",
+    "introP2": "Nuestro equipo de orientadores y trabajadores sociales trabaja de forma cercana y humanizada. Creemos en el potencial de cada persona y nuestro objetivo es que encuentres el lugar donde mejor puedas desarrollarte.",
+    "stats": { "personalized": "Personalizado", "free": "Sin coste" },
+    "servicesEyebrow": "Qué ofrecemos",
+    "servicesTitle": "Cómo podemos ayudarte",
+    "services": {
+      "itineraries": { "title": "Itinerarios Personalizados", "desc": "Diseñamos contigo una hoja de ruta adaptada a tus intereses, capacidades y situación personal." },
+      "jobSearch": { "title": "Búsqueda de Empleo", "desc": "Te enseñamos a redactar tu CV, preparar entrevistas y utilizar portales de empleo de forma eficaz." },
+      "social": { "title": "Acompañamiento Social", "desc": "Apoyo integral para resolver dificultades personales o familiares que puedan frenar tu inserción." },
+      "tests": { "title": "Pruebas de Acceso", "desc": "Información y apoyo para inscribirte en las pruebas de acceso a ciclos de Grado Medio o Superior." }
+    },
+    "team": {
+      "title": "Un equipo multidisciplinar",
+      "desc": "Contamos con psicólogos, pedagogos y trabajadores sociales con amplia experiencia en la inserción sociolaboral.",
+      "features": ["Atención en castellano y euskera", "Red de contactos con servicios sociales", "Seguimiento tras la inserción"]
+    },
+    "ctaTitle": "Pide tu cita hoy mismo",
+    "ctaDesc": "Puedes venir a vernos o llamarnos para concertar una primera entrevista de acogida.",
+    "appointmentBtn": "Solicitar Cita",
+    "callBtn": "Llamar 944 43 00 00"
+  },
+  "colabora": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbTitle": "Colabora",
+    "pageTitle": "Colabora con nosotros",
+    "pageSubtitle": "Existen muchas formas de formar parte de la familia Peñascal. Tu apoyo es clave para seguir generando oportunidades.",
+    "volunteering": {
+      "title": "Voluntariado",
+      "desc": "Comparte tus conocimientos técnicos o acompaña a personas en su proceso de aprendizaje. Tu tiempo es el regalo más valioso."
+    },
+    "contributions": {
+      "title": "Aportaciones",
+      "desc": "Apoya económicamente nuestros proyectos de intervención social o dona equipamiento técnico para nuestros talleres."
+    },
+    "ethicTitle": "Compromiso Ético",
+    "ethicDesc": "Todas las colaboraciones se gestionan bajo estrictos criterios de transparencia y ética social."
+  },
+  "apoyandoProyectos": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbColabora": "Colabora",
+    "breadcrumbTitle": "Proyectos sin recursos",
+    "pageTitle": "Apoyando proyectos sin recursos",
+    "pageSubtitle": "Tu solidaridad nos permite sostener iniciativas vitales que no cuentan con financiación pública suficiente.",
+    "introTitle": "Transformando realidades",
+    "introDesc": "En Peñascal creemos que nadie debe quedarse atrás. Por eso, destinamos recursos a proyectos de intervención directa que responden a necesidades urgentes de nuestra comunidad.",
+    "projects": {
+      "children": { "title": "Apoyo a la Infancia", "desc": "Programas de refuerzo educativo y alimentación saludable para niños y niñas en riesgo de exclusión." },
+      "housing": { "title": "Vivienda Social", "desc": "Iniciativas para facilitar el acceso a una vivienda digna y acompañamiento en la autonomía residencial." },
+      "digital": { "title": "Brecha Digital", "desc": "Dotación de equipos informáticos y formación en competencias digitales básicas para familias." }
+    },
+    "impactTitle": "¿Cómo se utiliza tu ayuda?",
+    "impactList": [
+      "100% de la donación destinada directamente al proyecto.",
+      "Seguimiento y reporte periódico de resultados.",
+      "Transparencia total avalada por auditorías externas."
+    ]
+  },
+  "donandoProductos": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbColabora": "Colabora",
+    "breadcrumbTitle": "Donando productos",
+    "pageTitle": "Donando productos y servicios",
+    "pageSubtitle": "Da una segunda vida a tus activos ayudando en la formación de futuros profesionales.",
+    "introTitle": "Economía circular con impacto social",
+    "introDesc": "Muchas empresas renuevan sus equipos cuando todavía tienen una vida útil valiosa para la enseñanza. Tus donaciones nos permiten mantener nuestros talleres a la vanguardia tecnológica.",
+    "categories": {
+      "machinery": {
+        "title": "Maquinaria y Herramientas",
+        "items": ["Tornos y fresadoras", "Equipos de soldadura", "Herramienta manual", "Maquinaria de hostelería"]
+      },
+      "tech": {
+        "title": "Informática y Tecnología",
+        "items": ["Ordenadores y portátiles", "Impresoras y escáneres", "Componentes de red", "Software con licencia"]
+      },
+      "furniture": {
+        "title": "Mobiliario y Otros",
+        "items": ["Mesas y sillas de oficina", "Estanterías industriales", "Vehículos comerciales", "Excedentes de stock"]
+      }
+    },
+    "processTitle": "¿Cómo es el proceso?",
+    "steps": {
+      "1": { "title": "Contacto", "desc": "Cuéntanos qué quieres donar y su estado." },
+      "2": { "title": "Valoración", "desc": "Nuestro equipo técnico evalúa la utilidad pedagógica." },
+      "3": { "title": "Recogida", "desc": "Coordinamos la logística para retirar el material." },
+      "4": { "title": "Certificación", "desc": "Emitimos el certificado de donación para deducción fiscal." }
+    }
+  },
+  "contratandoEmpresas": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbColabora": "Colabora",
+    "breadcrumbTitle": "Contratando empresas",
+    "pageTitle": "Contratando empresas de inserción",
+    "pageSubtitle": "Convierte tus costes operativos en inversión social de alto impacto.",
+    "introTitle": "Calidad profesional con alma social",
+    "introDesc": "Nuestras Empresas de Inserción (EI) compiten en el mercado libre ofreciendo servicios de máxima calidad. Al contratarlas, estás cumpliendo con la LGD (Ley General de Discapacidad) y potenciando tu Responsabilidad Social Corporativa.",
+    "services": {
+      "catering": { "name": "Peñascal Catering", "desc": "Servicios de catering para eventos corporativos y celebraciones con menús de alta calidad y fin social." },
+      "workshops": { "name": "Talleres Peñascal", "desc": "Fabricación metálica, carpintería y mantenimiento industrial con estándares de mercado." },
+      "services": { "name": "Peñascal Servicios", "desc": "Limpieza, mantenimiento de edificios, jardinería y reformas integrales para comunidades y empresas." }
+    },
+    "quoteBtn": "Solicitar presupuesto",
+    "benefitsTitle": "Ventajas para tu empresa",
+    "benefits": [
+      "Cumplimiento de cuotas legales (LGD).",
+      "Mejora de la imagen de marca y reputación.",
+      "Calidad certificada en todos los procesos.",
+      "Precios competitivos de mercado."
+    ]
+  },
+  "apoyandoInsercion": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbColabora": "Colabora",
+    "breadcrumbTitle": "Acompañando la inserción",
+    "pageTitle": "Apoyando la inserción laboral",
+    "pageSubtitle": "El empleo es el motor definitivo de la inclusión social. Ayúdanos a completar el ciclo formativo.",
+    "introTitle": "Tu empresa como agente de cambio",
+    "introDesc": "La formación no es completa si no hay una oportunidad real de demostrar lo aprendido. Buscamos empresas comprometidas que quieran abrir sus puertas a nuevos talentos con ganas de trabajar.",
+    "modalities": {
+      "fct": { "title": "Prácticas (FCT)", "desc": "Acoge alumnos para sus 400 horas de prácticas obligatorias. Sin coste salarial para la empresa." },
+      "alternance": { "title": "Contrato en Alternancia", "desc": "Combina formación y trabajo remunerado con importantes bonificaciones en la seguridad social." },
+      "pool": { "title": "Bolsa de Empleo", "desc": "Publica tus ofertas y nosotros preseleccionamos a los candidatos que mejor encajan." }
+    },
+    "consultConditions": "Consultar condiciones",
+    "valuesTitle": "¿Qué aportamos a tu empresa?",
+    "values": {
+      "accompaniment": "Acompañamiento: Seguimiento técnico durante todo el periodo de inserción.",
+      "preselection": "Preselección: Perfiles que cumplen con tus requisitos técnicos y de actitud.",
+      "advice": "Asesoría: Información sobre ayudas y subvenciones por contratación social."
+    }
+  },
+  "noticias": {
+    "breadcrumbHome": "Inicio",
+    "breadcrumbTitle": "Noticias",
+    "pageTitle": "Noticias",
+    "pageSubtitle": "Mantente al día de todas las novedades, cursos, convenios y la actividad institucional del Grupo Peñascal.",
+    "news1": { "tag": "Formación", "title": "Nueva convocatoria de cursos 2024: Automoción y Hostelería", "excerpt": "Abrimos el plazo de inscripción para los nuevos módulos formativos que comenzarán el próximo septiembre.", "date": "12 Mayo 2024" },
+    "news2": { "tag": "Empresas", "title": "Convenio con la Asociación de Hostelería de Bizkaia", "excerpt": "Firmamos un nuevo acuerdo que garantizará prácticas remuneradas a más de 50 alumnos de la cooperativa.", "date": "08 Mayo 2024" },
+    "news3": { "tag": "Institucional", "title": "Publicada nuestra Memoria de Sostenibilidad 2023", "excerpt": "Ya está disponible el informe anual donde recogemos el impacto social y medioambiental de nuestra actividad.", "date": "25 Abril 2024" },
+    "news4": { "tag": "Formación", "title": "Alumnos de mecanizado ganan el premio de innovación", "excerpt": "Un proyecto desarrollado íntegramente en nuestros talleres es reconocido a nivel autonómico.", "date": "14 Abril 2024" },
+    "news5": { "tag": "Institucional", "title": "Visita institucional a nuestras instalaciones en Bolueta", "excerpt": "Representantes del Gobierno Vasco conocen de primera mano nuestros programas de inserción laboral.", "date": "02 Abril 2024" },
+    "news6": { "tag": "Empresas", "title": "Peñascal inaugura una nueva línea de montaje para automoción", "excerpt": "Esta nueva instalación permitirá ampliar las competencias prácticas de nuestro alumnado en entornos reales.", "date": "18 Marzo 2024" }
+  },
+  "equipo": {
+    "title": "Tuani Coders",
+    "subtitle": "Equipo de desarrollo detrás de este proyecto",
+    "frontend": "Desarrollo Frontend",
+    "backend": "Desarrollo Backend",
+    "footer": "Proyecto desarrollado con dedicación para Peñascal Kooperatiba"
+  },
+  "router": {
+    "home": "Inicio - Peñascal Koop.",
+    "login": "Iniciar Sesión - Peñascal Koop.",
+    "verifyAdmin": "Verificación Admin - Peñascal Koop.",
+    "equipo": "Equipo - Tuani Coders",
+    "formacion": "Formación Profesional - Peñascal Koop.",
+    "gradoBasico": "Grado Básico - Peñascal Koop.",
+    "gradoMedio": "Grado Medio - Peñascal Koop.",
+    "formacionEmpleo": "Formación para el Empleo - Peñascal Koop.",
+    "cooperativa": "Quiénes Somos - Peñascal Koop.",
+    "queHacemos": "Qué Hacemos - Peñascal Koop.",
+    "cooperan": "Cooperan con Nosotros - Peñascal Koop.",
+    "orientacion": "Servicio de Orientación - Peñascal Koop.",
+    "colabora": "Colabora - Peñascal Koop.",
+    "apoyandoProyectos": "Apoyando Proyectos - Peñascal Koop.",
+    "donandoProductos": "Donando Productos - Peñascal Koop.",
+    "contratandoEmpresas": "Contratando Empresas - Peñascal Koop.",
+    "apoyandoInsercion": "Apoyando Inserción - Peñascal Koop.",
+    "noticias": "Noticias - Peñascal Koop.",
+    "contacto": "Contacto - Peñascal Koop.",
+    "notFound": "Página no encontrada - Peñascal Koop."
+  }
+}

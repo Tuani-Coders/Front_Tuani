@@ -1,0 +1,684 @@
+{
+  "lang": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "eu": "Euskara",
+    "ar": "العربية"
+  },
+  "common": {
+    "home": "Hasiera",
+    "training": "Heziketa",
+    "cooperative": "Kooperatiba",
+    "collaborate": "Kolaboratu",
+    "news": "Albisteak",
+    "contact": "Kontaktua",
+    "seeMore": "Gehiago ikusi",
+    "readMore": "Irakurri gehiago",
+    "readLess": "Gutxiago ikusi",
+    "learnMore": "Gehiago jakin",
+    "send": "Bidali",
+    "submit": "Mezua bidali",
+    "search": "Bilatu",
+    "close": "Itxi",
+    "open": "Ireki",
+    "next": "Hurrengoa",
+    "previous": "Aurrekoa",
+    "all": "Guztiak",
+    "yes": "Bai",
+    "no": "Ez",
+    "backToHome": "Itzuli hasierara",
+    "contactNow": "Kontaktatu orain",
+    "requestInfo": "Informazioa eskatu",
+    "requestAppointment": "Hitzordua eskatu",
+    "callNow": "Deitu orain",
+    "seeAllAreas": "Eremu guztiak ikusi",
+    "actualidad": "ALBISTEAK",
+    "howWeTeach": "Nola irakasten dugu",
+    "ourOffer": "Gure eskaintza",
+    "whatWeOffer": "Zer eskaintzen dugu",
+    "howCanWeHelp": "Nola lagundu dezakegu",
+    "ourApproach": "Gure Ikuspegia",
+    "ourTrajectory": "Gure ibilbidea",
+    "howToCollaborate": "Nola kolaboratu",
+    "collaborationWays": "Kolaboratzeko moduak",
+    "currentOffer": "Eskaintza Oraingoa",
+    "upcomingCalls": "Hurrengo deialdiak",
+    "howToRegister": "Nola matrikulatu?",
+    "ourInsertionCompanies": "Gure Enpresa Txertatzaileak",
+    "technicalAreas": "Eremu Teknikoak",
+    "institutional": "Instituzionala",
+    "howIsYourHelpUsed": "Nola erabiltzen da zure laguntza?",
+    "howIsTheProcess": "Nola da prozesua?",
+    "advantagesForYourCompany": "Zure enpresarentzako abantailak",
+    "whatDoWeBringToYourCompany": "Zer ekartzen dugu zure enpresara?",
+    "yourCompanyAsAgentOfChange": "Zure enpresa aldaketaren agente gisa",
+    "transparency": "Gardentasuna",
+    "ethicCommitment": "Konpromiso Etikoa",
+    "readAboutTransparency": "Irakurri gardentasunari buruz",
+    "wantToBeVolunteer": "Bolintario izan nahi dut",
+    "makeContribution": "Ekarpen bat egin",
+    "wantToCollaborateEconomically": "Ekonomikoki kolaboratu nahi dut",
+    "iHaveMaterialToDonate": "Materiala eman dezaket",
+    "wantToBeCollaboratingCompany": "Enpresa kolaboratzaile izan nahi dut",
+    "knowOurNetworkOfCompanies": "Ezagutu gure enpresen sarea",
+    "readArticle": "Artikulua irakurri"
+  },
+  "header": {
+    "location": "Kokapena",
+    "hello": "Kaixo",
+    "logout": "Irten",
+    "login": "Sartu",
+    "openMenu": "Ireki menua",
+    "closeMenu": "Itxi menua",
+    "nav": {
+      "home": "Hasiera",
+      "training": "Heziketa",
+      "trainingPro": "Lanbide Heziketa",
+      "basicDegree": "Oinarrizko Maila",
+      "mediumDegree": "Erdi Maila",
+      "trainingForEmployment": "Lanerako Heziketa",
+      "cooperative": "Kooperatiba",
+      "whoWeAre": "Nor gara",
+      "whatWeDo": "Zer egiten dugu",
+      "cooperateWithUs": "Gurekin kolaboratu",
+      "orientationService": "Orientazio Zerbitzua",
+      "collaborate": "Kolaboratu",
+      "supportingProjects": "Baliabiderik gabeko proiektuak lagunduz kolaboratu",
+      "donatingProducts": "Produktuak eta zerbitzuak emanaz kolaboratu",
+      "hiringCompanies": "Txertatze enpresak kontratatuz kolaboratu",
+      "supportingInsertion": "Lan txertakuntza lagunduz kolaboratu",
+      "news": "Albisteak",
+      "contact": "Kontaktua"
+    }
+  },
+  "footer": {
+    "resources": "BALIABIDEAK",
+    "training": "Heziketa",
+    "employment": "Enplegua",
+    "companies": "Enpresak",
+    "institutional": "INSTITUZIONALA",
+    "transparency": "Gardentasuna",
+    "team": "Taldea",
+    "news": "Albisteak",
+    "contactTitle": "KONTAKTUA",
+    "address": "C/ Ctra. Bilbao-Galdakao, 10 48004 BILBAO",
+    "brandDesc": "Gizarte-ekimeneko entitatea gara, irabazi-asmorik gabekoa eta 1986az geroztik erabil publikoko deklaratua.",
+    "legalNotice": "Lege Oharra",
+    "privacyPolicy": "Pribatasun Politika",
+    "cookies": "Cookie-ak",
+    "copyright": "Grupo Peñascal Kooperatiba. Eskubide guztiak erreserbatuta.",
+    "madeBy": "Webgune hau honek sortu du",
+    "tuaniCoders": "Tuani Coders",
+    "selectLanguage": "Hizkuntza",
+    "languages": {
+      "en": "Ingelesa (EN)",
+      "fr": "Frantsesa (FR)",
+      "eu": "Euskara (EU)",
+      "ar": "Arabiarra (AR)"
+    }
+  },
+  "home": {
+    "heroTitle": "Konpromiso soziala eta sustraia.",
+    "heroSubtitle": "Gure komunitatean gizarte-eta lan-txertakuntzarako aukera errealak sortzeko lanean dihardugu.",
+    "services": {
+      "training": {
+        "title": "Lanbide Heziketa",
+        "desc": "Lan-merkatuaren behar errealetarako egokitutako heziketa tekniko bikaina."
+      },
+      "jobSearch": {
+        "title": "Lan Bilaketa",
+        "desc": "Lan-munduan txertatzeko orientazio pertsonalizatua eta tresnak."
+      },
+      "insertionCompanies": {
+        "title": "Enpresa Txertatzaileak",
+        "desc": "Ingurune profesionaletan ikaskuntza praktikorako ekoizpen-unitate errealak."
+      },
+      "socialIntervention": {
+        "title": "Gizarte Interbentzioa",
+        "desc": "Ahultasun-egoeretan dauden kolektiboentzako laguntza integralak."
+      }
+    },
+    "news1": {
+      "title": "2024ko ikastaro-deialdi berria",
+      "desc": "Automozioko eta ostalaritzako modulu berrientzako matrikulazio-epea ireki dugu."
+    },
+    "news2": {
+      "title": "Tokiko enpresekin akordioa",
+      "desc": "Ikasleen praktiketarako enpresa-laguntzaileen sarean indartzen ari gara."
+    },
+    "news3": {
+      "title": "Lan-txertakuntzako istorioak",
+      "desc": "Gaur egun beren proiektuak zuzentzen dituzten ikasle ohiak elkarrizketatzen ditugu."
+    },
+    "ctaTitle": "Orientazioa behar duzu?",
+    "ctaText": "Gure taldea prest dago lanerako bidean aholkatzeko edo zure enpresarekin kolaboratzeko.",
+    "ofertaFormativa": {
+      "sectionTitle": "Heziketa eta enplegua",
+      "sectionDesc": "Aukera ezazu ibilbide bat eta ikasi nola laguntzen dugun prozesu bakoitza ikaskuntza praktikoarekin, orientazioarekin eta enpresekin harremanarekin.",
+      "gradoBasico": {
+        "title": "Oinarrizko Maila",
+        "eyebrow": "Ibilbide hasiberriak",
+        "btnText": "Ikusi Oinarrizko Mailako Ikastaroak",
+        "text": "Peñascaleko Oinarrizko Mailan lan eginez ikasiko duzu proiektu errealetan oinarritutako sistema praktiko baten bidez. Metodologia honek motibazio profesionala sustatzen du eta lan-merkatura sartzea edo zure heziketa jarraitzea aukeratzeko aukera ematen dizu."
+      },
+      "gradoMedio": {
+        "title": "Erdi Maila",
+        "eyebrow": "Titulazio teknikoa",
+        "btnText": "Ikusi Erdi Mailako Ikastaroak",
+        "text": "Erdi Mailak titulazio teknikoa eskaintzen du heziketa sistema praktiko baten bidez, eta zure espezialitatean aditu gisa akreditatzen zaitu. Gure heziketa enpleguarekin lotuta dago, txertakuntza-tasa altuak lortuz."
+      },
+      "fp": {
+        "title": "Lanbide Heziketa",
+        "eyebrow": "Lanean ikasten",
+        "btnText": "Ikusi Heziketa",
+        "text": "\"Lanean Ikasten\" leloaren pean, gure Lanbide Heziketak pedagogia berritzailea heziketa giza eta tekniko sendoarekin konbinatzen du. Ikaskuntza duala eta enpresa errealetan praktikak esperientzia paregabea eskaintzen dizute."
+      },
+      "empleo": {
+        "title": "Lanerako Heziketa",
+        "eyebrow": "Gizarte-aktibazioa",
+        "btnText": "Ikusi Heziketa",
+        "text": "Lan-duina eta langabezian dauden pertsonentzako ikastaroak eskaintzen ditugu, metodologia praktiko baten bidez gizarte-aktibazio egiazkoa bilatzen dutenak. Gure instalazioek enpresen makineria zehatz-mehatz erreproduzitzen dute."
+      },
+      "imageLabel": "Heziketa"
+    }
+  },
+  "contact": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbContact": "Kontaktua",
+    "pageTitle": "Hitz egun dezagun",
+    "pageSubtitle": "Laguntzeko hemen gaude. Bete ezazu inprimakia edo erabili gure kontaktu-informazio zuzena.",
+    "infoTitle": "Informazio nagusia",
+    "infoDesc": "Gure egoitza nagusia Bilbon.",
+    "addressLabel": "Helbidea",
+    "address": "Barrio Peñascal, s/n. 48002 Bilbao",
+    "phoneLabel": "Telefonoa",
+    "hoursLabel": "Ordutegia",
+    "hours": "Astelehenetik Ostiralera: 8:00 - 15:00",
+    "mapHint": "Ikusi Google Maps-en",
+    "formTitle": "Bidali iezaguzu mezu bat",
+    "nameLabel": "Izen-abizenak *",
+    "namePlaceholder": "Zure izena",
+    "emailLabel": "Emaila *",
+    "emailPlaceholder": "zu@email.com",
+    "phonePlaceholder": "Zure telefonoa",
+    "subjectLabel": "Gaia *",
+    "subjectPlaceholder": "Aukeratu gai bat",
+    "subjectOptions": {
+      "courses": "Ikastaroei buruzko informazioa",
+      "orientation": "Orientazio zerbitzua",
+      "companies": "Enpresetarako kolaborazioa",
+      "other": "Beste batzuk"
+    },
+    "messageLabel": "Mezua *",
+    "messagePlaceholder": "Nola lagundu dezakegu?",
+    "privacyText": "Irakurri eta onartzen dut",
+    "privacyLink": "Pribatasun Politika",
+    "privacyRequired": "*",
+    "alertSuccess": "Eskerrik asko zure mezuagatik. Laster jarriko gara zurekin harremanetan."
+  },
+  "notFound": {
+    "title": "Orrialdea ez da aurkitu",
+    "subtitle": "Barkatu, bilatzen ari zaren orrialdea ez da existitzen edo lekuz aldatu da.",
+    "backButton": "Itzuli hasierara"
+  },
+  "formacion": {
+    "breadcrumb": "Heziketa",
+    "pageTitle": "Heziketa Programak",
+    "pageSubtitle": "Lan-merkatuaren behar errealetarako egokitutako heziketa tekniko bikaina.",
+    "sectionTitle": "Gure eskaintza",
+    "sectionDesc": "Lan-txertakuntza eraginkorrerako diseinatutako programak ezagutu.",
+    "basicDegree": {
+      "title": "Oinarrizko Maila",
+      "desc": "Profesio batean hasteko eta titulazio oinarrizko nahitaezkoa lortzeko nahi duten gazteentzat.",
+      "features": ["Ibilgailuen Mantentzea", "Sukaldaritza eta Jatetxeak", "Fabrikazioa eta Muntaketa"],
+      "btnText": "Ikusi Oinarrizko Maila"
+    },
+    "mediumDegree": {
+      "title": "Erdi Maila",
+      "desc": "Gaitasun profesionalak eskuratzeko eta lanera sartzeko espezializazio teknikoa.",
+      "features": ["Mekanizazio Industrial", "Gastronomia Profesionala", "Elektromekanika"],
+      "btnText": "Ikusi Erdi Maila"
+    },
+    "empleo": {
+      "title": "Lanerako Heziketa",
+      "desc": "Langabeen enplegagarritasuna berehala hobetzeko zuzendutako ikastaro intentsiboak.",
+      "features": ["Profesionaltasun Ziurtagiriak", "%100 diru-laguntzako heziketa", "Orientazio lan zuzena"],
+      "btnText": "Ikusi Lanerako Heziketa"
+    },
+    "methodology": {
+      "eyebrow": "Nola irakasten dugu",
+      "title": "Peñascaleko Metodologia",
+      "desc": "Heziketa praktiko eta humanoa aldarrikatzen dugu, ikaslea errealitate industrialean oinarritutako ikaskuntza-prozesuaren erdian jarriz.",
+      "perks": {
+        "tutoring": "Tutoretza indibiduala",
+        "workshops": "Tailer espezializatuak",
+        "network": "500+ enpresen sarea"
+      }
+    },
+    "ctaTitle": "Orientazioa behar duzu?",
+    "ctaText": "Gure orientazio-zerbitzuak zure egoera pertsonal eta profesionalerako ibilbide egokiena aukeratzen lagunduko dizu.",
+    "ctaBtn": "Hitzordua eskatu"
+  },
+  "gradoBasico": {
+    "breadcrumbFormacion": "Heziketa",
+    "breadcrumbTitle": "Oinarrizko Maila",
+    "pageTitle": "Oinarrizko Lanbide Heziketa",
+    "pageSubtitle": "Aukera bat zure ikasketak berreskuratzeko, ofizio bat ikasteko eta DBHko titulua lortzeko.",
+    "introTitle": "Zer da Oinarrizko Maila?",
+    "introDesc": "Bi urteko ziklo formatiboak dira, ikaskuntza praktikoa nahiago duten gazteei zuzenduak eta lan-mundura bideratu nahi dutenak edo Erdi Mailarekin jarraitu nahi dutenak.",
+    "benefits": {
+      "esoTitle": "DBHko Graduatutako Titulua",
+      "fpTitle": "Oinarrizko Lanbide Titulua",
+      "accessTitle": "Erdi Mailarako Sarrera"
+    },
+    "infoCard": {
+      "title": "Eginaz Ikasten",
+      "desc": "Heziketaren %70a tailer praktikoetan egiten da."
+    },
+    "specialtiesEyebrow": "Gure Eskaintza",
+    "specialtiesTitle": "Eskuragarri dauden espezialitateak",
+    "specialties": {
+      "vehicles": { "title": "Ibilgailuen Mantentzea", "desc": "Mekanikaren eta autoaren elektrizitatearen oinarriak ikasi tailer errealetan." },
+      "cooking": { "title": "Sukaldaritza eta Jatetxeak", "desc": "Hastapenak ospitaletaritzaren munduan gure eskola-jatetxean sukaldatuz." },
+      "manufacturing": { "title": "Fabrikazioa eta Muntaketa", "desc": "Metalaren, soldaduraren eta muntaketa industrialaren mundua ezagutu." },
+      "commercial": { "title": "Zerbitzu Komertzialak", "desc": "Biltegi-kudeaketa, bezeroen arreta eta salmenta-teknikak ikasi." }
+    },
+    "requirementsTitle": "Sarbide-baldintzak",
+    "requirements": {
+      "age": { "label": "Adina", "desc": "15 eta 17 urte artean izatea urte naturalaren barruan." },
+      "academic": { "label": "Maila akademikoa", "desc": "DBHko lehen zikloa egin izana (edo salbuespenekin DBHko 2. maila)." },
+      "recommendation": { "label": "Gomendioa", "desc": "Zure zentro aktualeko talde pedagogikoaren gomendioa izatea." }
+    },
+    "ctaTitle": "Hasierarako interesatua?",
+    "ctaText": "Aurrematrikulazio-epea maiatza/ekaina izaten da normalean. Deitu gaitzazu eta konpromisorik gabe informatuko dizugu.",
+    "callBtn": "Deitu orain",
+    "infoBtn": "Informazioa eskatu"
+  },
+  "gradoMedio": {
+    "breadcrumbFormacion": "Heziketa",
+    "breadcrumbTitle": "Erdi Maila",
+    "pageTitle": "Erdi Mailako Lanbide Heziketa",
+    "pageSubtitle": "Kalitatezko espezializazio teknikoa bermeez lan-merkatura sartzeko edo Goi Mailara jarraitzeko.",
+    "infoCard": {
+      "title": "Profesionalizazioa",
+      "desc": "Gaur egungo industriaren beharrekin lotutako heziketa tekniko aurreratua."
+    },
+    "introTitle": "Erdi Mailako Zikloak",
+    "introDesc": "Gure Erdi Mailako zikloek 2.000 ordu (2 urte) irauten dute eta sektoreko enpresa liderratan Lan Zentroetan Prestakuntza (FCT) epe garrantzitsu bat barne hartzen dute.",
+    "perks": {
+      "title": "Teknikari Ofizialaren Titulua",
+      "practice": "Enpresa errealetan praktikak",
+      "employability": "Enplegagarritasun-tasa altua"
+    },
+    "specialtiesEyebrow": "Eremu Teknikoak",
+    "specialtiesTitle": "Erdi Mailako Espezialitateak",
+    "specialties": {
+      "mechanics": { "title": "Mekanizazioa", "desc": "Zura kentzeko fabrikazio-prozesuetan, kontrol numerikoan (CNC) eta metrolojian espezializatu." },
+      "cooking": { "title": "Sukaldaritza eta Gastronomia", "desc": "Sukaldaritza-teknika profesionalak, sukalde-kudeaketa eta elikagaien segurtasuna menperatu." },
+      "electromechanics": { "title": "Ibilgailuen Elektromekanika", "desc": "Arazoen diagnostikoan, sistema elektrikoetan eta motorren mantentzean aurreratutako heziketa." },
+      "commercial": { "title": "Jarduerak Komertzialak", "desc": "Merkataritza-kudeaketa integrala, salmenta-puntuko marketina eta biltegi-operazioak." }
+    },
+    "requirementsTitle": "Sarbide-baldintzak",
+    "requirementsList": [
+      "DBHko Graduatutako Titulua",
+      "Oinarrizko Lanbide Heziketaren Titulua",
+      "Formakuntza zikloetarako sarbide-proba gainditzea",
+      "Teknikari edo Teknikari Laguntzailearen Titulua"
+    ],
+    "careerPathsTitle": "Ibilbide profesionalak",
+    "careerPathsDesc": "Amaitzean, zure espezialitate-sektorean lan-merkatura sartzeko gaitasuna izango duzu edo honetara sartzeko aukera izango duzu:",
+    "careerPaths": ["Goi Mailako Zikloak", "Batxilergoa", "Espezializazio teknikoko ikastaroak"],
+    "ctaTitle": "Espezializatu Peñascalekin",
+    "ctaText": "Gure tailerrek eta irakasleek zure etorkizuneko profesioaren erronka errealetarako prestatuko zaituzte.",
+    "infoBtn": "Informazioa eskatu",
+    "companiesBtn": "Enpresa laguntzaileak"
+  },
+  "formacionEmpleo": {
+    "breadcrumbFormacion": "Heziketa",
+    "breadcrumbTitle": "Lanerako Heziketa",
+    "pageTitle": "Lanerako Heziketa",
+    "pageSubtitle": "Zure enplegagarritasuna hobetzeko eta egungo lan-merkatuarekin konektatzeko diseinatutako ikastaro praktikoak eta Profesionaltasun Ziurtagiriak.",
+    "introTitle": "Profesionaltasun Ziurtagiriak",
+    "introDesc": "Estatu osoan baliozkotasuna duten titulazio ofizialak dira, pertsona batek lanbide bat betetzeko gaitasunak dituela egiaztatzen dutenak. Mundu laboralera bidea berriro hartzeko modurik azkarrena eta zuzenena da bermiofizialarekin.",
+    "features": {
+      "official": { "title": "Titulu Ofiziala", "desc": "SEPE / Lanbidek akreditatua." },
+      "intensive": { "title": "Heziketa Intentsiboa", "desc": "%100 praktiko eta azkarreko ikuspegia." }
+    },
+    "highlightCard": {
+      "title": "Bultzatu zure karrera",
+      "desc": "Langabetuentzako doako heziketa, Europako eta eskualdeko funtsek kofinantzatua."
+    },
+    "coursesEyebrow": "Eskaintza Oraingoa",
+    "coursesTitle": "Hurrengo deialdiak",
+    "courses": {
+      "restaurant": { "title": "Jatetxe eta Taberna Operazioak", "level": "1. Mailako Ziurtagiria", "duration": "290 ordu" },
+      "electrical": { "title": "Sistema Elektrikoen Mantentzea", "level": "2. Mailako Ziurtagiria", "duration": "420 ordu" },
+      "welding": { "title": "Oxigas eta MIG/MAG Soldadura", "level": "2. Mailako Ziurtagiria", "duration": "600 ordu" },
+      "admin": { "title": "Kudeaketa Administrazioaren Jarduerak", "level": "2. Mailako Ziurtagiria", "duration": "880 ordu" }
+    },
+    "durationLabel": "Iraupena",
+    "inscriptionTitle": "Nola matrikulatu?",
+    "steps": {
+      "1": { "title": "Informatu zaitez", "desc": "Aukeratu zure profilarekin eta helburuekin ondoen bat datorren ikastaroa." },
+      "2": { "title": "Matrikulazioa", "desc": "Lanbide bidez edo zuzenean gurekin harremanetan jarriz." },
+      "3": { "title": "Hautaketa", "desc": "Elkarrizketa txiki bat egiten dugu ikastarorako egokitasuna baieztatzeko." }
+    },
+    "consultPlace": "Kontsultatu plazak",
+    "ctaTitle": "Erabakitzeko laguntza behar duzu?",
+    "ctaText": "Gure orientazio-zerbitzuak zure egoerarako ibilbide egokiena aukeratzen lagunduko dizu.",
+    "orientationBtn": "Orientazio Zerbitzua"
+  },
+  "cooperativa": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbTitle": "Kooperatiba",
+    "pageTitle": "Nor Gara",
+    "pageSubtitle": "Grupo Peñascal gizarte-ekimeneko irabazi-asmorik gabeko erakundea da, ahultasun-egoeran edo bazterketan dauden pertsonen integrazioa eta garapen pertsonal, sozial eta laborala sustatzeko.",
+    "about": {
+      "p1": "Gizarte-ekimeneko, irabazi-asmorik gabeko eta erabil publikoko entitatea gara, Bilbon sortua 1986an, eta bere helburua gizartean integratzea da egoera edo bazterketeko arriskuan dauden pertsonak, hainbat arrazoi pertsonal, akademiko edo sozialengatik.",
+      "p2": "Kualifikazio profesionala bultzatzen dugu, erantzukizun eta elkartasun balio eta jarrerekin, pertsonak beren bizitzan eta gizartean subiranista eta protagonist aktiboak izan daitezen.",
+      "p3": "Peñascal Kooperatiban, gure misioa pertsonen integrazioa da, batez ere desabantailan daudenak, eta horretarako beren heziketa eta kualifikazio profesionalean, lan-aktibazioan, enplegu-sortzean lanean gara, elkartasun eta herritartasun jarrera eta balioak sustatuz. Gure gizartean integratuta bizi ahal izateko itxiera integrala egin dezaten lagunduz, motibazioa aurkitzen lagunduz eta aldean izanik.",
+      "p4": "Euskal Herriko eta Nafarroako hainbat zonetan ikastetxe batzuk titular gisa kudeatzen ditugu, 14 urtetik 65 urtera bitarteko pertsonak hezteko. Gure ikaskuntza-espazioetan, hezkuntza-sistemako ikaskuntzak (Lanbide Heziketa, Helduentzako Oinarrizko Heziketa, Eskolarizazio Programa Osagarriak) edo lanerako heziketa ekintzak edo bizitza osoan zehar bere egoera pertsonal eta laborala hobetzeko ekintzak egiten dituzte.",
+      "p5": "Heziketa-arloan jardueraz gain, konpromisoa hartu dugu enpleguarekin. Enplegu Zerbitzuekin aktiboki kolaboratzen dugu, lan-orientazioa egiten dugu eta enpresetara bitartekaritza egiten dugu erabiltzaileek lana aurkitu dezaten.",
+      "p6": "Gure ingurunean ondasunak sortzeko beharraren jakitun, enpresa txertatzaileak sortu eta kudeatzen ditugu, entitatearen balioak eta estiloa errespetatuz."
+    },
+    "mission": {
+      "title": "Gure Misioa",
+      "desc": "Gizarte-eta lan-txertakuntza sustatzea heziketa integrala, orientazio pertsonalizatua eta enpresa txertatzaileetan enplegu-sorkuntza bidez, komunitatearen garapenean apostu eginez."
+    },
+    "values": {
+      "title": "Gure Balioak",
+      "commitment": { "title": "Konpromiso Soziala", "desc": "Behar handienak dituzten pertsonentzako eta haiekin lan egiten dugu." },
+      "diversity": { "title": "Berdintasuna eta Aniztasuna", "desc": "Inklusiboagoa den gizarte baten alde apostu egiten dugu, non guztiok batzen garen." },
+      "sustainability": { "title": "Jasangarritasuna", "desc": "Erabilgarriak diren eta inpaktu positiboa duten proiektuak garatzen ditugu." }
+    },
+    "timeline": {
+      "eyebrow": "Gure ibilbidea",
+      "title": "35 urte baino gehiagoko historia",
+      "items": {
+        "1986": { "title": "Hasiera", "desc": "Rekaldeberri (Peñascal) auzo bilbainan sortua, gazteen lan-berritze altuari erantzuteko." },
+        "1999": { "title": "Enpresa Txertatzaileak", "desc": "Lehen ekoizpen-unitateak sortu ziren lan erreala eta trantsiziokoa sortzeko." },
+        "2010": { "title": "Lurralde-hedapena", "desc": "Bizkaian, Gipuzkoan eta Nafarroan zentro berriak ireki ziren eragina zabaltzeko." },
+        "present": { "title": "Sendotzea", "desc": "200 profesional baino gehiagoko talde bat urtero 3.500 pertsona baino gehiago artatzen dituena." }
+      }
+    },
+    "transparency": {
+      "title": "Gardentasunarekiko Konpromisoa",
+      "desc": "Erabil Publikoko entitate gisa, gure baliabideak zorroztasunez eta erantzukizunez kudeatzen ditugu, gizarteari kontuak emanez.",
+      "annualReport": "Urteko Txostena",
+      "auditedAccounts": "Auditatutako Kontuak"
+    }
+  },
+  "queHacemos": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbCoop": "Kooperatiba",
+    "breadcrumbTitle": "Zer Egiten Dugu",
+    "pageTitle": "Zer Egiten Dugu",
+    "pageSubtitle": "Gure lana heziketaren, lan duinaren eta laguntza sozial jarraituaren bidez bizitzak eraldatzean datza.",
+    "pillars": {
+      "eyebrow": "Gure Ikuspegia",
+      "title": "Gure Interbentzioko Zutabeak",
+      "training": { "title": "Bizitzarako heziketa", "desc": "Ez dugu ofizioak bakarrik irakasten, pertsona bakoitzaren hazkunde pertsonal eta sozialarekin lagunduko dugu." },
+      "employment": { "title": "Helburudun Enplegua", "desc": "Lan-espazio errealak sortzen ditugu, non ikaskuntza esperientzia profesional bilakatzen den." },
+      "intervention": { "title": "Hurbileko Interbentzioa", "desc": "Babes integrala oztopoak gainditzeko eta autonomia-duin bizi-proiektuak eraikitzeko." }
+    },
+    "impact": {
+      "title": "Eraldatzen duen eragina",
+      "desc": "Zenbakiak gure konpromisoa islatzen dute, baina pertsona bakoitzaren arrakasta-historiak gure benetako motorra dira.",
+      "insertion": "Lan-txertakuntza",
+      "people": "Artatutako pertsonak",
+      "partnerCompanies": "Laguntzaile enpresak",
+      "years": "Eragin-urteak"
+    },
+    "areas": {
+      "educationChip": "Heziketa",
+      "educationTitle": "Lanbide eta Oinarrizko Heziketa",
+      "educationDesc": "Maila desberdinetara egokitutako heziketa-ibilbideak eskaintzen ditugu, Oinarrizko Mailatik Erdi Mailarako, lanerako heziketa espezifikoa eta profesionaltasun ziurtagiriak barne.",
+      "educationFeatures": ["Gure tailer industrialak", "Metodologia praktikoa (eginez ikasten)", "Orientazio akademiko pertsonalizatua"],
+      "educationBtn": "Ikusi heziketa-eskaintza",
+      "employmentChip": "Enplegua",
+      "employmentTitle": "Enpresa Txertatzaileak",
+      "employmentDesc": "Ospitaletaritza, automozioa eta zerbitzuak bezalako sektoreetan ekoizpen-unitate errealak kudeatzen ditugu, non pertsonak lan-merkatuarekin lehen kontaktua egin dezaketen ingurune babestu batean.",
+      "employmentFeatures": ["Txertakuntza-kontratuak", "Ekoizpen-espazio errealak", "Lan-merkatu arrunterako trantsizioa"],
+      "employmentBtn": "Gure enpresak"
+    },
+    "cta": {
+      "title": "Gehiago jakin nahi duzu?",
+      "desc": "Pozik gaude gure lan-modua xehetasunez azaltzeko.",
+      "contactBtn": "Kontaktatu orain",
+      "aboutBtn": "Gehiago guri buruz"
+    }
+  },
+  "cooperan": {
+    "chip": "Enpresak",
+    "pageTitle": "Gurekin Kolaboratu",
+    "pageSubtitle": "Heziketa eta lan-merkatu errealaren artean zubiak eraikitzen ditugu, 500 enpresa kolaboratzaile baino gehiagoko sareari esker.",
+    "intro": {
+      "title": "Talentua eta aukera batzea",
+      "desc": "Enpresa-oinarriarekin kolaboratzea funtsezkoa da gure misiorako. Ez dugu profil tekniko prestatuak bakarrik eskaintzen, txertakuntza profesional arrakastatsua eta iraunkorra errazten baitugu.",
+      "perks": { "pool": "Lan-bolsa", "filtered": "Iragazitako hautagaiak", "followup": "Jarraipen teknikoa" }
+    },
+    "visualLabel": "Kolaborazio Sarea",
+    "modalitiesTitle": "Kolaboratzeko moduak",
+    "modalities": {
+      "fct": { "title": "Praktikak (FCT)", "desc": "Ikasleak zure enpresan praktika ez-laboralak egitera onartu, heziketa-fasearen amaieran." },
+      "hiring": { "title": "Kontratazioa", "desc": "Sartu gure lan-bolsan profil tekniko kualifikatuekin eta txertakuntzan laguntzarekin." },
+      "social": { "title": "Proiektu Sozialak", "desc": "Erakundeko Gizarte Erantzukizunarekin (RSC) inpaktu lokal zuzenarekin kolaboratu." }
+    },
+    "insertionCompanies": {
+      "title": "Gure Enpresa Txertatzaileak",
+      "desc": "Gure ekoizpen-unitate propioak dira, merkatuaren logikaren arabera funtzionatzen dutenak, baina helburu sozialarekin: txertakuntza-prozesuan dauden pertsonei lan-esperientzia erreala emateko.",
+      "sectors": ["Ospitaletaritza eta Catering", "Automozioa eta Tallerak", "Mantentzea eta Berrituak"]
+    },
+    "entitiesTitle": "Gure lana posible egiten duten erakundeak",
+    "entitiesSubtitle": "Instituzio publikoen eta erakunde pribatuen laguntza eskertzen dugu.",
+    "publicEntities": "Erakunde Publikoak",
+    "privateEntities": "Erakunde Pribatuak",
+    "publicList": [
+      "FSE-Europako Gizarte Funtsa (FSE+, SENDOTU Proiektua)",
+      "FEDER- Europako Eskualde Garapenerako Funtsa",
+      "SEPE - Estatuko Lan Publiko Zerbitzua",
+      "Eusko Jaurlaritza (Enplegua, Heziketa, Lanbide)",
+      "Nafarroako Gobernua (Nafarroako Enplegu Zerbitzua)",
+      "Bizkaiko Foru Aldundia (Gizarte Ekintza, Enplegua)",
+      "Gipuzkoako Foru Aldundia (Gizarte Politika)",
+      "Bilboko Udaletxea (Bilbao Ekintza, Osasuna, Gizarte Ekintza)",
+      "Tolosako Udaletxea (Tolosaldea Garatzen)",
+      "Lea-Artibaiko Mankomunitatea",
+      "Behargintza (Galdakao, Basauri, Txorierri, Getxolan)"
+    ],
+    "privateList": [
+      "Obra Social BBK",
+      "\"la Caixa\" Banku Fundazioa (Incorpora, Umeen Pobrezia)",
+      "Víctor Tapia eta Dolores Sainz Fundazioa",
+      "CEPES, Espainiako Enpresa Konfederazioa",
+      "Accenture Fundazioa",
+      "Porticus Iberia",
+      "Erkide, Kooperatiben Federazioa",
+      "ROBODK, Simulazio Softwarea"
+    ],
+    "testimonial": "\"Peñascalekin kolaboratzeak oinarri tekniko sendoa duen pertsonala sartzeko aukera ematen digu, eta batez ere, jarrera eta konpromiso izugarriekoa.\"",
+    "testimonialAuthor": "— Industria sektoreko Enpresa (Bizkaia)",
+    "ctaTitle": "Zure enpresak batu nahi al du?",
+    "ctaDesc": "Bat zaitez tokiko talentuarekin eta erantzukizun sozialarekin apostu egiten duten enpresen sarera.",
+    "ctaBtn": "Enpresekin kontaktatu"
+  },
+  "orientacion": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbCoop": "Kooperatiba",
+    "breadcrumbTitle": "Orientazio Zerbitzua",
+    "pageTitle": "Orientazio Zerbitzua",
+    "pageSubtitle": "Zure etorkizun profesional eta pertsonalari buruzko erabakietan lagunduko dizugu, zure helburuak lortzeko tresnak eskainiz.",
+    "introTitle": "Guztientzako baliabide bat",
+    "introP1": "Gure heziketa-ibilbidean sartzen diren pertsona guztiek Peñascalen baliabideak dituzte lan-bilaketa aukerak hobetzeko. Gainera, baliabide hauek guregana hurbiltzen den edozein pertsonari eskaintzen dizkiegu, batez ere lanpostuak aurkitzeko zailtasun handiagoa duten kolektiboei.",
+    "introP2": "Gure orientatzaile eta gizarte-langileen taldeak modu hurbilean eta humanizatuan lan egiten du. Pertsona bakoitzaren potentzialean sinesten dugu, eta gure helburua da zugan ongien garatu zaitezkeen tokia aurkitzea.",
+    "stats": { "personalized": "Pertsonalizatua", "free": "Doakoa" },
+    "servicesEyebrow": "Zer eskaintzen dugu",
+    "servicesTitle": "Nola lagundu dezakegu",
+    "services": {
+      "itineraries": { "title": "Ibilbide Pertsonalizatuak", "desc": "Zurekin batera zure interesetara, gaitasunetara eta egoera pertsonalera egokitutako bide-orria diseinatzen dugu." },
+      "jobSearch": { "title": "Lan Bilaketa", "desc": "Zure CV-a idazten, elkarrizketak prestatzen eta lan-portalak eraginkortasunez erabiltzen irakasten dizugu." },
+      "social": { "title": "Gizarte Laguntza", "desc": "Zure txertakuntza eragozten dezaketen arazo pertsonal edo familiarrak konpontzeko laguntza integrala." },
+      "tests": { "title": "Sarbide Probak", "desc": "Erdi edo Goi Mailako zikloetarako sarbide-probetan matrikulatzeko informazioa eta laguntza." }
+    },
+    "team": {
+      "title": "Talde multidisziplinar bat",
+      "desc": "Gizarte-lan txertakuntzan esperientzia handia duten psikologo, pedagogo eta gizarte-langileak ditugu.",
+      "features": ["Gaztelaniaz eta euskarazko arreta", "Gizarte-zerbitzuekin harreman-sarea", "Txertakuntzaren ondorengo jarraipena"]
+    },
+    "ctaTitle": "Eskatu zure hitzordua gaur bertan",
+    "ctaDesc": "Guregana etor zaitezke edo deitu gaitzazu lehenengo ongietorri-elkarrizketa bat antolatzeko.",
+    "appointmentBtn": "Hitzordua eskatu",
+    "callBtn": "Deitu 944 43 00 00"
+  },
+  "colabora": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbTitle": "Kolaboratu",
+    "pageTitle": "Kolaboratu gurekin",
+    "pageSubtitle": "Peñascal familia parte izateko modu asko daude. Zure laguntza funtsezkoa da aukerak sortzen jarraitzeko.",
+    "volunteering": {
+      "title": "Bolintariotza",
+      "desc": "Partekatu zure ezagutza teknikoak edo lagundu pertsonak beren ikaskuntza-prozesuan. Zure denbora da oparirik baliotsuena."
+    },
+    "contributions": {
+      "title": "Ekarpenak",
+      "desc": "Lagundu ekonomikoki gure gizarte-interbentzioko proiektuak edo eman material teknikoa gure tailerentzako."
+    },
+    "ethicTitle": "Konpromiso Etikoa",
+    "ethicDesc": "Kolaborazio guztiak gardentasun eta etika sozialaren irizpide zorrotzen arabera kudeatzen dira."
+  },
+  "apoyandoProyectos": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbColabora": "Kolaboratu",
+    "breadcrumbTitle": "Baliabiderik gabeko proiektuak",
+    "pageTitle": "Baliabiderik gabeko proiektuak lagunduz",
+    "pageSubtitle": "Zure elkartasunak funtsezkoak diren ekimenak mantentzen laguntzen du, finantzaketa publiko nahikorik ez dutenak.",
+    "introTitle": "Errealitateak eraldatzen",
+    "introDesc": "Peñascalean sinesten dugu inor ez dela atzean geratu behar. Horregatik, baliabideak bideratzen ditugu gure komunitatearen behar premiazkoei erantzuten dieten interbentzio zuzeneko proiektuetara.",
+    "projects": {
+      "children": { "title": "Haurtzarorako Laguntza", "desc": "Bazterketarako arriskuan dauden haurrei zuzendutako heziketa-indartze eta elikadura osasuntsu programa." },
+      "housing": { "title": "Etxebizitza Soziala", "desc": "Etxebizitza duin baterako sarbidea errazteko ekimenak eta autonomia residentzialean laguntza." },
+      "digital": { "title": "Zulo Digitala", "desc": "Familientzako ordenagailu-eqeuipamendua eta oinarrizko gaitasun digitaletan heziketa." }
+    },
+    "impactTitle": "Nola erabiltzen da zure laguntza?",
+    "impactList": [
+      "Dohaintzaren %100a zuzenean proiektuari bideratzen da.",
+      "Emaitzen jarraipen eta txosten periodikoa.",
+      "Kanpo auditurek onartutako gardentasun osoa."
+    ]
+  },
+  "donandoProductos": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbColabora": "Kolaboratu",
+    "breadcrumbTitle": "Produktuak emanez",
+    "pageTitle": "Produktuak eta zerbitzuak emanez",
+    "pageSubtitle": "Eman zure aktiboei bigarren bizitza bat, etorkizuneko profesionalen heziketan lagunduz.",
+    "introTitle": "Inpaktu sozialeko ekonomia zirkularra",
+    "introDesc": "Enpresa askok berriztatzen dituzte beren ekipamenduak heziketarako baliozko bizitza erabilgarria oraindik dutenean. Zure dohaintzek gure tailerak teknologiaren aitzindarian mantentzen laguntzen dute.",
+    "categories": {
+      "machinery": {
+        "title": "Makineria eta Tresnak",
+        "items": ["Tornuak eta fresak", "Soldadura-eqeuipamenduak", "Tresna eskuak", "Ospitaletaritzako makineria"]
+      },
+      "tech": {
+        "title": "Informatika eta Teknologia",
+        "items": ["Ordenagailuak eta eramangarriak", "Inprimagailuak eta eskanerrak", "Sare-osagaiak", "Lizentziadun softwarea"]
+      },
+      "furniture": {
+        "title": "Altzeria eta Beste Batzuk",
+        "items": ["Bulego-mahaiak eta aulkiak", "Estalki industrialak", "Ibilgailu komertzialak", "Stock soberakina"]
+      }
+    },
+    "processTitle": "Nola da prozesua?",
+    "steps": {
+      "1": { "title": "Kontaktua", "desc": "Eman iezaguzu zer eman nahi duzun eta bere egoera." },
+      "2": { "title": "Balorazioa", "desc": "Gure talde teknikoak erabilera pedagogikoa ebaluatzen du." },
+      "3": { "title": "Bilketa", "desc": "Materiala jasotzeko logistika koordinatzen dugu." },
+      "4": { "title": "Ziurtagiria", "desc": "Dohaintza-ziurtagiria igortzen dugu zerga-kenkaria lortzeko." }
+    }
+  },
+  "contratandoEmpresas": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbColabora": "Kolaboratu",
+    "breadcrumbTitle": "Enpresak kontratatuz",
+    "pageTitle": "Enpresa txertatzaileak kontratatuz",
+    "pageSubtitle": "Bihurtu zure kostu operatiboak inpaktu sozial handiko inbertsio bihurtu.",
+    "introTitle": "Kalitate profesionala arima sozialarekin",
+    "introDesc": "Gure Enpresa Txertatzaileak (EI) merkatu librean lehiatzen dira kalitate handiko zerbitzuak eskainiz. Haiek kontratatuz, LGD (Desgaitasun Orokorraren Legea) betetzen ari zara eta zure Enpresen Gizarte Erantzukizuna indartzen duzu.",
+    "services": {
+      "catering": { "name": "Peñascal Catering", "desc": "Ekitaldi korporatiboetarako eta ospakizunetarako catering zerbitzuak, menu kalitate altukoekin eta helburu sozialarekin." },
+      "workshops": { "name": "Peñascal Tailerrak", "desc": "Metal fabrikazioa, zurgintza eta mantentze industrialak merkatu-estandarrekin." },
+      "services": { "name": "Peñascal Zerbitzuak", "desc": "Garbitzea, eraikinen mantentzea, lorategintza eta berritu integrala komunitate eta enpresentzako." }
+    },
+    "quoteBtn": "Aurrekontua eskatu",
+    "benefitsTitle": "Zure enpresarentzako abantailak",
+    "benefits": [
+      "Legezko kuoten betetzea (LGD).",
+      "Markaren irudiaren eta ospearen hobekuntza.",
+      "Prozesu guztietan ziurtatutako kalitatea.",
+      "Merkatu-prezio lehiakorrak."
+    ]
+  },
+  "apoyandoInsercion": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbColabora": "Kolaboratu",
+    "breadcrumbTitle": "Txertakuntza lagunduz",
+    "pageTitle": "Lan-txertakuntza lagunduz",
+    "pageSubtitle": "Enplegua da gizarte-txertakuntzako motor nagusia. Lagundu gaitzazu heziketa zikloa osotzen.",
+    "introTitle": "Zure enpresa aldaketaren agente gisa",
+    "introDesc": "Heziketa ez da osatzen ikasitakoa frogatzeko aukera errealik ez badago. Konprometitutako enpresak bilatzen ditugu, beren ateak lan egiteko grina duten talentu berriei ireki nahi dietenak.",
+    "modalities": {
+      "fct": { "title": "Praktikak (FCT)", "desc": "Ikasleak onartu beren 400 orduko praktika derrigorretarako. Enpresarentzako kostu soldatarik gabe." },
+      "alternance": { "title": "Txandakako Kontratua", "desc": "Heziketa eta lan ordaindua konbinatu, gizarte-segurantzako kenketa nabarmenekin." },
+      "pool": { "title": "Lan-bolsa", "desc": "Argitaratu zure eskaintzak eta guk ongien datozen hautagaiak aurrehautatzen ditugu." }
+    },
+    "consultConditions": "Baldintzak kontsultatu",
+    "valuesTitle": "Zer ekartzen dugu zure enpresara?",
+    "values": {
+      "accompaniment": "Laguntza: Txertakuntza-epe osoan zehar jarraipen teknikoa.",
+      "preselection": "Aurrehautaketa: Zure eskakizun tekniko eta jarrerakoa betetzen duten profilak.",
+      "advice": "Aholkularitza: Kontratazio sozialerako laguntzen eta diru-laguntzen informazioa."
+    }
+  },
+  "noticias": {
+    "breadcrumbHome": "Hasiera",
+    "breadcrumbTitle": "Albisteak",
+    "pageTitle": "Albisteak",
+    "pageSubtitle": "Egon zaitez eguneratuta Grupo Peñascalen albiste, ikastaro, akordio eta jarduer instituzional guztiekin.",
+    "news1": { "tag": "Heziketa", "title": "2024ko ikastaro-deialdi berria: Automozioa eta Ospitaletaritza", "excerpt": "Hurrengo irailean hasiko diren heziketa-modulu berrientzako matrikulazio-epea ireki dugu.", "date": "2024ko Maiatzak 12" },
+    "news2": { "tag": "Enpresak", "title": "Bizkaiko Ospitaletaritza Elkartearekin akordioa", "excerpt": "50 ikasle baino gehiagori praktika ordainduak bermatuko dizkien akordio berria sinatu dugu.", "date": "2024ko Maiatzak 8" },
+    "news3": { "tag": "Instituzionala", "title": "2023ko Jasangarritasun Txostena argitaratuta", "excerpt": "Gure jardueraren gizarte- eta ingurumen-inpaktua biltzen duen urteko txostena eskuragarri dago.", "date": "2024ko Apirilak 25" },
+    "news4": { "tag": "Heziketa", "title": "Mekanizazio ikasleek berrikuntza saria irabazi dute", "excerpt": "Gure tailerretan osorik garatutako proiektu bat eskualde-mailan aitortua izan da.", "date": "2024ko Apirilak 14" },
+    "news5": { "tag": "Instituzionala", "title": "Bolueta instalazioetara bisita instituzionala", "excerpt": "Eusko Jaurlaritzako ordezkariak zuzenean ezagutu dute gure lan-txertakuntza programa.", "date": "2024ko Apirilak 2" },
+    "news6": { "tag": "Enpresak", "title": "Peñascalek automoziorako muntaketa-lerro berria inauguratu du", "excerpt": "Instalazio berri honek gure ikasleen gaitasun praktikoak zabalduko ditu ingurune errealetan.", "date": "2024ko Martxoak 18" }
+  },
+  "equipo": {
+    "title": "Tuani Coders",
+    "subtitle": "Proiektu honen atzean dagoen garapen-taldea",
+    "frontend": "Frontend Garapena",
+    "backend": "Backend Garapena",
+    "footer": "Proiektua Peñascal Kooperatibarako dedikazioz garatua"
+  },
+  "router": {
+    "home": "Hasiera - Peñascal Koop.",
+    "login": "Saioa Hasi - Peñascal Koop.",
+    "verifyAdmin": "Admin Egiaztapena - Peñascal Koop.",
+    "equipo": "Taldea - Tuani Coders",
+    "formacion": "Lanbide Heziketa - Peñascal Koop.",
+    "gradoBasico": "Oinarrizko Maila - Peñascal Koop.",
+    "gradoMedio": "Erdi Maila - Peñascal Koop.",
+    "formacionEmpleo": "Lanerako Heziketa - Peñascal Koop.",
+    "cooperativa": "Nor Gara - Peñascal Koop.",
+    "queHacemos": "Zer Egiten Dugu - Peñascal Koop.",
+    "cooperan": "Gurekin Kolaboratu - Peñascal Koop.",
+    "orientacion": "Orientazio Zerbitzua - Peñascal Koop.",
+    "colabora": "Kolaboratu - Peñascal Koop.",
+    "apoyandoProyectos": "Proiektuak Lagunduz - Peñascal Koop.",
+    "donandoProductos": "Produktuak Emanez - Peñascal Koop.",
+    "contratandoEmpresas": "Enpresak Kontratatuz - Peñascal Koop.",
+    "apoyandoInsercion": "Txertakuntza Lagunduz - Peñascal Koop.",
+    "noticias": "Albisteak - Peñascal Koop.",
+    "contacto": "Kontaktua - Peñascal Koop.",
+    "notFound": "Orrialdea ez da aurkitu - Peñascal Koop."
+  }
+}

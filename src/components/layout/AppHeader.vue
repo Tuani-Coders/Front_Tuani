@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
 
@@ -9,17 +9,34 @@ const scrolled = ref(false)
 const activeDropdown = ref(null)
 const headerRef = ref(null)
 
-const toggleMenu = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value
+const showTranslateSelector = ref(false)
+
+const langOptions = [
+  { code: 'en', label: 'English' },
+  { code: 'fr', label: 'Français' },
+  { code: 'eu', label: 'Euskera' },
+  { code: 'ar', label: 'العربية' }
+]
+
+const toggleTranslateSelector = () => {
+  showTranslateSelector.value = !showTranslateSelector.value
+}
+
+const openGoogleTranslate = (langCode) => {
+  const currentUrl = window.location.href
+  const translateUrl = `https://translate.google.com/translate?sl=es&tl=${langCode}&u=${encodeURIComponent(currentUrl)}`
+  window.open(translateUrl, '_blank')
+  showTranslateSelector.value = false
+}
+
+
+const toggleDropdown = (label) => {
+  activeDropdown.value = activeDropdown.value === label ? null : label
 }
 
 const closeMenu = () => {
   mobileMenuOpen.value = false
   activeDropdown.value = null
-}
-
-const toggleDropdown = (label) => {
-  activeDropdown.value = activeDropdown.value === label ? null : label
 }
 
 const windowWidth = ref(window.innerWidth)
@@ -132,8 +149,20 @@ const handleNavClick = (item, event) => {
           </div>
           <div class="topbar-social">
             <div class="lang-switcher">
-              <button class="lang-btn active">ES</button>
-              <button class="lang-btn">EU</button>
+              <button class="lang-btn" @click="toggleTranslateSelector">
+                <span class="material-symbols-outlined">language</span>
+                <span>Traducir</span>
+              </button>
+              <div v-if="showTranslateSelector" class="translate-dropdown">
+                <button
+                  v-for="lang in langOptions"
+                  :key="lang.code"
+                  class="lang-option-btn"
+                  @click="openGoogleTranslate(lang.code)"
+                >
+                  {{ lang.label }}
+                </button>
+              </div>
             </div>
             <a href="https://www.facebook.com/PenascalKoop/" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -157,7 +186,7 @@ const handleNavClick = (item, event) => {
           class="mobile-toggle"
           :class="{ active: mobileMenuOpen }"
           @click="toggleMenu"
-          :aria-label="mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'"
+          :aria-label="mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'""
           aria-expanded="false"
         >
           <span></span>
@@ -332,6 +361,44 @@ const handleNavClick = (item, event) => {
   background: var(--color-primary);
   color: white;
   border-color: var(--color-primary);
+}
+
+.translate-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  padding: 8px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lang-option-btn {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #1a202c;
+  transition: background 0.2s;
+}
+
+.lang-option-btn:hover {
+  background: #f7fafc;
+}
+
+.lang-option-btn:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.lang-option-btn:last-child {
+  border-radius: 0 0 8px 8px;
 }
 
 .social-icon {

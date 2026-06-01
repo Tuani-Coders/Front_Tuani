@@ -1,81 +1,7 @@
 <script setup>
-import { onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const currentYear = new Date().getFullYear()
-
-// Initialize Google Translate in footer
-onMounted(() => {
-  initializeFooterGoogleTranslate();
-});
-
-function initializeFooterGoogleTranslate() {
-  // Check if Google Translate script is already loaded
-  if (window.google && window.google.translate) {
-    createFooterGoogleTranslateWidget();
-  } else {
-    // If script exists but not loaded yet, wait for it
-    const existingScript = document.querySelector('script[src*="translate.google.com"]');
-    if (existingScript) {
-      const checkInterval = setInterval(() => {
-        if (window.google && window.google.translate) {
-          createFooterGoogleTranslateWidget();
-          clearInterval(checkInterval);
-        }
-      }, 200);
-      setTimeout(() => clearInterval(checkInterval), 5000);
-    } else {
-      // Load Google Translate script
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInitFooter';
-      script.async = true;
-      document.head.appendChild(script);
-
-      window.googleTranslateElementInitFooter = function () {
-        createFooterGoogleTranslateWidget();
-      };
-    }
-  }
-}
-
-function createFooterGoogleTranslateWidget() {
-  if (!window.google || !window.google.translate) {
-    return;
-  }
-
-  const translateElement = document.getElementById('footer-google-translate-element');
-  if (!translateElement) {
-    return;
-  }
-
-  // Clear any existing content
-  translateElement.innerHTML = '';
-
-  // Initialize Google Translate
-  new window.google.translate.TranslateElement({
-    pageLanguage: 'es',
-    includedLanguages: 'en,fr,eu,ar',
-    layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-    autoDisplay: false,
-    multilanguagePage: true
-  }, 'footer-google-translate-element');
-
-  // Style the Google Translate widget
-  setTimeout(() => {
-    const select = document.querySelector('#footer-google-translate-element select');
-    if (select) {
-      select.style.width = '100%';
-      select.style.maxWidth = '300px';
-      select.style.padding = '0.5rem 1rem';
-      select.style.borderRadius = '6px';
-      select.style.border = '1px solid rgba(148, 163, 184, 0.25)';
-      select.style.background = '#ffffff';
-      select.style.color = '#1a202c';
-      select.style.fontSize = '0.9rem';
-    }
-  }, 200);
-}
 
 const resourceLinks = [
   { label: 'Formación', to: '/formacion-profesional' },
@@ -144,14 +70,6 @@ const institutionalLinks = [
         </div>
       </div>
 
-      <!-- Google Translate Section -->
-      <div class="footer-translate-section">
-        <h4 class="footer-translate-title">Traducir página</h4>
-        <p class="footer-translate-description">
-          ¿Eres de otro país o no encuentras tu idioma? Puedes usar Google Translate para traducir esta página a cualquier idioma del mundo.
-        </p>
-        <div id="footer-google-translate-element" class="footer-google-translate-wrapper"></div>
-      </div>
 
       <div class="footer-bottom">
         <div class="legal-links">
@@ -317,8 +235,8 @@ const institutionalLinks = [
   text-decoration: underline;
 }
 
-/* ── Google Translate Section ─────────────────── */
-.footer-translate-section {
+/* ── Language Switcher Section ────────────────── */
+.footer-language-section {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 2rem 1.5rem;
   text-align: center;
@@ -327,60 +245,38 @@ const institutionalLinks = [
   margin-bottom: 2rem;
 }
 
-.footer-translate-title {
+.footer-language-title {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--color-secondary);
   margin: 0 0 0.75rem;
 }
 
-.footer-translate-description {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.65);
-  margin: 0 0 1rem;
-  line-height: 1.6;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.footer-google-translate-wrapper {
+.footer-lang-switcher {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
   margin-top: 1rem;
 }
 
-#footer-google-translate-element {
-  display: inline-block;
-}
-
-#footer-google-translate-element select {
+.footer-lang-btn {
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  background: #ffffff;
-  color: #1a202c;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.9rem;
-  min-width: 200px;
-  max-width: 300px;
-  width: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 52px;
 }
 
-#footer-google-translate-element .goog-te-combo {
-  width: 100% !important;
-  max-width: 300px !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 6px !important;
-  border: 1px solid rgba(148, 163, 184, 0.25) !important;
-  background: #ffffff !important;
-  color: #1a202c !important;
-  font-size: 0.9rem !important;
-}
-
-/* Hide Google Translate banner in footer */
-.footer-translate-section + .goog-te-banner-frame {
-  display: none !important;
+.footer-lang-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
 }
 
 /* ── Responsive ───────────────────────────────── */
