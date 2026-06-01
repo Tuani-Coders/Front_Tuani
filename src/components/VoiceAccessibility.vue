@@ -13,46 +13,71 @@ let recognition = null
 let synth = null
 let isListening = false
 
+let speechQueue = []
+let isProcessingQueue = false
+
+const processQueue = () => {
+  if (speechQueue.length === 0) {
+    isProcessingQueue = false
+    return
+  }
+  
+  isProcessingQueue = true
+  const t = speechQueue.shift()
+  
+  const utterance = new SpeechSynthesisUtterance(t)
+  utterance.lang = "es-ES"
+  utterance.rate = 1
+  utterance.pitch = 1
+  
+  utterance.onstart = () => {
+    spokenHistory.push(t)
+    if (spokenHistory.length > 20) spokenHistory.shift()
+  }
+  
+  utterance.onend = () => {
+    const idx = utteranceReferences.indexOf(utterance)
+    if (idx > -1) utteranceReferences.splice(idx, 1)
+    // Dejar respirar al motor 50ms antes de la siguiente
+    setTimeout(processQueue, 50)
+  }
+  
+  utterance.onerror = (e) => {
+    console.warn("TTS Error:", e)
+    const idx = utteranceReferences.indexOf(utterance)
+    if (idx > -1) utteranceReferences.splice(idx, 1)
+    setTimeout(processQueue, 50)
+  }
+  
+  utteranceReferences.push(utterance)
+  synth.speak(utterance)
+}
+
 const speakMsg = (input, cancelPrevious = true) => {
   if (!synth) return
 
   const texts = Array.isArray(input) ? input : [input]
   
-  const executeSpeak = () => {
-    texts.forEach(t => {
-      const utterance = new SpeechSynthesisUtterance(t)
-      utterance.lang = "es-ES"
-      utterance.rate = 1
-      utterance.pitch = 1
-      
-      // Guardar el texto para repetirlo y mantener la referencia viva
-      utterance.onstart = () => {
-        spokenHistory.push(t)
-        if (spokenHistory.length > 20) spokenHistory.shift()
-      }
-      
-      utterance.onend = () => {
-        // Liberar referencia cuando termine de hablar para no fugar memoria
-        const index = utteranceReferences.indexOf(utterance)
-        if (index > -1) utteranceReferences.splice(index, 1)
-      }
-      
-      utteranceReferences.push(utterance)
-      synth.speak(utterance)
-    })
-  }
-
-  if (cancelPrevious && (synth.speaking || synth.pending)) {
-    synth.cancel()
-    utteranceReferences = [] // Limpiar cola muerta
-    // Timeout mitigates a known Chrome bug where immediate speak after cancel breaks TTS permanently
-    setTimeout(executeSpeak, 150)
+  if (cancelPrevious) {
+    speechQueue = [] // Vaciar mensajes pendientes
+    if (synth.speaking || synth.pending) {
+      synth.cancel()
+    }
+    // Set to false to allow the new timeout to re-trigger it safely
+    isProcessingQueue = false
+    
+    // Timeout para que el sistema operativo limpie la síntesis antes de reanudar
+    setTimeout(() => {
+      speechQueue.push(...texts)
+      if (!isProcessingQueue) processQueue()
+    }, 150)
   } else {
-    executeSpeak()
+    speechQueue.push(...texts)
+    if (!isProcessingQueue) processQueue()
   }
 }
 
-const readPage = (target = 'main') => {
+const readPage = (target = 'main', cancelQueue = true) => {
   const extractNavbarText = () => {
     const header = document.querySelector('header') || document.querySelector('nav')
     if (!header) return ''
@@ -98,9 +123,8 @@ const readPage = (target = 'main') => {
     .map(line => line.replace(/\s+/g, ' ')) // normalize spaces
 
   if (texts.length > 0) {
-    // Limpiar historial al empezar a leer una página nueva de cero
-    spokenHistory = []
-    speakMsg(texts, true)
+    if (cancelQueue) spokenHistory = [] // Only clear history if it actually interrupts
+    speakMsg(texts, cancelQueue)
   }
 }
 
@@ -124,15 +148,33 @@ const handleCommand = (rawTranscript) => {
 
     if (!isVisuallyImpairedMode) {
       isVisuallyImpairedMode = true
-      speakMsg("Modo de asistencia visual activado. Leyendo página actual.")
-      setTimeout(() => { readPage(readingTarget) }, 4000)
+      speakMsg("Modo de asistencia visual activado. Leyendo página actual.", true)
+      readPage(readingTarget, false) // Encolar la lectura sin cancelar el aviso
     } else {
-      readPage(readingTarget)
+      readPage(readingTarget, true) // Cancelar lo anterior porque el usuario lo ha pedido explícitamente
     }
     return
   }
 
-  // Si no hemos activado el modo ciego con "leer página", debemos ignorar CUALQUIER comando o conversación de fondo.
+  // 1.1 Check for deactivate command
+  const deactivateCommands = [
+    'desactivar modo ciego', 'desactivar el modo ciego', 'apaga el asistente', 
+    'apagar modo ciego', 'apagar el modo ciego', 'salir del modo ciego', 'salir de modo ciego', 
+    'apaga la asistencia', 'desactiva el modo ciego', 'quita el modo ciego', 'quitar modo ciego',
+    'desactivar asistencia visual', 'apagar el asistente', 'desactiva el asistente',
+    'desconectar modo ciego', 'detener asistencia visual', 'finalizar lectura', 'modo normal'
+  ]
+  if (deactivateCommands.some(cmd => transcript === cmd || transcript.includes(" " + cmd) || transcript.startsWith(cmd + " "))) {
+    if (isVisuallyImpairedMode) {
+      isVisuallyImpairedMode = false
+      speechQueue = []
+      if (synth) synth.cancel()
+      speakMsg("Modo de asistencia visual desactivado.")
+    }
+    return
+  }
+
+  // Si no hemos activado el modo ciego, debemos ignorar CUALQUIER comando o conversación de fondo.
   if (!isVisuallyImpairedMode) return;
 
   // 1.2. Check for 'help / options' command (Reads navbar)
@@ -141,6 +183,7 @@ const handleCommand = (rawTranscript) => {
     'opciones', 'que puedo hacer', 'dime el menu', 'que menu hay'
   ]
   if (helpCommands.some(cmd => transcript === cmd || transcript.includes(" " + cmd) || transcript.startsWith(cmd + " "))) {
+    speechQueue = []
     if (synth) synth.cancel()
     speakMsg("Estas son las opciones de navegación principales:")
     setTimeout(() => { readPage('navbar') }, 3500)
@@ -150,6 +193,7 @@ const handleCommand = (rawTranscript) => {
   // 1.3. Check for 'location' command
   const locationCommands = ['donde estoy', 'en que pagina estoy', 'cual es mi ubicacion', 'que pagina es esta']
   if (locationCommands.some(cmd => transcript === cmd || transcript.includes(" " + cmd) || transcript.startsWith(cmd + " "))) {
+    speechQueue = []
     if (synth) synth.cancel()
     let locName = route.name || route.path.replace(/-/g, ' ').replace(/\//g, ' ').trim()
     if (!locName || locName === 'inicio' || route.path === '/') locName = 'Inicio'
@@ -163,6 +207,7 @@ const handleCommand = (rawTranscript) => {
     'callar', 'shh', 'no leas mas', 'cortar', 'basta', 'silenciar', 'detener', 'apaga la voz'
   ]
   if (stopCommands.some(cmd => transcript === cmd || transcript.includes(" " + cmd) || transcript.startsWith(cmd + " "))) {
+    speechQueue = []
     if (synth) synth.cancel()
     return
   }
@@ -173,6 +218,7 @@ const handleCommand = (rawTranscript) => {
     'repite la pagina', 'repiteme', 'dimelo de nuevo', 'leer de nuevo', 'una vez mas'
   ]
   if (repeatCommands.some(cmd => transcript === cmd || transcript.includes(" " + cmd) || transcript.startsWith(cmd + " "))) {
+    speechQueue = []
     if (synth) synth.cancel()
     const allWords = spokenHistory.join(' ').split(/\s+/).filter(w => w.trim() !== '')
     const lastWords = allWords.slice(-20).join(' ')
@@ -259,11 +305,23 @@ const handleCommand = (rawTranscript) => {
     }
   })
 
-  // 4. Execute click if match is reasonable (score > 30)
-  if (bestMatch && bestScore > 30) {
+  // 4. Validate if this is a literal echo of itself talking
+  let isEcho = false
+  if (synth && (synth.speaking || synth.pending) && !hasActionVerb) {
+    // Look back at the last 3 chunks of text spoken (approx ~5 seconds of speech)
+    const recentHistory = spokenHistory.slice(-3).map(t => normalizeText(t))
+    if (recentHistory.some(historyText => historyText.includes(targetText) || targetText.includes(historyText))) {
+      console.log("Echo detectado y silenciado:", targetText)
+      isEcho = true
+    }
+  }
+
+  // 5. Execute click if match is reasonable (score > 30)
+  if (bestMatch && bestScore > 30 && !isEcho) {
     const elName = (bestSemanticAlias || bestMatch.ariaLabel || bestMatch.title || bestMatch.textContent || '').trim().replace(/\s+/g, ' ')
     // Clear speech completely, allow Chrome 150ms to digest the cancel, then execute button action
     if (synth && (synth.speaking || synth.pending)) {
+      speechQueue = []
       synth.cancel();
       setTimeout(() => {
         speakMsg(`Accediendo a ${elName}`)
@@ -323,10 +381,6 @@ const initializeSpeech = () => {
   // Welcome message when loaded
   const speakLoadingMessage = () => {
     liveMessage.value = "La página ha cargado correctamente. Puedes pedirme que lea la página o indicarme dónde quieres ir."
-  }
-
-  // Workaround for browsers that block speech without interaction:
-  const unlockSpeech = () => {
     if (!hasSpokenIntro) {
       speakMsg("La página ha cargado correctamente. Puedes pedirme que lea la página o indicarme dónde quieres ir.")
       hasSpokenIntro = true
@@ -335,12 +389,7 @@ const initializeSpeech = () => {
         if (recognition) recognition.start()
       } catch (e) { console.error(e) }
     }
-    window.removeEventListener('keydown', unlockSpeech)
-    window.removeEventListener('click', unlockSpeech)
   }
-  
-  window.addEventListener('keydown', unlockSpeech)
-  window.addEventListener('click', unlockSpeech)
 
   // Workaround for synthesis voices loading asynchronously in some browsers
   if (synth.getVoices().length === 0) {
@@ -367,12 +416,17 @@ watch(
         pageTitle = document.title.split('-')[0].trim()
       }
 
+      const isHomePage = route.path === '/';
+      const readingTarget = isHomePage ? 'full' : 'main';
+
       const msg = `Página de ${pageTitle} cargada correctamente.`
       liveMessage.value = msg
       
       // If speech is initialized and unlocked, speak automatically
       if (hasSpokenIntro && isVisuallyImpairedMode) {
-        speakMsg(msg)
+        speakMsg(msg, false) // False ensures it doesn't cut off 'Accediendo a...'
+        // Auto-read continuous flow without cancelling the load message
+        readPage(readingTarget, false)
       }
     }, 600) // Delay to wait for router transition fade
   }
