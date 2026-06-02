@@ -1,260 +1,305 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuth } from '../../composables/useAuth'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
+const route = useRoute()
 const router = useRouter()
-const { loginInit, error, loading } = useAuth()
+const { login, resendCode, loginWithGoogle, error, loading } = useAuth()
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
+const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID
+const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID
+
+const redirectTarget = computed(() => route.query.redirect || '/dashboard')
+const googleReady = ref(false)
+let googleTokenClient = null
 
 const form = ref({
-  email: ''
+  username: '',
+  password: ''
+})
+
+const oauthProviders = computed(() => [
+  {
+    id: 'google',
+    label: 'Google',
+    icon: 'G',
+    enabled: Boolean(GOOGLE_CLIENT_ID && googleReady.value),
+    action: handleGoogleLogin
+  },
+  {
+    id: 'discord',
+    label: 'Discord',
+    icon: 'D',
+    enabled: Boolean(DISCORD_CLIENT_ID),
+    action: () => redirectToOAuth('discord')
+  },
+  {
+    id: 'github',
+    label: 'GitHub',
+    icon: 'GH',
+    enabled: Boolean(GITHUB_CLIENT_ID),
+    action: () => redirectToOAuth('github')
+  }
+])
+
+onMounted(() => {
+  if (GOOGLE_CLIENT_ID && window.google?.accounts?.oauth2) {
+    googleTokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+      callback: async (response) => {
+        if (!response.access_token) return
+        await loginWithGoogle(response.access_token)
+        router.push(redirectTarget.value)
+      }
+    })
+    googleReady.value = true
+  }
 })
 
 const handleLogin = async () => {
   try {
-    // Paso 1: Enviar email para verificar admin y enviar codigo
-    const result = await loginInit(form.value.email)
-    // Redirigir a pagina de verificacion con timestamp de expiracion
-    const expiresAt = result.data?.expires_at || (Date.now() / 1000 + 300)
-    router.push({
-      path: '/verify-admin',
-      query: { email: form.value.email, expires: expiresAt }
-    })
+    await login(form.value.username, form.value.password)
+    router.push(redirectTarget.value)
   } catch (err) {
     console.error('Error de login:', err)
+   if (err.status === 403 && err.data?.errors?.requires_verification) {
+      const email = err.data.errors.email
+      sessionStorage.setItem('temp_credentials', JSON.stringify({
+        username: form.value.username,
+        password: form.value.password
+      }))
+      try {
+        await resendCode(email)
+      } catch (resendErr) {
+        console.error('Error al enviar código de verificación:', resendErr)
+      }
+      router.push({
+        name: 'VerifyEmail',
+        query: { email }
+      })
+    }
   }
+}
+
+const handleGoogleLogin = () => {
+  if (!googleTokenClient) return
+  googleTokenClient.requestAccessToken()
+}
+
+const redirectToOAuth = (provider) => {
+  const clientId = provider === 'discord' ? DISCORD_CLIENT_ID : GITHUB_CLIENT_ID
+  if (!clientId) return
+
+  const callbackUrl = `${window.location.origin}/auth/callback/${provider}`
+  const state = crypto.randomUUID()
+  localStorage.setItem('oauth_state', state)
+  localStorage.setItem('oauth_redirect', redirectTarget.value)
+
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: callbackUrl,
+    response_type: 'code',
+    state
+  })
+
+  if (provider === 'discord') {
+    params.set('scope', 'identify email')
+    window.location.href = `https://discord.com/oauth2/authorize?${params.toString()}`
+    return
+  }
+
+  params.set('scope', 'user:email')
+  window.location.href = `https://github.com/login/oauth/authorize?${params.toString()}`
 }
 </script>
 
 <template>
   <div class="auth-view view">
-    <div class="container auth-container">
-      <div class="auth-card card shadow-md">
-        <div class="auth-header text-center">
-          <img src="../../assets/icons/penascal.png" alt="Logo" class="auth-logo">
-          <h1 class="headline-md">Bienvenido de nuevo</h1>
-          <p class="body-md text-muted">Entra en tu área personal de Peñascal</p>
+    <div class="auth-wrapper">
+      <div class="auth-sidebar">
+        <div class="sidebar-content">
+          <div class="brand-info">
+            <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="sidebar-logo">
+            <span class="brand-tagline">Peñascal</span>
+          </div>
+          <div class="sidebar-hero-text">
+            <h2 class="sidebar-title">Creando oportunidades, tejiendo futuro</h2>
+            <p class="sidebar-subtitle">Acceso para equipos autorizados, con contraseña, código interno u OAuth.</p>
+          </div>
+          <div class="sidebar-footer">
+            <p class="sidebar-footer-text">© 2026 Grupo Peñascal · Compromiso social y ético</p>
+          </div>
         </div>
+      </div>
 
-        <form @submit.prevent="handleLogin" class="auth-form">
-          <div v-if="error" class="error-box">
-            {{ error }}
+      <div class="auth-form-container">
+        <div class="auth-form-card">
+          <div class="auth-header text-center">
+            <div class="mobile-logo-container">
+              <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="auth-logo">
+            </div>
+            <h1 class="headline-md">Entrar a la administración</h1>
+            <p class="body-md text-muted">Elige cómo quieres iniciar sesión</p>
           </div>
 
-          <div class="form-group">
-            <label for="email" class="label-md">Email de administrador</label>
-            <input
-              type="email"
-              id="email"
-              v-model="form.email"
-              required
-              class="form-control"
-              placeholder="admin@ejemplo.com"
+          <form @submit.prevent="handleLogin" class="auth-form">
+            <div v-if="error" class="error-box">
+              {{ error }}
+            </div>
+
+            <div class="form-group">
+              <label for="username" class="label-md">Nombre de usuario</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">person</span>
+                <input
+                  type="text"
+                  id="username"
+                  v-model="form.username"
+                  required
+                  class="form-control"
+                  placeholder="admin"
+                  autocomplete="username"
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="label-md">Contraseña</label>
+              <div class="input-icon-wrapper">
+                <span class="material-symbols-outlined input-icon">lock</span>
+                <input
+                  type="password"
+                  id="password"
+                  v-model="form.password"
+                  required
+                  class="form-control"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                >
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-100"
+              :disabled="loading || !form.username || !form.password"
             >
+              <span v-if="!loading" class="button-content">
+                Entrar
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </span>
+              <span v-else>Comprobando...</span>
+            </button>
+          </form>
+
+          <div class="auth-divider">
+            <span>O entra con OAuth</span>
           </div>
 
-          <button type="submit" class="btn btn-primary w-100" :disabled="loading || !form.email">
-            <span v-if="!loading">Enviar código</span>
-            <span v-else>Enviando...</span>
-          </button>
+          <div class="oauth-grid">
+            <button
+              v-for="provider in oauthProviders"
+              :key="provider.id"
+              type="button"
+              class="oauth-button"
+              :disabled="loading || !provider.enabled"
+              @click="provider.action"
+            >
+              <span class="oauth-mark">{{ provider.icon }}</span>
+              <span>{{ provider.label }}</span>
+            </button>
+          </div>
 
           <div class="auth-footer text-center">
             <p class="body-md text-muted">
-              Acceso solo para administradores
+              Google usa token directo. Discord y GitHub vuelven por <strong>/auth/callback/:provider</strong>.
             </p>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.auth-view {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-surface);
-  padding: var(--space-xl) var(--space-md);
-}
-
-.auth-container {
-  max-width: 480px;
-}
-
-.auth-card {
-  padding: var(--space-lg);
-  background: white;
-  border-radius: var(--radius-lg);
-}
-
-.auth-header {
-  margin-bottom: var(--space-lg);
-}
-
-.auth-logo {
-  height: 64px;
-  margin-bottom: var(--space-md);
-  object-fit: contain;
-}
-
-.form-group {
-  margin-bottom: var(--space-md);
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: var(--space-xs);
-  color: var(--color-on-surface);
-  font-weight: 700;
-}
-
-.form-control {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid var(--color-outline-variant);
-  border-radius: var(--radius-default);
-  background: var(--color-surface-container-low);
-  font-family: var(--font-family);
-  font-size: var(--body-md-size);
-  transition: all var(--transition-base);
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  background: white;
-}
-
-.error-box {
-  background: var(--color-secondary-container);
-  color: var(--color-on-secondary-container);
-  padding: var(--space-md);
-  border-radius: var(--radius-default);
-  margin-bottom: var(--space-md);
-  font-size: var(--label-lg-size);
-  text-align: center;
-  border-left: 4px solid var(--color-secondary);
-}
-
-.link-primary {
-  color: var(--color-secondary);
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.link-primary:hover {
-  text-decoration: underline;
-}
-
-.link-forgot {
-  color: var(--color-on-surface-variant);
-  font-size: var(--label-lg-size);
-  text-decoration: none;
-}
-
-.link-forgot:hover {
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-.auth-footer {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--color-outline-variant);
-}
-
 .w-100 {
   width: 100%;
   justify-content: center;
 }
 
-.d-flex { display: flex; }
-.justify-between { justify-content: space-between; }
-.align-center { align-items: center; }
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.mb-0 { margin-bottom: 0; }
-.mb-xs { margin-bottom: 4px; }
-.mt-xs { margin-top: 4px; }
-
-/* Social Auth Styles */
-.social-auth {
-  margin-top: var(--space-lg);
+.button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.divider {
+.button-content .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.admin-code-option {
   display: flex;
   align-items: center;
-  text-align: center;
-  margin-bottom: var(--space-md);
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-sm);
   color: var(--color-on-surface-variant);
-  font-size: var(--label-md-size);
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid var(--color-outline-variant);
+.admin-code-option input {
+  width: 16px;
+  height: 16px;
 }
 
-.divider:not(:empty)::before {
-  margin-right: var(--space-sm);
+.admin-code-option .material-symbols-outlined {
+  color: var(--color-primary);
+  font-size: 20px;
 }
 
-.divider:not(:empty)::after {
-  margin-left: var(--space-sm);
+.oauth-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.btn-outline {
-  background: transparent;
-  border: 2px solid var(--color-outline-variant);
+.oauth-button {
+  min-height: 48px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-container-lowest);
   color: var(--color-on-surface);
-  display: flex;
+  font-weight: 800;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-sm);
+  gap: 8px;
+  cursor: pointer;
 }
 
-.btn-outline:hover {
-  background: var(--color-surface-container-low);
-  border-color: var(--color-outline);
+.oauth-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
-.btn-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
+.oauth-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-surface-container);
+  font-size: 11px;
 }
 
-.btn-social {
-  font-weight: 600;
-  margin-bottom: var(--space-sm);
-}
-
-.btn-google {
-  color: #3c4043;
-}
-
-.btn-discord {
-  color: #5865F2;
-  border-color: #5865F2;
-}
-
-.btn-discord:hover {
-  background: #f0f1ff;
-  border-color: #4752c4;
-}
-
-.btn-github {
-  color: #24292f;
-  border-color: #d0d7de;
-}
-
-.btn-github:hover {
-  background: #f6f8fa;
-  border-color: #24292f;
+@media (max-width: 560px) {
+  .oauth-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
-
