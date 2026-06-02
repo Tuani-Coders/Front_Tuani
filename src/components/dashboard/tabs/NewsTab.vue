@@ -157,6 +157,23 @@ const saveModalData = async () => {
     emit('toast', { message: 'El título, el resumen y el contenido son obligatorios', type: 'error' })
     return
   }
+  if (newsForm.imageUrl && !/^https?:\/\//i.test(newsForm.imageUrl.trim())) {
+    emit('toast', {
+      message: 'La imagen principal debe ser una URL http(s). Las imágenes locales/base64 no son válidas para la API.',
+      type: 'error'
+    })
+    return
+  }
+
+  const invalidGalleryImage = (newsForm.additionalImages || [])
+    .find((img) => img?.url && !/^https?:\/\//i.test(String(img.url).trim()))
+  if (invalidGalleryImage) {
+    emit('toast', {
+      message: 'Las imágenes de galería deben ser URLs http(s). Revisa las imágenes locales cargadas.',
+      type: 'error'
+    })
+    return
+  }
 
   saving.value = true
   try {
@@ -400,6 +417,26 @@ defineExpose({
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.primary-cell-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.primary-cell-text strong {
+  display: block;
+  color: var(--color-on-surface);
+  line-height: 1.35;
+}
+
+.cell-excerpt {
+  display: block;
+  color: var(--color-on-surface-variant);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .news-image-field {

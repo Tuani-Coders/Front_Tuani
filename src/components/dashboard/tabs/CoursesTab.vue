@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useContent } from '@/composables/useContent'
 
 const emit = defineEmits(['toast'])
@@ -10,6 +10,8 @@ const {
   coursesLoading,
   coursesError,
   fetchAdminCourses,
+  ensureSampleCourses,
+  ensureCourseImages,
   createCourseItem,
   updateCourseItem,
   deleteCourseItem,
@@ -27,19 +29,29 @@ const modalMode = ref('create') // 'create', 'edit'
 const editId = ref(null)
 const saving = ref(false)
 
+const loadCoursesData = async () => {
+  brokenImages.value.clear()
+  await fetchAdminCourses()
+  await ensureSampleCourses()
+  await ensureCourseImages()
+}
+
 onMounted(() => {
-  fetchAdminCourses()
+  loadCoursesData().catch(() => {})
 })
+
+watch(
+  () => coursesList.value.map((course) => `${course.id}:${course.imageUrl}`).join('|'),
+  () => {
+    brokenImages.value.clear()
+  }
+)
 
 const courseForm = reactive({
   code: '',
   name: '',
-  category: 'Grado Básico',
   centerId: '',
   duration: '2000h',
-  enrolled: 0,
-  capacity: 15,
-  status: 'Activo',
   imageUrl: '',
   imageName: '',
   description: ''
@@ -166,12 +178,8 @@ const openCreateModal = () => {
   editId.value = null
   courseForm.code = ''
   courseForm.name = ''
-  courseForm.category = 'Grado Básico'
   courseForm.centerId = centersList.value[0]?.id || ''
   courseForm.duration = '2000h'
-  courseForm.enrolled = 0
-  courseForm.capacity = 15
-  courseForm.status = 'Activo'
   courseForm.imageUrl = ''
   courseForm.imageName = ''
   courseForm.description = ''
@@ -184,12 +192,8 @@ const openEditModal = (item) => {
   editId.value = item.id
   courseForm.code = item.code || ''
   courseForm.name = item.name || ''
-  courseForm.category = item.category || 'Grado Básico'
   courseForm.centerId = item.centerId || centersList.value[0]?.id || ''
   courseForm.duration = item.duration || '2000h'
-  courseForm.enrolled = item.enrolled || 0
-  courseForm.capacity = item.capacity || 15
-  courseForm.status = item.status || 'Activo'
   courseForm.imageUrl = item.imageUrl || ''
   courseForm.imageName = item.imageName || ''
   courseForm.description = item.description || ''
@@ -332,13 +336,21 @@ const saveModalData = async () => {
     return
   }
 
-  if (!courseForm.code.trim() || !courseForm.name.trim()) {
-    emit('toast', { message: 'El código y el nombre del curso son obligatorios', type: 'error' })
+  if (!courseForm.name.trim()) {
+    emit('toast', { message: 'El nombre del curso es obligatorio', type: 'error' })
     return
   }
 
   if (!courseForm.centerId) {
     emit('toast', { message: 'Selecciona un centro formativo', type: 'error' })
+    return
+  }
+
+  if (courseForm.imageUrl && !/^https?:\/\//i.test(courseForm.imageUrl.trim())) {
+    emit('toast', {
+      message: 'La imagen del curso debe ser una URL http(s). Las imágenes locales/base64 no son válidas para la API.',
+      type: 'error'
+    })
     return
   }
 
@@ -380,7 +392,7 @@ defineExpose({
     <div v-if="coursesError" class="courses-error-banner">
       <span class="material-symbols-outlined">error</span>
       <p>{{ coursesError }}</p>
-      <button type="button" class="secondary-button" @click="fetchAdminCourses">Reintentar</button>
+      <button type="button" class="secondary-button" @click="loadCoursesData">Reintentar</button>
     </div>
 
     <div v-if="coursesLoading" class="courses-loading">
@@ -393,10 +405,10 @@ defineExpose({
         <thead>
           <tr>
             <th>Curso</th>
+            <th>Centro formativo</th>
+            <th>Código</th>
             <th>Categoría</th>
             <th>Duración</th>
-            <th>Ocupación</th>
-            <th>Estado</th>
             <th class="actions-col">Acciones</th>
           </tr>
         </thead>
@@ -416,17 +428,24 @@ defineExpose({
                     :src="item.imageUrl"
                     :alt="item.name"
                     loading="lazy"
+                    referrerpolicy="no-referrer"
+                    crossorigin="anonymous"
                     @error="onCourseImageError(item.id)"
                   >
                   <span v-else class="material-symbols-outlined" aria-hidden="true">school</span>
                 </div>
                 <div class="primary-cell-text">
                   <strong class="course-title">{{ item.name }}</strong>
-                  <span class="course-code" :class="{ 'course-code--missing': !item.code }">
-                    {{ getCourseCodeLabel(item) }}
-                  </span>
-                  <span v-if="item.centerName" class="course-meta">{{ item.centerName }}</span>
+                  <div class="course-summary-meta">
+                    <span class="course-meta">Haz clic para ver alumnos inscritos</span>
+                  </div>
                 </div>
+              </td>
+              <td class="duration-cell">{{ item.centerName || 'Sin centro asignado' }}</td>
+              <td>
+                <span class="course-code" :class="{ 'course-code--missing': !item.code }">
+                  {{ getCourseCodeLabel(item) }}
+                </span>
               </td>
               <td>
                 <span :class="['table-chip', getCategoryChipClass(item.category)]">
@@ -434,28 +453,6 @@ defineExpose({
                 </span>
               </td>
               <td class="duration-cell">{{ item.duration || '—' }}</td>
-              <td>
-                <div class="progress-bar-cell">
-                  <div class="progress-bar-head">
-                    <span class="progress-text">
-                      <strong>{{ getCourseEnrollment(item) }}</strong>
-                      <span>/ {{ getCourseCapacity(item) }} plazas</span>
-                    </span>
-                    <span class="progress-pct">{{ Math.round(getCourseOccupancy(item)) }}%</span>
-                  </div>
-                  <div class="progress-bar-mini" role="progressbar" :aria-valuenow="Math.round(getCourseOccupancy(item))" aria-valuemin="0" aria-valuemax="100">
-                    <span
-                      :class="getOccupancyTone(item)"
-                      :style="{ width: `${Math.max(getCourseOccupancy(item), getCourseEnrollment(item) > 0 ? 8 : 0)}%` }"
-                    ></span>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <span :class="['table-chip', item.status === 'Activo' ? 'chip-green' : item.status === 'Completo' ? 'chip-yellow' : 'chip-stone']">
-                  {{ item.status }}
-                </span>
-              </td>
               <td class="actions-cell" @click.stop>
                 <button 
                   class="action-btn add-student" 
@@ -486,9 +483,25 @@ defineExpose({
               <td colspan="6">
                 <div class="students-panel">
                   <div class="students-panel-header">
-                    <div>
-                      <strong>Alumnos Inscritos en el Curso</strong>
-                      <span>{{ getCourseStudents(item).length }} registros guardados</span>
+                    <div class="students-panel-course-info">
+                      <strong>{{ item.name }}</strong>
+                      <span class="students-panel-subtitle">
+                        Alumnos inscritos · {{ getCourseStudents(item).length }} registros
+                      </span>
+                      <div class="course-summary-meta students-panel-meta">
+                        <span class="course-code" :class="{ 'course-code--missing': !item.code }">
+                          Código: {{ getCourseCodeLabel(item) }}
+                        </span>
+                        <span class="course-meta">
+                          Centro: {{ item.centerName || 'Sin centro asignado' }}
+                        </span>
+                        <span class="course-meta">
+                          Duración: {{ item.duration || 'No definida' }}
+                        </span>
+                      </div>
+                      <p v-if="item.description" class="students-panel-description">
+                        {{ item.description }}
+                      </p>
                     </div>
                   </div>
 
@@ -567,16 +580,12 @@ defineExpose({
           <!-- Formulario Formación -->
           <div v-if="modalType === 'formacion'" class="form-grid">
             <div class="form-group-half">
-              <label class="label-md">Código de Curso *</label>
+              <label class="label-md">Código de Curso</label>
               <input type="text" class="form-control-dash" v-model="courseForm.code" placeholder="Ej: GM-SOL">
             </div>
             <div class="form-group-half">
-              <label class="label-md">Categoría *</label>
-              <select class="form-control-dash" v-model="courseForm.category">
-                <option value="Grado Básico">Grado Básico</option>
-                <option value="Grado Medio">Grado Medio</option>
-                <option value="Empleo">Formación Empleo</option>
-              </select>
+              <label class="label-md">Duración</label>
+              <input type="text" class="form-control-dash" v-model="courseForm.duration" placeholder="Ej: 2000h">
             </div>
             <div class="form-group-full">
               <label class="label-md">Centro formativo *</label>
@@ -591,31 +600,21 @@ defineExpose({
               <label class="label-md">Nombre Completo del Curso *</label>
               <input type="text" class="form-control-dash" v-model="courseForm.name" placeholder="Ej: Grado Medio en Soldadura y Calderería">
             </div>
-            <div class="form-group-half">
-              <label class="label-md">Duración Total *</label>
-              <input type="text" class="form-control-dash" v-model="courseForm.duration" placeholder="Ej: 2000h">
-            </div>
-            <div class="form-group-half">
-              <label class="label-md">Plazas Totales *</label>
-              <input type="number" class="form-control-dash" v-model.number="courseForm.capacity">
-            </div>
-            <div class="form-group-half">
-              <label class="label-md">Alumnos Matriculados *</label>
-              <input type="number" class="form-control-dash" v-model.number="courseForm.enrolled">
-            </div>
-            <div class="form-group-half">
-              <label class="label-md">Estado *</label>
-              <select class="form-control-dash" v-model="courseForm.status">
-                <option value="Activo">Activo</option>
-                <option value="Completo">Completo</option>
-                <option value="Borrador">Borrador</option>
-              </select>
+            <div class="form-group-full">
+              <label class="label-md">Descripción</label>
+              <textarea class="form-control-dash" rows="3" v-model="courseForm.description" placeholder="Resumen del contenido del curso..."></textarea>
             </div>
             <div class="form-group-full">
               <label class="label-md">Imagen del curso</label>
               <div class="news-image-field">
                 <div class="news-image-preview">
-                  <img v-if="courseForm.imageUrl" :src="courseForm.imageUrl" alt="Vista previa del curso">
+                  <img
+                    v-if="courseForm.imageUrl"
+                    :src="courseForm.imageUrl"
+                    alt="Vista previa del curso"
+                    referrerpolicy="no-referrer"
+                    crossorigin="anonymous"
+                  >
                   <span v-else class="material-symbols-outlined">image</span>
                 </div>
                 <div class="news-image-controls">
@@ -642,10 +641,21 @@ defineExpose({
               <span class="material-symbols-outlined">school</span>
               <div>
                 <strong>{{ selectedCourse?.name }}</strong>
-                <p>
-                  {{ selectedCourse?.id }} · 
-                  {{ modalMode === 'edit' ? 'Editando alumno inscrito' : `Plaza ${selectedCourse ? getCourseEnrollment(selectedCourse) + 1 : 0} de ${selectedCourse?.capacity}` }}
+                <p class="selected-course-context">
+                  {{ modalMode === 'edit' ? 'Editando alumno inscrito' : 'Matriculando nuevo alumno' }}
+                  · {{ selectedCourse ? getCourseStudents(selectedCourse).length : 0 }} alumnos actuales
                 </p>
+                <div v-if="selectedCourse" class="course-summary-meta selected-course-meta">
+                  <span class="course-code" :class="{ 'course-code--missing': !selectedCourse.code }">
+                    Código: {{ getCourseCodeLabel(selectedCourse) }}
+                  </span>
+                  <span class="course-meta">
+                    Centro: {{ selectedCourse.centerName || 'Sin centro asignado' }}
+                  </span>
+                  <span class="course-meta">
+                    Duración: {{ selectedCourse.duration || 'No definida' }}
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group-half">
@@ -818,6 +828,12 @@ defineExpose({
   line-height: 1.3;
 }
 
+.course-summary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .duration-cell {
   color: var(--color-on-surface);
   font-weight: 700;
@@ -887,21 +903,34 @@ defineExpose({
   border-bottom: 1px solid var(--color-surface-container-low);
 }
 
-.students-panel-header strong,
-.students-panel-header span {
-  display: block;
+.students-panel-course-info {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
 }
 
-.students-panel-header strong {
+.students-panel-course-info strong {
+  display: block;
   color: var(--color-primary);
   font-size: 15px;
+  line-height: 1.35;
 }
 
-.students-panel-header span {
-  margin-top: 3px;
+.students-panel-subtitle {
   color: var(--color-on-surface-variant);
   font-size: 12px;
   font-weight: 700;
+}
+
+.students-panel-meta {
+  margin-top: 2px;
+}
+
+.students-panel-description {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .students-table-wrap {
@@ -1139,11 +1168,15 @@ defineExpose({
   line-height: 20px;
 }
 
-.selected-course-summary p {
-  margin-top: 3px;
+.selected-course-context {
+  margin: 3px 0 0;
   color: var(--color-on-surface-variant);
   font-size: 12px;
   font-weight: 700;
+}
+
+.selected-course-meta {
+  margin-top: 8px;
 }
 
 @media (max-width: 720px) {

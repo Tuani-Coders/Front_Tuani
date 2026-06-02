@@ -1,23 +1,43 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useContent } from '@/composables/useContent'
 
 const emit = defineEmits(['toast'])
 
-const { collaborationsList } = useContent()
+const {
+  collaborationsList,
+  collabsLoading,
+  collabsError,
+  fetchAdminCollaborators,
+  ensureCollaboratorLogos,
+  createCollaboratorItem,
+  updateCollaboratorItem,
+  deleteCollaboratorItem,
+  setCollaboratorWorkflow
+} = useContent()
 
 // --- State ---
 const collabSearchQuery = ref('')
 
 const isModalOpen = ref(false)
 const modalMode = ref('create') // 'create', 'edit'
-const editIndex = ref(-1)
+const editId = ref(null)
+const saving = ref(false)
+
+onMounted(async () => {
+  await fetchAdminCollaborators()
+  await ensureCollaboratorLogos()
+})
 
 const collabForm = reactive({
   entity: '',
   type: 'Apoyando Proyectos',
   date: '',
   status: 'Pendiente',
+  description: '',
+  email: '',
+  phone: '',
+  website: '',
   imageUrl: '',
   imageName: ''
 })
@@ -57,61 +77,99 @@ const clearCollabImage = () => {
 }
 
 // --- Actions ---
-const openCreateModal = () => {
-  modalMode.value = 'create'
-  editIndex.value = -1
+const resetCollabForm = () => {
   collabForm.entity = ''
   collabForm.type = 'Apoyando Proyectos'
   collabForm.date = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
   collabForm.status = 'Pendiente'
+  collabForm.description = ''
+  collabForm.email = ''
+  collabForm.phone = ''
+  collabForm.website = ''
   collabForm.imageUrl = ''
   collabForm.imageName = ''
+}
+
+const openCreateModal = () => {
+  modalMode.value = 'create'
+  editId.value = null
+  resetCollabForm()
   isModalOpen.value = true
 }
 
-const openEditModal = (item, index) => {
+const openEditModal = (item) => {
   modalMode.value = 'edit'
-  editIndex.value = index
+  editId.value = item.id
   collabForm.entity = item.entity || ''
   collabForm.type = item.type || 'Apoyando Proyectos'
   collabForm.date = item.date || ''
   collabForm.status = item.status || 'Pendiente'
+  collabForm.description = item.description || ''
+  collabForm.email = item.email || ''
+  collabForm.phone = item.phone || ''
+  collabForm.website = item.website || ''
   collabForm.imageUrl = item.imageUrl || ''
   collabForm.imageName = item.imageName || ''
   isModalOpen.value = true
 }
 
-const deleteCollab = (index) => {
-  if (confirm('¿Estás seguro de que deseas eliminar este colaborador?')) {
-    collaborationsList.value.splice(index, 1)
+const deleteCollab = async (id) => {
+  if (!confirm('¿Estás seguro de que deseas eliminar este colaborador?')) return
+  try {
+    await deleteCollaboratorItem(id)
     emit('toast', { message: 'Colaboración eliminada correctamente', type: 'error' })
+  } catch (err) {
+    emit('toast', { message: err.message || 'No se pudo eliminar', type: 'error' })
   }
 }
 
-const approveCollab = (index) => {
-  collaborationsList.value[index].status = 'Aprobada'
-  emit('toast', { message: 'Colaboración aprobada con éxito', type: 'success' })
+const approveCollab = async (id) => {
+  try {
+    await setCollaboratorWorkflow(id, 'Aprobada')
+    emit('toast', { message: 'Colaboración aprobada con éxito', type: 'success' })
+  } catch (err) {
+    emit('toast', { message: err.message || 'No se pudo aprobar', type: 'error' })
+  }
 }
 
-const rejectCollab = (index) => {
-  collaborationsList.value[index].status = 'Rechazada'
-  emit('toast', { message: 'Colaboración rechazada', type: 'error' })
+const rejectCollab = async (id) => {
+  try {
+    await setCollaboratorWorkflow(id, 'Rechazada')
+    emit('toast', { message: 'Colaboración rechazada', type: 'error' })
+  } catch (err) {
+    emit('toast', { message: err.message || 'No se pudo rechazar', type: 'error' })
+  }
 }
 
-const saveModalData = () => {
+const saveModalData = async () => {
   if (!collabForm.entity.trim()) {
     emit('toast', { message: 'El nombre de la entidad es obligatorio', type: 'error' })
     return
   }
 
-  if (modalMode.value === 'create') {
-    collaborationsList.value.unshift({ id: Date.now(), ...collabForm })
-    emit('toast', { message: 'Colaboración registrada correctamente', type: 'success' })
-  } else {
-    collaborationsList.value[editIndex.value] = { ...collaborationsList.value[editIndex.value], ...collabForm }
-    emit('toast', { message: 'Colaboración actualizada correctamente', type: 'success' })
+  if (collabForm.imageUrl && !/^https?:\/\//i.test(collabForm.imageUrl.trim())) {
+    emit('toast', {
+      message: 'El logo debe ser una URL http(s). Las imágenes locales/base64 no son válidas para la API.',
+      type: 'error'
+    })
+    return
   }
-  isModalOpen.value = false
+
+  saving.value = true
+  try {
+    if (modalMode.value === 'create') {
+      await createCollaboratorItem({ ...collabForm })
+      emit('toast', { message: 'Colaboración registrada correctamente', type: 'success' })
+    } else {
+      await updateCollaboratorItem(editId.value, { ...collabForm })
+      emit('toast', { message: 'Colaboración actualizada correctamente', type: 'success' })
+    }
+    isModalOpen.value = false
+  } catch (err) {
+    emit('toast', { message: err.message || 'No se pudo guardar', type: 'error' })
+  } finally {
+    saving.value = false
+  }
 }
 
 defineExpose({
@@ -132,7 +190,13 @@ defineExpose({
       </button>
     </div>
 
-    <div class="data-table-container">
+    <div v-if="collabsLoading" class="loading-hint">Cargando colaboradores…</div>
+    <div v-else-if="collabsError" class="error-hint">
+      <p>{{ collabsError }}</p>
+      <button type="button" class="secondary-button" @click="fetchAdminCollaborators()">Reintentar</button>
+    </div>
+
+    <div v-else class="data-table-container">
       <table class="data-table">
         <thead>
           <tr>
@@ -144,10 +208,15 @@ defineExpose({
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in filteredCollabs" :key="item.id">
+          <tr v-for="item in filteredCollabs" :key="item.id">
             <td class="primary-cell">
               <div class="collab-thumbnail">
-                <img v-if="item.imageUrl" :src="item.imageUrl" :alt="item.entity">
+                <img
+                  v-if="item.imageUrl"
+                  :src="item.imageUrl"
+                  :alt="item.entity"
+                  referrerpolicy="no-referrer"
+                >
                 <span v-else class="material-symbols-outlined">handshake</span>
               </div>
               <div class="primary-cell-text">
@@ -166,7 +235,7 @@ defineExpose({
                 v-if="item.status === 'Pendiente'" 
                 class="action-btn approve" 
                 title="Aprobar Solicitud" 
-                @click="approveCollab(index)"
+                @click="approveCollab(item.id)"
               >
                 <span class="material-symbols-outlined">check</span>
               </button>
@@ -174,14 +243,14 @@ defineExpose({
                 v-if="item.status === 'Pendiente'" 
                 class="action-btn reject" 
                 title="Rechazar Solicitud" 
-                @click="rejectCollab(index)"
+                @click="rejectCollab(item.id)"
               >
                 <span class="material-symbols-outlined">close</span>
               </button>
-              <button class="action-btn edit" title="Editar Datos" @click="openEditModal(item, index)">
+              <button class="action-btn edit" title="Editar Datos" @click="openEditModal(item)">
                 <span class="material-symbols-outlined">edit</span>
               </button>
-              <button class="action-btn delete" title="Eliminar Registro" @click="deleteCollab(index)">
+              <button class="action-btn delete" title="Eliminar Registro" @click="deleteCollab(item.id)">
                 <span class="material-symbols-outlined">delete</span>
               </button>
             </td>
@@ -211,6 +280,27 @@ defineExpose({
             <div class="form-group-full">
               <label class="label-md">Nombre de la Entidad / Empresa *</label>
               <input type="text" class="form-control-dash" v-model="collabForm.entity" placeholder="Ej: Empresa S.A.">
+            </div>
+            <div class="form-group-full">
+              <label class="label-md">Descripción breve</label>
+              <textarea
+                class="form-control-dash"
+                rows="2"
+                v-model="collabForm.description"
+                placeholder="Resumen de la colaboración (máx. 500 caracteres)"
+              />
+            </div>
+            <div class="form-group-half">
+              <label class="label-md">Email de contacto</label>
+              <input type="email" class="form-control-dash" v-model="collabForm.email" placeholder="colabora@empresa.com">
+            </div>
+            <div class="form-group-half">
+              <label class="label-md">Teléfono</label>
+              <input type="text" class="form-control-dash" v-model="collabForm.phone" placeholder="+34 600 000 000">
+            </div>
+            <div class="form-group-full">
+              <label class="label-md">Sitio web</label>
+              <input type="url" class="form-control-dash" v-model="collabForm.website" placeholder="https://www.empresa.com">
             </div>
             <div class="form-group-full">
               <label class="label-md">Tipo de Colaboración *</label>
@@ -261,8 +351,8 @@ defineExpose({
 
         <div class="modal-footer">
           <button class="secondary-button" @click="isModalOpen = false">Cancelar</button>
-          <button class="primary-button-accent" @click="saveModalData">
-            {{ modalMode === 'create' ? 'Crear registro' : 'Guardar cambios' }}
+          <button class="primary-button-accent" :disabled="saving" @click="saveModalData">
+            {{ saving ? 'Guardando…' : modalMode === 'create' ? 'Crear registro' : 'Guardar cambios' }}
           </button>
         </div>
       </div>
@@ -725,6 +815,21 @@ textarea.form-control-dash {
 
 .secondary-button:hover {
   background: var(--color-surface-container-high);
+}
+
+.loading-hint,
+.error-hint {
+  padding: 24px;
+  text-align: center;
+  color: var(--color-on-surface-variant);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-lowest);
+  margin-bottom: 16px;
+}
+
+.error-hint p {
+  margin-bottom: 12px;
 }
 
 @media (max-width: 720px) {

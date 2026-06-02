@@ -1,9 +1,13 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useContent } from '@/composables/useContent'
 
-const { collaborationsList } = useContent()
+const { collaborationsList, fetchPublishedCollaborators } = useContent()
+
+onMounted(() => {
+  fetchPublishedCollaborators('Apoyando Proyectos')
+})
 
 const approvedEntities = computed(() => {
   return collaborationsList.value.filter(
@@ -84,7 +88,13 @@ const projects = [
           <h3 class="mb-md text-center">Empresas colaboradoras en esta modalidad</h3>
           <div class="entities-tags">
             <span v-for="entity in approvedEntities" :key="entity.id" class="entity-tag" :class="{ 'has-logo': entity.imageUrl }">
-              <img v-if="entity.imageUrl" :src="entity.imageUrl" :alt="entity.entity" class="entity-logo">
+              <img
+                v-if="entity.imageUrl"
+                :src="entity.imageUrl"
+                :alt="entity.entity"
+                class="entity-logo"
+                referrerpolicy="no-referrer"
+              >
               <span v-else>{{ entity.entity }}</span>
             </span>
           </div>

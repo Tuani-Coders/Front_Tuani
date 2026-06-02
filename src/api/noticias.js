@@ -1,26 +1,31 @@
 import { apiRequest } from './client.js'
 
-function withTagQuery(path, tag) {
-  if (!tag) return path
+function withCategoryQuery(path, categoryId) {
+  if (!categoryId) return path
   const separator = path.includes('?') ? '&' : '?'
-  return `${path}${separator}tag=${encodeURIComponent(tag)}`
+  return `${path}${separator}category=${encodeURIComponent(categoryId)}`
 }
 
 export const noticiasApi = {
-  listPublished: (tag) => apiRequest(withTagQuery('/noticias', tag)),
+  listPublished: (categoryId) => apiRequest(withCategoryQuery('/news', categoryId)),
 
-  listAdmin: (tag) => apiRequest(withTagQuery('/noticias/admin', tag), { auth: true }),
+  listAdmin: () => apiRequest('/news/admin', { auth: true }),
 
-  getPublished: (id) => apiRequest(`/noticias/${id}`),
+  getPublished: (id) => apiRequest(`/news/${id}`),
 
-  getAdmin: (id) => apiRequest(`/noticias/admin/${id}`, { auth: true }),
+  // Backend does not expose /news/admin/:id at the moment.
+  getAdmin: (id) => apiRequest(`/news/${id}`, { auth: true }),
 
   create: (payload) =>
-    apiRequest('/noticias', { method: 'POST', body: payload, auth: true }),
+    apiRequest('/news', { method: 'POST', body: payload, auth: true }),
 
   update: (id, payload) =>
-    apiRequest(`/noticias/${id}`, { method: 'PUT', body: payload, auth: true }),
+    apiRequest(`/news/${id}`, { method: 'PUT', body: payload, auth: true }),
 
   remove: (id) =>
-    apiRequest(`/noticias/${id}`, { method: 'DELETE', auth: true })
+    apiRequest(`/news/${id}`, { method: 'DELETE', auth: true }),
+
+  listCategories: () => apiRequest('/category-news'),
+
+  listPages: () => apiRequest('/paginas-contenido')
 }

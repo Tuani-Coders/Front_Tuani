@@ -11,11 +11,12 @@ import ProfileTab from '@/components/dashboard/tabs/ProfileTab.vue'
 import UsersTab from '@/components/dashboard/tabs/UsersTab.vue'
 import SettingsTab from '@/components/dashboard/tabs/SettingsTab.vue'
 
-const { fetchAdminNews, fetchAdminCourses } = useContent()
+const { fetchAdminNews, fetchAdminCourses, fetchAdminCollaborators } = useContent()
 
 onMounted(() => {
   fetchAdminNews()
   fetchAdminCourses()
+  fetchAdminCollaborators()
 })
 
 // --- Active Tab State ---
