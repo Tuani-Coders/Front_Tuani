@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watchEffect } from 'vue'
+import { computed, watchEffect, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import AppHeader from '@/components/layout/AppHeader.vue'
@@ -15,12 +15,30 @@ watchEffect(() => {
     : 'Grupo Peñascal Kooperatiba'
   document.documentElement.lang = locale.value
 })
+
+// Reset focus to the header logo on route navigation so keyboard & screen reader accessibility starts at the nav
+watch(
+  () => route.path,
+  () => {
+    nextTick(() => {
+      const navEl = document.querySelector('.header-logo')
+      if (navEl) {
+        navEl.focus({ preventScroll: true })
+      } else {
+        const contentEl = document.getElementById('content')
+        if (contentEl) {
+          contentEl.focus({ preventScroll: true })
+        }
+      }
+    })
+  }
+)
 </script>
 
 <template>
   <div id="app-wrapper" :class="{ 'dashboard-wrapper': isDashboardLayout }">
     <AppHeader v-if="!isDashboardLayout" />
-    <main id="content" :class="{ 'dashboard-content': isDashboardLayout }">
+    <main id="content" tabindex="-1" :class="{ 'dashboard-content': isDashboardLayout }" style="outline: none;">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />

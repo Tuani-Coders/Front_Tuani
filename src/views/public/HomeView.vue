@@ -169,8 +169,6 @@ const news = computed(() => {
 .hero-section {
   position: relative;
   padding: 120px 0 80px;
-  background-color: transparent;
-  border-bottom: 2px solid var(--color-outline-variant);
   overflow: hidden;
 }
 

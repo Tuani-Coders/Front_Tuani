@@ -451,11 +451,6 @@ const handleNavClick = (item, event) => {
 
 .dropdown-arrow {
   font-size: 18px;
-  transition: transform var(--transition-fast);
-}
-
-.dropdown-arrow.rotated {
-  transform: rotate(180deg);
 }
 
 /* ── Dropdown ─────────────────────────────────── */
@@ -472,10 +467,16 @@ const handleNavClick = (item, event) => {
   .has-dropdown:focus-within .dropdown {
     display: flex !important; /* Instant show on hover/focus */
   }
-  
-  .has-dropdown:hover .dropdown-arrow,
-  .has-dropdown:focus-within .dropdown-arrow {
-    transform: rotate(180deg);
+
+  .dropdown::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    pointer-events: auto;
   }
 }
 
@@ -514,7 +515,7 @@ const handleNavClick = (item, event) => {
   font-size: 14px;
   font-weight: 600;
   color: var(--color-on-surface);
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast);
   text-decoration: none;
 }
 
@@ -525,16 +526,12 @@ const handleNavClick = (item, event) => {
   }
 
   .dropdown-link:hover {
-    background: var(--color-surface-container-low);
     color: var(--color-primary);
-    padding-left: 16px; /* No text push in horizontal layout */
   }
 }
 
 .dropdown-link:hover {
-  background: var(--color-surface-container-low);
   color: var(--color-primary);
-  padding-left: 24px;
 }
 
 /* ── Mobile toggle ────────────────────────────── */
