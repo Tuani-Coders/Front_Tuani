@@ -46,70 +46,68 @@ const locations = [
 <template>
   <footer class="app-footer">
     <div class="container footer-inner">
-      <!-- Branding & Desc -->
-      <div class="footer-header">
-        <RouterLink to="/" class="footer-logo">
-          <img src="../../assets/icons/penascal.png" alt="Grupo Peñascal Logo" class="footer-logo-img">
-        </RouterLink>
-        <p class="brand-desc body-lg">
-          {{ t('brand.description') }}
-        </p>
-      </div>
-
-      <!-- Main Footer Grid (Cards) -->
+      <!-- Main Footer Grid (3 flat columns matching reference style) -->
       <div class="footer-grid">
-        <!-- Sedes (From Reference Image) -->
-        <div v-for="loc in locations" :key="loc.name" class="accent-card">
-          <h4 class="accent-card-title">
-            <span class="material-symbols-outlined">{{ loc.icon }}</span>
-            {{ loc.name }}
-          </h4>
-          <div class="accent-card-content">
-            <ul class="accent-card-list">
-              <li>
-                <span>{{ loc.address }}</span>
-              </li>
-              <li>
-                <span class="material-symbols-outlined">phone</span>
-                <a :href="'tel:' + loc.phone.replace(/\s/g, '')">{{ loc.phone }}</a>
-              </li>
-              <li>
-                <span class="material-symbols-outlined">mail</span>
-                <a :href="'mailto:' + loc.email">{{ loc.email }}</a>
-              </li>
-            </ul>
+        
+        <!-- Column 1: Branding & Actions -->
+        <div class="footer-brand-col">
+          <RouterLink to="/" class="footer-logo">
+            <img src="../../assets/icons/penascal.png" alt="Grupo Peñascal Logo" class="footer-logo-img">
+          </RouterLink>
+          <p class="footer-slogan">Hezi landuz. Aprende trabajando.</p>
+          <p class="brand-desc">
+            {{ t('brand.description') }}
+          </p>
+          <div class="footer-actions">
+            <RouterLink to="/contacto" class="btn-footer-outline">
+              + información
+            </RouterLink>
+            <RouterLink to="/la-cooperativa" class="btn-footer-outline">
+              Canal Ético
+            </RouterLink>
           </div>
         </div>
 
-        <!-- Links: Recursos -->
-        <div class="accent-card">
-          <h4 class="accent-card-title">
-            <span class="material-symbols-outlined">hub</span>
-            {{ t('footer.resources') }}
-          </h4>
-          <div class="accent-card-content">
-            <ul class="accent-card-list">
+        <!-- Column 2: Contacto / Enlaces -->
+        <div class="footer-links-col">
+          <h3 class="footer-section-title">Contacto</h3>
+          
+          <div class="footer-links-section">
+            <h4 class="footer-subheading">{{ t('footer.resources') }}</h4>
+            <ul class="footer-links-list">
               <li v-for="link in resourceLinks" :key="link.label">
                 <RouterLink :to="link.to">{{ link.label }}</RouterLink>
               </li>
             </ul>
           </div>
-        </div>
 
-        <!-- Links: Institucional -->
-        <div class="accent-card">
-          <h4 class="accent-card-title">
-            <span class="material-symbols-outlined">corporate_fare</span>
-            {{ t('footer.institutional') }}
-          </h4>
-          <div class="accent-card-content">
-            <ul class="accent-card-list">
+          <div class="footer-links-section">
+            <h4 class="footer-subheading">{{ t('footer.institutional') }}</h4>
+            <ul class="footer-links-list">
               <li v-for="link in institutionalLinks" :key="link.label">
                 <RouterLink :to="link.to">{{ link.label }}</RouterLink>
               </li>
             </ul>
           </div>
         </div>
+
+        <!-- Column 3: Localización y Sedes -->
+        <div class="footer-locations-col">
+          <h3 class="footer-section-title">Localización</h3>
+          
+          <div class="locations-list">
+            <div v-for="loc in locations" :key="loc.name" class="location-item">
+              <h4 class="footer-subheading">{{ loc.name }}</h4>
+              <p class="location-address">{{ loc.address }}</p>
+              <div class="location-details">
+                <span>Tel.: <a :href="'tel:' + loc.phone.replace(/\s/g, '')">{{ loc.phone }}</a></span>
+                <span class="detail-separator">|</span>
+                <span>Email: <a :href="'mailto:' + loc.email">{{ loc.email }}</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="footer-bottom">
@@ -132,46 +130,189 @@ const locations = [
 
 <style scoped>
 .app-footer {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary); /* Forest Green #003429 */
   color: var(--color-on-primary);
   padding: 80px 0 40px;
   border-top: 4px solid var(--color-secondary);
 }
 
-.footer-header {
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.8fr;
+  gap: 60px;
   margin-bottom: 60px;
+}
+
+/* ── Branding Column ── */
+.footer-brand-col {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
-  margin-bottom: 60px;
-  align-items: stretch;
-}
-
-/* ── Brand ────────────────────────────────────── */
-.footer-logo {
-  display: inline-block;
-}
-
 .footer-logo-img {
-  height: 60px;
+  height: 52px;
   width: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
 }
 
-.brand-desc {
+.footer-slogan {
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
   color: var(--color-on-primary);
-  opacity: 0.78;
-  max-width: 600px;
+  margin-top: -8px;
+  opacity: 0.9;
 }
 
-/* ── Bottom ───────────────────────────────────── */
+.brand-desc {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 220px;
+  margin-top: var(--space-sm);
+}
+
+.btn-footer-outline {
+  display: inline-block;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: transparent;
+  color: var(--color-secondary); /* Accent color */
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: all 0.25s ease;
+}
+
+.btn-footer-outline:hover {
+  border-color: var(--color-secondary);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-on-primary);
+}
+
+/* ── Section Titles (Underlined) ── */
+.footer-section-title {
+  font-family: var(--font-family);
+  font-size: 24px;
+  font-weight: 800;
+  font-style: italic;
+  color: var(--color-on-primary);
+  margin-bottom: 24px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.footer-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-secondary); /* Terracotta underline */
+}
+
+/* ── Subheadings ── */
+.footer-subheading {
+  color: var(--color-secondary); /* Terracotta */
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+/* ── Links Column ── */
+.footer-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links-list a {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  text-decoration: none;
+  transition: color var(--transition-base), padding-left var(--transition-base);
+}
+
+.footer-links-list a:hover {
+  color: var(--color-secondary);
+  padding-left: 4px;
+}
+
+/* ── Locations Column ── */
+.footer-locations-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.locations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.location-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.location-item .footer-subheading {
+  margin-bottom: 2px;
+}
+
+.location-address {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.location-details {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.location-details a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.location-details a:hover {
+  color: var(--color-secondary);
+}
+
+.detail-separator {
+  opacity: 0.3;
+}
+
+/* ── Bottom Section ── */
 .footer-bottom {
   padding-top: 32px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -193,10 +334,10 @@ const locations = [
   opacity: 0.62;
   font-size: 13px;
   text-decoration: none;
+  transition: opacity var(--transition-base);
 }
 
 .legal-links a:hover {
-  color: var(--color-on-primary);
   opacity: 1;
 }
 
@@ -212,7 +353,6 @@ const locations = [
   opacity: 0.68;
   font-size: 13px;
   line-height: 20px;
-  font-style: italic;
 }
 
 .tuani-link {
@@ -227,15 +367,36 @@ const locations = [
   text-decoration: underline;
 }
 
-/* ── Responsive ───────────────────────────────── */
-@media (max-width: 992px) {
+/* ── Responsive breakpoints ── */
+@media (max-width: 1024px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
   }
+  .footer-locations-col {
+    grid-column: span 2;
+  }
+  .locations-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
 
-  .footer-brand,
-  .footer-contact {
-    max-width: 520px;
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .footer-locations-col {
+    grid-column: span 1;
+  }
+  .locations-list {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .footer-actions {
+    max-width: 100%;
   }
 }
 
@@ -243,18 +404,10 @@ const locations = [
   .app-footer {
     padding: 56px 0 32px;
   }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    margin-bottom: 40px;
-  }
-
   .footer-bottom {
     flex-direction: column;
     text-align: center;
   }
-
   .legal-links {
     justify-content: center;
     gap: 12px 20px;

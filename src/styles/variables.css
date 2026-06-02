@@ -21,6 +21,15 @@
   --color-on-secondary: #ffffff;
   --color-on-secondary-container: #600006;
 
+  --color-primary-fixed: #e2efe9;
+  --color-secondary-fixed: #fceae9;
+  --color-tertiary-fixed: #fef1d9;
+
+  --color-on-primary-fixed: var(--color-primary);
+  --color-on-secondary-fixed: var(--color-secondary);
+  --color-on-tertiary-fixed: var(--color-primary);
+  --color-on-amber-fixed: var(--color-primary);
+
   --color-surface: #f8faf7;           /* Stone White */
   --color-surface-dim: #d8dbd8;
   --color-surface-bright: #f8faf7;

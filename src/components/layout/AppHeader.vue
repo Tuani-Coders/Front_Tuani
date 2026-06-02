@@ -19,6 +19,9 @@ const toggleMenu = () => {
 const closeMenu = () => {
   mobileMenuOpen.value = false
   activeDropdown.value = null
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur()
+  }
 }
 
 const toggleDropdown = (key) => {
@@ -380,7 +383,9 @@ const handleNavClick = (item, event) => {
 }
 
 /* ── Nav ──────────────────────────────────────── */
+/* ── Nav ──────────────────────────────────────── */
 .header-nav {
+  position: relative; /* Positioning anchor for horizontal dropdowns */
   background-color: var(--color-primary);
   transition: all var(--transition-base);
 }
@@ -459,19 +464,24 @@ const handleNavClick = (item, event) => {
 }
 
 @media (min-width: 1101px) {
-  .has-dropdown:hover .dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  .has-dropdown {
+    position: static; /* Let dropdown position relative to .header-nav */
   }
-  .has-dropdown:hover .dropdown-arrow {
+  
+  .has-dropdown:hover .dropdown,
+  .has-dropdown:focus-within .dropdown {
+    display: flex !important; /* Instant show on hover/focus */
+  }
+  
+  .has-dropdown:hover .dropdown-arrow,
+  .has-dropdown:focus-within .dropdown-arrow {
     transform: rotate(180deg);
   }
 }
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 0px);
+  top: 100%;
   left: 0;
   min-width: 260px;
   background: var(--color-surface-container-lowest);
@@ -479,18 +489,23 @@ const handleNavClick = (item, event) => {
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   padding: var(--space-sm) 0;
   box-shadow: var(--shadow-lg);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all var(--transition-base);
+  display: none; /* Instant hide by default */
   list-style: none;
   z-index: 100;
 }
 
-.dropdown--open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+@media (min-width: 1101px) {
+  .dropdown {
+    width: 100%;
+    display: none !important; /* Managed by hover/focus-within */
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    padding: 10px var(--space-lg);
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
 }
 
 .dropdown-link {
@@ -501,6 +516,19 @@ const handleNavClick = (item, event) => {
   color: var(--color-on-surface);
   transition: all var(--transition-fast);
   text-decoration: none;
+}
+
+@media (min-width: 1101px) {
+  .dropdown-link {
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+
+  .dropdown-link:hover {
+    background: var(--color-surface-container-low);
+    color: var(--color-primary);
+    padding-left: 16px; /* No text push in horizontal layout */
+  }
 }
 
 .dropdown-link:hover {
