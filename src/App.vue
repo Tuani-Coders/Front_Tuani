@@ -1,12 +1,20 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import AppHeader from './components/layout/AppHeader.vue'
-import AppFooter from './components/layout/AppFooter.vue'
-import VoiceAccessibility from './components/VoiceAccessibility.vue'
+import { useI18n } from 'vue-i18n'
+import AppHeader from '@/components/layout/AppHeader.vue'
+import AppFooter from '@/components/layout/AppFooter.vue'
 
 const route = useRoute()
+const { t, locale } = useI18n()
 const isDashboardLayout = computed(() => route.meta.layout === 'dashboard')
+
+watchEffect(() => {
+  document.title = route.meta.titleKey
+    ? t(route.meta.titleKey)
+    : 'Grupo Peñascal Kooperatiba'
+  document.documentElement.lang = locale.value
+})
 </script>
 
 <template>
@@ -20,7 +28,6 @@ const isDashboardLayout = computed(() => route.meta.layout === 'dashboard')
       </router-view>
     </main>
     <AppFooter v-if="!isDashboardLayout" />
-    <VoiceAccessibility />
   </div>
 </template>
 
@@ -29,6 +36,10 @@ const isDashboardLayout = computed(() => route.meta.layout === 'dashboard')
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-image: linear-gradient(rgba(232, 242, 235, 0.93), rgba(232, 242, 235, 0.93)), url('@/assets/icons/fondo.PNG');
+  background-size: 360px;
+  background-attachment: fixed;
+  background-repeat: repeat;
 }
 
 #content {
@@ -38,7 +49,8 @@ const isDashboardLayout = computed(() => route.meta.layout === 'dashboard')
 }
 
 .dashboard-wrapper {
-  background: var(--color-surface);
+  background: var(--color-surface) !important;
+  background-image: none !important;
 }
 
 #content.dashboard-content {

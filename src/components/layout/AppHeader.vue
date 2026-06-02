@@ -1,9 +1,12 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useAuth } from '../../composables/useAuth'
+import { useI18n } from 'vue-i18n'
+import { useAuth } from '@/composables/useAuth'
+import { setLocale, SUPPORTED_LOCALES } from '../../i18n'
 
 const { user, isLoggedIn, logout } = useAuth()
+const { t, locale } = useI18n()
 const mobileMenuOpen = ref(false)
 const scrolled = ref(false)
 const activeDropdown = ref(null)
@@ -16,10 +19,13 @@ const toggleMenu = () => {
 const closeMenu = () => {
   mobileMenuOpen.value = false
   activeDropdown.value = null
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur()
+  }
 }
 
-const toggleDropdown = (label) => {
-  activeDropdown.value = activeDropdown.value === label ? null : label
+const toggleDropdown = (key) => {
+  activeDropdown.value = activeDropdown.value === key ? null : key
 }
 
 const windowWidth = ref(window.innerWidth)
@@ -49,46 +55,55 @@ onUnmounted(() => {
   window.removeEventListener('click', handleClickOutside)
 })
 
-const navItems = [
-  { label: 'Inicio', to: '/' },
+const languages = SUPPORTED_LOCALES
+
+const changeLocale = (nextLocale) => {
+  setLocale(nextLocale)
+}
+
+const navItems = computed(() => [
+  { key: 'home', label: t('nav.home'), to: '/' },
   {
-    label: 'Formación',
+    key: 'training',
+    label: t('nav.training'),
     to: '/formacion-profesional',
     children: [
-      { label: 'Formación Profesional', to: '/formacion-profesional' },
-      { label: 'Grado Básico', to: '/formacion-profesional/grado-basico' },
-      { label: 'Grado medio', to: '/formacion-profesional/grado-medio' },
-      { label: 'Formación para el Empleo', to: '/formacion-profesional/formacion-para-el-empleo' }
+      { key: 'professionalTraining', label: t('nav.professionalTraining'), to: '/formacion-profesional' },
+      { key: 'basicGrade', label: t('nav.basicGrade'), to: '/formacion-profesional/grado-basico' },
+      { key: 'mediumGrade', label: t('nav.mediumGrade'), to: '/formacion-profesional/grado-medio' },
+      { key: 'employmentTraining', label: t('nav.employmentTraining'), to: '/formacion-profesional/formacion-para-el-empleo' }
     ]
   },
   {
-    label: 'La Cooperativa',
+    key: 'cooperative',
+    label: t('nav.cooperative'),
     to: '/la-cooperativa',
     children: [
-      { label: 'Quiénes somos', to: '/la-cooperativa' },
-      { label: 'Qué hacemos', to: '/la-cooperativa/que-hacemos' },
-      { label: 'Cooperan con nosotros', to: '/la-cooperativa/cooperan-con-nosotros' },
-      { label: 'Servicio de orientación', to: '/la-cooperativa/servicio-de-orientacion' }
+      { key: 'whoWeAre', label: t('nav.whoWeAre'), to: '/la-cooperativa' },
+      { key: 'whatWeDo', label: t('nav.whatWeDo'), to: '/la-cooperativa/que-hacemos' },
+      { key: 'partners', label: t('nav.partners'), to: '/la-cooperativa/cooperan-con-nosotros' },
+      { key: 'orientation', label: t('nav.orientation'), to: '/la-cooperativa/servicio-de-orientacion' }
     ]
   },
   {
-    label: 'Colabora',
+    key: 'collaborate',
+    label: t('nav.collaborate'),
     to: '/colabora',
     children: [
-      { label: 'Colabora apoyando proyectos sin recursos', to: '/colabora/apoyando-proyectos' },
-      { label: 'Colabora donando productos y servicios', to: '/colabora/donando-productos' },
-      { label: 'Colabora contratando empresas de inserción', to: '/colabora/contratando-empresas' },
-      { label: 'Colabora apoyando la inserción laboral', to: '/colabora/apoyando-insercion' }
+      { key: 'supportProjects', label: t('nav.supportProjects'), to: '/colabora/apoyando-proyectos' },
+      { key: 'donateProducts', label: t('nav.donateProducts'), to: '/colabora/donando-productos' },
+      { key: 'hireCompanies', label: t('nav.hireCompanies'), to: '/colabora/contratando-empresas' },
+      { key: 'supportInsertion', label: t('nav.supportInsertion'), to: '/colabora/apoyando-insercion' }
     ]
   },
-  { label: 'Noticias', to: '/noticias' },
-  { label: 'Contacto', to: '/contacto' }
-]
+  { key: 'news', label: t('nav.news'), to: '/noticias' },
+  { key: 'contact', label: t('nav.contact'), to: '/contacto' }
+])
 
 const handleNavClick = (item, event) => {
   if (window.innerWidth <= 1100 && item.children) {
     event.preventDefault()
-    toggleDropdown(item.label)
+    toggleDropdown(item.key)
   } else {
     closeMenu()
   }
@@ -103,41 +118,53 @@ const handleNavClick = (item, event) => {
         <div class="topbar-contact">
           <a href="tel:+34944029300" class="topbar-link">
             <span class="material-symbols-outlined">phone</span>
-            +34 944 029 300
+            {{ t('common.phone') }}
           </a>
           <a href="mailto:info@grupopenascal.com" class="topbar-link">
             <span class="material-symbols-outlined">mail</span>
-            info@grupopenascal.com
+            {{ t('common.email') }}
           </a>
           <RouterLink to="/contacto" class="topbar-link topbar-location">
             <span class="material-symbols-outlined">location_on</span>
-            <span>Ubicación</span>
+            <span>{{ t('common.location') }}</span>
           </RouterLink>
         </div>
         <div class="topbar-right">
           <div class="topbar-auth">
             <template v-if="isLoggedIn">
-              <span class="user-greeting">Hola, <strong>{{ user?.username }}</strong></span>
+              <span class="user-greeting">
+                {{ t('auth.hello') }} <strong>{{ user?.username }}</strong>
+              </span>
               <RouterLink to="/dashboard" class="topbar-link dashboard-link">
                 <span class="material-symbols-outlined">dashboard</span>
-                Panel
+                {{ t('auth.dashboard') }}
               </RouterLink>
               <button @click="logout" class="topbar-link logout-btn">
                 <span class="material-symbols-outlined">logout</span>
-                Salir
+                {{ t('auth.logout') }}
               </button>
             </template>
             <template v-else>
               <RouterLink to="/login" class="topbar-link login-btn">
                 <span class="material-symbols-outlined">account_circle</span>
-                Entrar
+                {{ t('auth.login') }}
               </RouterLink>
             </template>
           </div>
           <div class="topbar-social">
             <div class="lang-switcher">
-              <button class="lang-btn active">ES</button>
-              <button class="lang-btn">EU</button>
+              <button
+                v-for="lang in languages"
+                :key="lang"
+                class="lang-btn"
+                :class="{ active: locale === lang }"
+                type="button"
+                :aria-label="`${t('languages.label')}: ${t(`languages.${lang}`)}`"
+                :aria-pressed="locale === lang"
+                @click="changeLocale(lang)"
+              >
+                {{ t(`languages.${lang}`) }}
+              </button>
             </div>
             <a href="https://www.facebook.com/PenascalKoop/" target="_blank" rel="noopener" aria-label="Facebook" class="social-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -172,9 +199,9 @@ const handleNavClick = (item, event) => {
         <ul class="nav-list" :class="{ open: mobileMenuOpen }">
           <li
             v-for="item in navItems"
-            :key="item.label"
+            :key="item.key"
             :class="{ 'has-dropdown': item.children }"
-            @mouseenter="item.children && windowWidth <= 1100 ? (activeDropdown = item.label) : null"
+            @mouseenter="item.children && windowWidth <= 1100 ? (activeDropdown = item.key) : null"
             @mouseleave="item.children && windowWidth <= 1100 ? (activeDropdown = null) : null"
           >
             <RouterLink
@@ -193,10 +220,10 @@ const handleNavClick = (item, event) => {
                 @click="handleNavClick(item, $event)"
               >
                 {{ item.label }}
-                <span class="material-symbols-outlined dropdown-arrow" :class="{ rotated: activeDropdown === item.label }">expand_more</span>
+                <span class="material-symbols-outlined dropdown-arrow" :class="{ rotated: activeDropdown === item.key }">expand_more</span>
               </RouterLink>
-              <ul class="dropdown" :class="{ 'dropdown--open': activeDropdown === item.label }">
-                <li v-for="child in item.children" :key="child.label">
+              <ul class="dropdown" :class="{ 'dropdown--open': activeDropdown === item.key }">
+                <li v-for="child in item.children" :key="child.key">
                   <RouterLink :to="child.to" class="dropdown-link" @click="closeMenu">
                     {{ child.label }}
                   </RouterLink>
@@ -339,7 +366,7 @@ const handleNavClick = (item, event) => {
 
 .lang-btn.active, .lang-btn:hover {
   background: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
   border-color: var(--color-primary);
 }
 
@@ -356,7 +383,9 @@ const handleNavClick = (item, event) => {
 }
 
 /* ── Nav ──────────────────────────────────────── */
+/* ── Nav ──────────────────────────────────────── */
 .header-nav {
+  position: relative; /* Positioning anchor for horizontal dropdowns */
   background-color: var(--color-primary);
   transition: all var(--transition-base);
 }
@@ -401,7 +430,7 @@ const handleNavClick = (item, event) => {
   padding: 8px 16px;
   font-size: 15px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-on-primary);
   border-radius: var(--radius-default);
   transition: all var(--transition-fast);
   white-space: nowrap;
@@ -416,8 +445,8 @@ const handleNavClick = (item, event) => {
 
 .nav-link:hover,
 .nav-link.router-link-active {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
+  background-color: rgba(var(--color-primary-rgb), 0.18);
+  color: var(--color-on-primary);
 }
 
 .dropdown-arrow {
@@ -435,38 +464,48 @@ const handleNavClick = (item, event) => {
 }
 
 @media (min-width: 1101px) {
-  .has-dropdown:hover .dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  .has-dropdown {
+    position: static; /* Let dropdown position relative to .header-nav */
   }
-  .has-dropdown:hover .dropdown-arrow {
+  
+  .has-dropdown:hover .dropdown,
+  .has-dropdown:focus-within .dropdown {
+    display: flex !important; /* Instant show on hover/focus */
+  }
+  
+  .has-dropdown:hover .dropdown-arrow,
+  .has-dropdown:focus-within .dropdown-arrow {
     transform: rotate(180deg);
   }
 }
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 0px);
+  top: 100%;
   left: 0;
   min-width: 260px;
-  background: white;
+  background: var(--color-surface-container-lowest);
   border-top: 3px solid var(--color-secondary); /* Acento rojo Peñascal */
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   padding: var(--space-sm) 0;
   box-shadow: var(--shadow-lg);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all var(--transition-base);
+  display: none; /* Instant hide by default */
   list-style: none;
   z-index: 100;
 }
 
-.dropdown--open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+@media (min-width: 1101px) {
+  .dropdown {
+    width: 100%;
+    display: none !important; /* Managed by hover/focus-within */
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    padding: 10px var(--space-lg);
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-outline-variant);
+  }
 }
 
 .dropdown-link {
@@ -477,6 +516,19 @@ const handleNavClick = (item, event) => {
   color: var(--color-on-surface);
   transition: all var(--transition-fast);
   text-decoration: none;
+}
+
+@media (min-width: 1101px) {
+  .dropdown-link {
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+
+  .dropdown-link:hover {
+    background: var(--color-surface-container-low);
+    color: var(--color-primary);
+    padding-left: 16px; /* No text push in horizontal layout */
+  }
 }
 
 .dropdown-link:hover {
@@ -505,7 +557,7 @@ const handleNavClick = (item, event) => {
   display: block;
   width: 26px;
   height: 3px;
-  background: #ffffff;
+  background: var(--color-on-primary);
   border-radius: 2px;
   transition: all var(--transition-base);
 }
@@ -623,7 +675,7 @@ const handleNavClick = (item, event) => {
   .dropdown-link {
     padding: 12px 24px;
     text-align: center;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--color-outline-variant);
     color: var(--color-on-surface);
   }
 

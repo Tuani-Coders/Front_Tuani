@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useAuth } from '../../composables/useAuth'
+import { useAuth } from '@/composables/useAuth'
 
 const route = useRoute()
 const router = useRouter()
@@ -155,46 +155,90 @@ const handleVerify = async () => {
 <template>
   <div>
     <div class="auth-view view">
-      <div class="container auth-container">
-        <div class="auth-card card shadow-md">
-          <div class="auth-header text-center">
-            <h1 class="headline-md">Verificación de seguridad</h1>
-            <p class="body-md text-muted">
-              Hemos enviado un código a <strong>{{ email }}</strong>
-            </p>
-            <div class="timer-box" :class="{ 'timer-warning': timeLeft < 60 }">
-              <span class="timer-label">El código expira en:</span>
-              <span class="timer-value">{{ formatTime(timeLeft) }}</span>
+      <div class="auth-wrapper">
+        <!-- Brand Sidebar -->
+        <div class="auth-sidebar">
+          <div class="sidebar-content">
+            <div class="brand-info">
+              <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="sidebar-logo">
+              <span class="brand-tagline">Peñascal</span>
+            </div>
+            <div class="sidebar-hero-text">
+              <h2 class="sidebar-title">Creando oportunidades, tejiendo futuro</h2>
+              <p class="sidebar-subtitle">Acceso exclusivo para el personal de administración e instructores autorizados.</p>
+            </div>
+            <div class="sidebar-footer">
+              <p class="sidebar-footer-text">© 2026 Grupo Peñascal · Compromiso social y ético</p>
             </div>
           </div>
+        </div>
 
-          <form @submit.prevent="handleVerify" class="auth-form">
-            <div v-if="error" class="error-box">
-              {{ error }}
+        <!-- Form Container -->
+        <div class="auth-form-container">
+          <div class="auth-form-card">
+            <div class="auth-header text-center">
+              <div class="mobile-logo-container">
+                <img src="../../assets/icons/penascal.png" alt="Logo Peñascal" class="auth-logo">
+              </div>
+              <h1 class="headline-md">Verificación</h1>
+              <p class="body-md text-muted" style="margin-bottom: var(--space-md);">
+                Hemos enviado un código a <strong>{{ email }}</strong>
+              </p>
+              <div class="timer-box" :class="{ 'timer-warning': timeLeft < 60 }">
+                <span class="timer-label">Expira en:</span>
+                <span class="timer-value">{{ formatTime(timeLeft) }}</span>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="code" class="label-md">Código de verificación</label>
-              <input
-                type="text"
-                id="code"
-                v-model="code"
-                required
-                maxlength="6"
-                class="form-control code-input"
-                placeholder="123456"
-              >
-            </div>
+            <form @submit.prevent="handleVerify" class="auth-form">
+              <div v-if="error" class="error-box">
+                {{ error }}
+              </div>
 
-            <button type="submit" class="btn btn-primary w-100" :disabled="loading || code.length < 6">
-              <span v-if="!loading">Verificar y entrar</span>
-              <span v-else>Verificando...</span>
-            </button>
+              <div class="form-group">
+                <label for="code" class="label-md">Código de 6 dígitos</label>
+                <div class="input-icon-wrapper">
+                  <span class="material-symbols-outlined input-icon">key</span>
+                  <input
+                    type="text"
+                    id="code"
+                    v-model="code"
+                    required
+                    maxlength="6"
+                    class="form-control code-input"
+                    placeholder="123456"
+                  >
+                </div>
+              </div>
 
-            <div class="auth-footer text-center">
-              <div v-if="timeLeft > 0">
-                <p class="resend-info">
-                  ¿No recibiste el código?
+              <button type="submit" class="btn btn-primary w-100" :disabled="loading || code.length < 6">
+                <span v-if="!loading" style="display: inline-flex; align-items: center; gap: 8px;">
+                  Verificar y entrar
+                  <span class="material-symbols-outlined" style="font-size: 18px;">lock_open</span>
+                </span>
+                <span v-else>Verificando...</span>
+              </button>
+
+              <div class="auth-footer text-center">
+                <div v-if="timeLeft > 0">
+                  <p class="resend-info" style="margin-bottom: var(--space-sm);">
+                    ¿No recibiste el código?<br>
+                    <button
+                      v-if="canResend"
+                      type="button"
+                      @click="resendCode"
+                      class="link-resend"
+                      :disabled="loading"
+                    >
+                      Reenviar ahora
+                    </button>
+                    <span v-else class="resend-wait" style="font-size: 13px; color: var(--color-outline);">
+                      Podrás reenviar cuando el actual expire.
+                    </span>
+                  </p>
+                </div>
+                <div v-else>
+                  <p class="code-expired" style="color: var(--color-secondary); font-weight: 700; margin-bottom: var(--space-sm);">Código expirado</p>
                   <button
                     v-if="canResend"
                     type="button"
@@ -202,38 +246,28 @@ const handleVerify = async () => {
                     class="link-resend"
                     :disabled="loading"
                   >
-                    Reenviar ahora
+                    Enviar nuevo código
                   </button>
-                  <span v-else class="resend-wait">
-                    Podrás reenviar cuando el código expire
+                  <span v-else class="resend-wait" style="font-size: 13px; color: var(--color-outline);">
+                    Espera {{ formatTime(resendCooldown) }} para reenviar.
                   </span>
-                </p>
-              </div>
-              <div v-else>
-                <p class="code-expired">Código expirado</p>
-                <button
-                  v-if="canResend"
-                  type="button"
-                  @click="resendCode"
+                </div>
+                
+                <div class="auth-divider" style="margin-block: var(--space-md);">
+                  <span>Opciones</span>
+                </div>
+
+                <a
+                  href="#"
                   class="link-resend"
-                  :disabled="loading"
+                  style="font-size: 14px;"
+                  @click.prevent="confirmExit('/login')"
                 >
-                  Enviar nuevo código
-                </button>
-                <span v-else class="resend-wait">
-                  Espera {{ formatTime(resendCooldown) }} para reenviar
-                </span>
+                  Cancelar y volver
+                </a>
               </div>
-              <br>
-              <a
-                href="#"
-                class="link-forgot"
-                @click.prevent="confirmExit('/login')"
-              >
-                Cancelar y volver al login
-              </a>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -268,265 +302,7 @@ const handleVerify = async () => {
 </template>
 
 <style scoped>
-.auth-view {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  background-color: var(--color-surface);
-  padding: var(--space-xl) var(--space-md);
-}
-
-.auth-container {
-  max-width: 480px;
-}
-
-.auth-card {
-  padding: var(--space-lg);
-  background: white;
-  border-radius: var(--radius-lg);
-}
-
-.auth-header {
-  margin-bottom: var(--space-lg);
-}
-
-.form-group {
-  margin-bottom: var(--space-md);
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: var(--space-xs);
-  color: var(--color-on-surface);
-  font-weight: 700;
-}
-
-.form-control {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid var(--color-outline-variant);
-  border-radius: var(--radius-default);
-  background: var(--color-surface-container-low);
-  font-family: var(--font-family);
-  font-size: var(--body-md-size);
-  text-align: center;
-  letter-spacing: 8px;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  background: white;
-}
-
-.code-input {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.error-box {
-  background: var(--color-secondary-container);
-  color: var(--color-on-secondary-container);
-  padding: var(--space-md);
-  border-radius: var(--radius-default);
-  margin-bottom: var(--space-md);
-  font-size: var(--label-lg-size);
-  text-align: center;
-  border-left: 4px solid var(--color-secondary);
-}
-
-.link-forgot {
-  color: var(--color-on-surface-variant);
-  font-size: var(--label-lg-size);
-  text-decoration: none;
-}
-
-.link-forgot:hover {
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-.resend-wait {
-  color: var(--color-on-surface-variant);
-  font-size: var(--body-md-size);
-  margin: 0;
-}
-
-.link-resend {
-  background: none;
-  border: none;
-  color: var(--color-primary);
-  font-size: var(--body-md-size);
-  text-decoration: underline;
-  cursor: pointer;
-  padding: 0;
-}
-
-.link-resend:hover {
-  color: var(--color-on-primary-container);
-}
-
-.link-resend:disabled {
-  color: var(--color-outline);
-  cursor: not-allowed;
-}
-
-.auth-footer {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--color-outline-variant);
-}
-
-.timer-box {
-  background: var(--color-primary-container);
-  border-radius: var(--radius-default);
-  padding: var(--space-md);
-  margin-top: var(--space-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.timer-label {
-  font-size: var(--label-md-size);
-  color: var(--color-on-primary-container);
-}
-
-.timer-value {
-  font-size: var(--headline-md-size);
-  font-weight: 700;
-  color: var(--color-primary);
-  font-family: monospace;
-}
-
-.timer-warning {
-  background: var(--color-secondary-container);
-}
-
-.timer-warning .timer-value {
-  color: var(--color-secondary);
-}
-
 .w-100 {
   width: 100%;
-}
-
-.text-center {
-  text-align: center;
-}
-
-/* Modal de confirmacion */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: var(--space-md);
-}
-
-.modal-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  max-width: 400px;
-  width: 100%;
-  box-shadow: var(--shadow-xl);
-  animation: modal-slide-in 0.2s ease-out;
-}
-
-@keyframes modal-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.modal-header {
-  padding: var(--space-lg);
-  border-bottom: 1px solid var(--color-outline-variant);
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: var(--color-on-surface);
-}
-
-.modal-body {
-  padding: var(--space-lg);
-}
-
-.modal-body p {
-  margin: 0 0 var(--space-md) 0;
-  color: var(--color-on-surface-variant);
-  line-height: 1.5;
-}
-
-.modal-timer {
-  background: var(--color-secondary-container);
-  border-radius: var(--radius-default);
-  padding: var(--space-md);
-  text-align: center;
-}
-
-.modal-timer .timer-label {
-  display: block;
-  font-size: var(--label-md-size);
-  color: var(--color-on-secondary-container);
-  margin-bottom: var(--space-xs);
-}
-
-.modal-timer .timer-value {
-  font-size: var(--headline-sm-size);
-  font-weight: 700;
-  color: var(--color-secondary);
-  font-family: monospace;
-}
-
-.modal-footer {
-  padding: var(--space-lg);
-  display: flex;
-  gap: var(--space-md);
-  justify-content: flex-end;
-  border-top: 1px solid var(--color-outline-variant);
-}
-
-.modal-footer .btn {
-  padding: 12px 24px;
-  border-radius: var(--radius-default);
-  font-size: var(--label-lg-size);
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.modal-footer .btn-primary {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
-.modal-footer .btn-primary:hover {
-  background: var(--color-primary-container);
-  color: var(--color-on-primary-container);
-}
-
-.modal-footer .btn-secondary {
-  background: var(--color-surface-variant);
-  color: var(--color-on-surface-variant);
-  border: 1px solid var(--color-outline);
-}
-
-.modal-footer .btn-secondary:hover {
-  background: var(--color-outline-variant);
 }
 </style>

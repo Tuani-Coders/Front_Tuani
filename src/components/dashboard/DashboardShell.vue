@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { useAuth } from '../../composables/useAuth'
+import { useAuth } from '@/composables/useAuth'
 
 const props = defineProps({
   activeTab: {
@@ -198,7 +198,7 @@ const avatarStyle = computed(() => ({
 }
 
 .dashboard-brand strong {
-  color: #ffffff;
+  color: var(--color-on-primary);
   font-size: 17px;
   line-height: 21px;
 }
@@ -302,7 +302,7 @@ const avatarStyle = computed(() => ({
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-default);
   background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  color: var(--color-on-primary);
   text-align: left;
   cursor: pointer;
   transition: all var(--transition-base);
@@ -320,7 +320,7 @@ const avatarStyle = computed(() => ({
   height: 36px;
   border-radius: var(--radius-default);
   background: var(--color-secondary);
-  color: #ffffff;
+  color: var(--color-on-secondary);
   font-size: 15px;
   font-weight: 900;
   overflow: hidden;
@@ -481,7 +481,7 @@ const avatarStyle = computed(() => ({
 .primary-action:hover {
   background: var(--color-on-secondary-container);
   border-color: var(--color-on-secondary-container);
-  color: white;
+  color: var(--color-secondary-container);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }

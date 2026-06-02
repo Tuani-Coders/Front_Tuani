@@ -1,0 +1,79 @@
+{
+  "brand": {
+    "name": "Grupo Peñascal Kooperatiba",
+    "description": "We are a social initiative, non-profit organisation declared of public benefit since 1986."
+  },
+  "common": {
+    "phone": "+34 944 029 300",
+    "email": "info{'@'}grupopenascal.com",
+    "location": "Location"
+  },
+  "auth": {
+    "hello": "Hello,",
+    "dashboard": "Dashboard",
+    "logout": "Log out",
+    "login": "Sign in"
+  },
+  "nav": {
+    "home": "Home",
+    "training": "Training",
+    "professionalTraining": "Vocational Training",
+    "basicGrade": "Basic Grade",
+    "mediumGrade": "Intermediate Grade",
+    "employmentTraining": "Employment Training",
+    "cooperative": "The Cooperative",
+    "whoWeAre": "Who we are",
+    "whatWeDo": "What we do",
+    "partners": "Partners",
+    "orientation": "Guidance service",
+    "collaborate": "Collaborate",
+    "supportProjects": "Support projects without resources",
+    "donateProducts": "Donate products and services",
+    "hireCompanies": "Hire social integration companies",
+    "supportInsertion": "Support labour market integration",
+    "news": "News",
+    "contact": "Contact"
+  },
+  "footer": {
+    "resources": "Resources",
+    "institutional": "Institutional",
+    "transparency": "Transparency",
+    "team": "Team",
+    "legal": "Legal Notice",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookies",
+    "copyright": "© {year} Grupo Peñascal Kooperatiba. All rights reserved.",
+    "madeBy": "This website was created by",
+    "creator": "Tuani Coders"
+  },
+  "languages": {
+    "label": "Language",
+    "es": "ES",
+    "eu": "EU",
+    "en": "EN"
+  },
+  "pages": {
+    "home": "Home - Peñascal Koop.",
+    "login": "Sign in - Peñascal Koop.",
+    "verifyAdmin": "Admin verification - Peñascal Koop.",
+    "verifyEmail": "Verification - Peñascal Koop.",
+    "dashboard": "Dashboard - Peñascal Koop.",
+    "team": "Team - Tuani Coders",
+    "training": "Vocational Training - Peñascal Koop.",
+    "basicGrade": "Basic Grade - Peñascal Koop.",
+    "mediumGrade": "Intermediate Grade - Peñascal Koop.",
+    "employmentTraining": "Employment Training - Peñascal Koop.",
+    "cooperative": "Who we are - Peñascal Koop.",
+    "whatWeDo": "What we do - Peñascal Koop.",
+    "partners": "Partners - Peñascal Koop.",
+    "orientation": "Guidance service - Peñascal Koop.",
+    "collaborate": "Collaborate - Peñascal Koop.",
+    "supportProjects": "Supporting Projects - Peñascal Koop.",
+    "donateProducts": "Donating Products - Peñascal Koop.",
+    "hireCompanies": "Hiring Companies - Peñascal Koop.",
+    "supportInsertion": "Supporting Integration - Peñascal Koop.",
+    "news": "News - Peñascal Koop.",
+    "contact": "Contact - Peñascal Koop.",
+    "notFound": "Page not found - Peñascal Koop."
+  }
+}

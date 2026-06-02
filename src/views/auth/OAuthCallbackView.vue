@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useAuth } from '../../composables/useAuth'
+import { useAuth } from '@/composables/useAuth'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,6 +14,9 @@ const provider = ref('')
 onMounted(async () => {
   provider.value = route.params.provider
   const code = route.query.code
+  const state = route.query.state
+  const savedState = localStorage.getItem('oauth_state')
+  const redirectTo = localStorage.getItem('oauth_redirect') || '/dashboard'
 
   if (!code) {
     error.value = 'No se recibió código de autorización'
@@ -21,11 +24,17 @@ onMounted(async () => {
     return
   }
 
+  if (savedState && state !== savedState) {
+    error.value = 'La respuesta OAuth no coincide con la sesión iniciada'
+    loading.value = false
+    return
+  }
+
   try {
-    // Usa handleOAuthCallback del composable para conectar con backend
     await handleOAuthCallback(provider.value, code)
-    // Redirect to home
-    router.push('/')
+    localStorage.removeItem('oauth_state')
+    localStorage.removeItem('oauth_redirect')
+    router.push(redirectTo)
   } catch (err) {
     console.error('OAuth error:', err)
     error.value = err.message || 'Error al iniciar sesión'
@@ -70,7 +79,7 @@ onMounted(async () => {
 .callback-card {
   max-width: 480px;
   padding: var(--space-xl);
-  background: white;
+  background: var(--color-surface-container-lowest);
   border-radius: var(--radius-lg);
 }
 
