@@ -181,7 +181,7 @@ const collabTypes = [
       <div class="container">
         <div class="cta-box card text-center border-secondary">
           <h2 class="mb-sm">¿Tu empresa quiere sumarse?</h2>
-          <p class="body-lg text-muted mb-lg">Únete a la red de empresas que apuestan por el talento local y la responsabilidad social.</p>
+          <p class="body-lg mb-lg">Únete a la red de empresas que apuestan por el talento local y la responsabilidad social.</p>
           <div class="cta-actions justify-center">
             <RouterLink to="/contacto" class="btn btn-primary btn-lg">Contactar con Empresas</RouterLink>
           </div>

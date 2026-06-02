@@ -164,6 +164,23 @@
   background-color: var(--color-primary);
   color: var(--color-on-primary);
 }
+.bg-primary-container {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+.bg-primary-fixed {
+  background-color: var(--color-primary-fixed);
+  color: var(--color-primary);
+}
+.bg-secondary-fixed {
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-secondary);
+}
+.bg-tertiary-fixed,
+.bg-amber-fixed {
+  background-color: var(--color-tertiary-fixed);
+  color: var(--color-primary);
+}
 
 .text-center { text-align: center; }
 .justify-center { justify-content: center; }
